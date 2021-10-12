@@ -34,26 +34,15 @@ export default function Customer() {
     cleanFieldError();
     let valid = true;
     if (valid) {
-      let responsePromise;
-      if (update) {
-        responsePromise = updateCustomer(createTransferObject(model.id));
-      } else {
-        responsePromise = createCustomer(createTransferObject());
-      }
+      let responsePromise = updateCustomer(createTransferObject(model.id));
       responsePromise
         .then((user) => {
-          addSuccessMessage(
-            'El cliente ' +
-              user.name +
-              ' fue ' +
-              (update ? 'actualizado' : 'creado') +
-              ' exitosamente.',
-          );
+          addSuccessMessage('El cliente ' + user.name + ' fue ' + (update ? 'actualizado' : 'creado') + ' exitosamente.');
           history.push('/Customers');
         })
         .catch((error) => {
-          addFieldError(error.field, error.message);
           addErrorMessage(error.message);
+          addFieldError(error.field, error.message);
         });
     }
   };

@@ -16,7 +16,9 @@ const useReactPath = () => {
     });
 
     return () => {
-      history.unlisten();
+      if (history.unlisten) {
+        history.unlisten();
+      }
     };
   }, [history]);
 

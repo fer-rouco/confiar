@@ -1,33 +1,16 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useHistory, useLocation } from 'react-router';
-import { Link } from 'react-router-dom';
 import AcceptCancelDialog from '../components/dialog/accept-cancel-dialog';
 import { useAlertMessage } from '../contexts/alert-message-context';
 import { removeCustomer, getAllCustomers } from '../services/customer-service';
 import Panel from '../components/panel';
-import Icon from '../components/icon';
-import styled from 'styled-components';
-
-const StyledTD = styled.td`
-  vertical-align: middle;
-`;
-
-const StyledTH = styled.th`
-  vertical-align: middle;
-`;
-
-const columns = [
-  { id: 'name', label: 'Nombre' },
-  { id: 'lastName', label: 'Apellido' },
-  { id: 'mail', label: 'E-Mail' },
-  { id: 'remove', label: '' }
-];
+import Table from '../components/table/table';
+import { iconColumnDefinition, textColumnDefinition } from '../components/table/column-definitions/column-definition';
 
 export default function Customers() {
   const history = useHistory();
   const location = useLocation();
   const { addSuccessMessage, addErrorMessage } = useAlertMessage();
-  const [customerItems, setCustomerItems] = useState([]);
   const [customers, setCustomers] = useState(null);
   const [showDialog, setShowDialog] = useState(false);
   const [dialogConfirmation, setDialogConfirmation] = useState(false);
@@ -49,32 +32,30 @@ export default function Customers() {
     [setCustomerToBeDeleted],
   );
 
-  const refreshTable = useCallback(() => {
-    const getTableRowClass = (index) => {
-      return index % 2 !== 0 ? 'table-secondary' : '';
-    };
+  const columnDefinitions = [
+    textColumnDefinition({
+      key: 'name',
+      label: 'Nombre',
+      target: '/Customer'
+    }),
+    textColumnDefinition({
+      key: 'lastName',
+      label: 'Apellido'
+    }),
+    textColumnDefinition({
+      key: 'mail', 
+      label: 'Mail'
+    }),
+    iconColumnDefinition({
+      key: 'remove',
+      icon: 'trash-fill',
+      onClick: (rowObject) => removeAlert(rowObject)
+    })
+  ];
 
+  const refreshTable = useCallback(() => {
     getAllCustomers().then((customerList) => {
       setCustomers(customerList);
-      const customerItemList = customerList.map((customer, index) => (
-        <tr key={customer.mail}>
-          <StyledTH className={getTableRowClass(index)} scope="row">
-            <Link to={{ pathname: '/Customer', state: customer }}>{customer.name}</Link>
-          </StyledTH>
-          <StyledTD className={getTableRowClass(index)}>
-            {customer.lastName}
-          </StyledTD>
-          <StyledTD className={getTableRowClass(index)}>{customer.mail}</StyledTD>
-          <StyledTD className={getTableRowClass(index) + ' fs-4 mb-3'}>
-            <Icon
-              fontName="trash-fill"
-              medium
-              onClick={() => removeAlert(customer)}
-            ></Icon>
-          </StyledTD>
-        </tr>
-      ));
-      setCustomerItems(customerItemList);
     });
   }, [location, removeAlert]);
 
@@ -124,18 +105,7 @@ export default function Customers() {
         },
       ]}
     >
-      <table className="table table-hover">
-        <thead>
-          <tr>
-            {columns.map((column) => (
-              <StyledTH className="table-success" scope="col" key={column.id}>
-                {column.label}
-              </StyledTH>
-            ))}
-          </tr>
-        </thead>
-        <tbody>{customerItems}</tbody>
-      </table>
+      <Table columnDefinitions={columnDefinitions} rowObjects={customers} ></Table>
 
       <AcceptCancelDialog
         title="Eliminar Cliente"

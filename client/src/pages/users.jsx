@@ -1,9 +1,9 @@
 import { useCallback, useEffect, useState } from 'react';
-import { useHistory, useLocation } from 'react-router';
+import { useHistory } from 'react-router';
 import { Link } from 'react-router-dom';
 import AcceptCancelDialog from '../components/dialog/accept-cancel-dialog';
 import { useAlertMessage } from '../contexts/alert-message-context';
-import { deleteUser, findUsersByStore } from '../services/user-service';
+import { deleteUser, findAllUsers } from '../services/user-service';
 import Panel from '../components/panel';
 import Icon from '../components/icon';
 import styled from 'styled-components';
@@ -27,7 +27,6 @@ const columns = [
 
 export default function Users() {
   const history = useHistory();
-  const location = useLocation();
   const { addSuccessMessage, addErrorMessage } = useAlertMessage();
   const [userItems, setUserItems] = useState([]);
   const [users, setUsers] = useState(null);
@@ -48,13 +47,11 @@ export default function Users() {
   };
 
   const getTitle = () => {
-    return !location.state || !location.state.store
-      ? ''
-      : 'Usuarios de la tienda ' + location.state.store.name;
+    return 'Usuarios.';
   };
 
   const createUser = () => {
-    history.push('/User', { store: location.state.store, profile: 1 });
+    history.push('/User');
   };
 
   const deleteUserAlert = useCallback(() => {
@@ -70,39 +67,36 @@ export default function Users() {
   );
 
   const refreshTable = useCallback(() => {
-    let storeId = !location.state ? -1 : location.state.store.id;
-    if (storeId > -1) {
-      const getTableRowClass = (index) => {
-        return index % 2 !== 0 ? 'table-secondary' : '';
-      };
+    const getTableRowClass = (index) => {
+      return index % 2 !== 0 ? 'table-secondary' : '';
+    };
 
-      findUsersByStore(storeId).then((userList) => {
-        setUsers(userList);
-        const userItemList = userList.map((user, index) => (
-          <tr key={user.userName}>
-            <StyledTH className={getTableRowClass(index)} scope="row">
-              <Link to={{ pathname: '/User', state: user }}>{user.name}</Link>
-            </StyledTH>
-            <StyledTD className={getTableRowClass(index)}>
-              {user.lastName}
-            </StyledTD>
-            <StyledTD className={getTableRowClass(index)}>{user.user}</StyledTD>
-            <StyledTD className={getTableRowClass(index)}>{user.mail}</StyledTD>
-            <StyledTD className={getTableRowClass(index)}>
-              {getProfileDescription(user.profile)}
-            </StyledTD>
-            <StyledTD className={getTableRowClass(index) + ' fs-4 mb-3'}>
-              <Icon
-                fontName="trash-fill"
-                medium
-                onClick={() => removeUser(user)}
-              ></Icon>
-            </StyledTD>
-          </tr>
-        ));
-        setUserItems(userItemList);
-      });
-    }
+    findAllUsers().then((userList) => {
+      setUsers(userList);
+      const userItemList = userList.map((user, index) => (
+        <tr key={user.userName}>
+          <StyledTH className={getTableRowClass(index)} scope="row">
+            <Link to={{ pathname: '/User', state: user }}>{user.name}</Link>
+          </StyledTH>
+          <StyledTD className={getTableRowClass(index)}>
+            {user.lastName}
+          </StyledTD>
+          <StyledTD className={getTableRowClass(index)}>{user.user}</StyledTD>
+          <StyledTD className={getTableRowClass(index)}>{user.mail}</StyledTD>
+          <StyledTD className={getTableRowClass(index)}>
+            {getProfileDescription(user.profile)}
+          </StyledTD>
+          <StyledTD className={getTableRowClass(index) + ' fs-4 mb-3'}>
+            <Icon
+              fontName="trash-fill"
+              medium
+              onClick={() => removeUser(user)}
+            ></Icon>
+          </StyledTD>
+        </tr>
+      ));
+      setUserItems(userItemList);
+    });
   }, [location, removeUser]);
 
   useEffect(() => {

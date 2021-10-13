@@ -6,6 +6,7 @@ import { useModel } from '../model-context';
 const StyledFormSelect = styled.select`
   margin-top: 10px;
   margin-bottom: 10px;
+  font-size: 1rem;
 `;
 
 // props: register, attr, label, options
@@ -61,6 +62,7 @@ export default function SelectField(props) {
         {/* <option>{props.label}</option> */}
         {getOptions()}
       </StyledFormSelect>
+      <label htmlFor="floatingInput">{props.label}</label>
     </div>
   );
 }

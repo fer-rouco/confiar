@@ -1,9 +1,9 @@
-import { findById, post, put, remove } from './base-service';
+import { findById, get, post, put, remove } from './base-service';
 
 const BASE_URL = 'user';
 
-export async function findUsersByStore(storeId) {
-  return findById(BASE_URL + '/byStoreId', storeId);
+export async function findAllUsers() {
+  return get(BASE_URL);
 }
 
 export async function createUser(createObject) {

@@ -157,7 +157,7 @@ export default function InputField(props) {
           ? fieldError.message
           : ''}
       </StyledErrorMessage>
-      <label htmlFor="floatingInput">{props.label}</label>
+      {/* <label htmlFor="floatingInput">{props.label}</label> */}
     </div>
   );
 }

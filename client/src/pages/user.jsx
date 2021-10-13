@@ -4,7 +4,6 @@ import { useHistory } from 'react-router-dom';
 import SubmitButton from '../components/controls/buttons/submit-button';
 import MailField from '../components/controls/fields/input/mail-field';
 import PasswordField from '../components/controls/fields/input/password-field';
-import PhoneField from '../components/controls/fields/input/phone-field';
 import TextField from '../components/controls/fields/input/text-field';
 import SelectField from '../components/controls/fields/select/select-field';
 import PanelForm from '../components/panel-form';
@@ -174,19 +173,13 @@ export default function User() {
               attr={PROFILE.id}
               label={PROFILE.label}
               options={[
-                { value: 1, label: 'Cajero' },
-                { value: 2, label: 'Supervisor' },
+                { value: 1, label: 'Administrador' },
+                { value: 2, label: 'Vendedor' },
+                { value: 3, label: 'Administrativo' }
               ]}
               required
             ></SelectField>
           </div>
-          <div className="col-md-6">
-              <PhoneField
-                attr={PHONE.id}
-                label={PHONE.label}
-                required
-              ></PhoneField>
-            </div>
         </div>
       </div>
       <div className="row justify-content-center">

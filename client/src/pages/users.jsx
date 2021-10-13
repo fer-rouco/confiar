@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useHistory, useLocation } from 'react-router';
 import { Link } from 'react-router-dom';
-import AlertDialog from '../components/alert-dialog';
+import AcceptCancelDialog from '../components/dialog/accept-cancel-dialog';
 import { useAlertMessage } from '../contexts/alert-message-context';
 import { deleteUser, findUsersByStore } from '../services/user-service';
 import Panel from '../components/panel';
@@ -31,8 +31,8 @@ export default function Users() {
   const { addSuccessMessage, addErrorMessage } = useAlertMessage();
   const [userItems, setUserItems] = useState([]);
   const [users, setUsers] = useState(null);
-  const [show, setShow] = useState(false);
-  const [alertConfirmation, setAlertConfirmation] = useState(false);
+  const [showDialog, setShowDialog] = useState(false);
+  const [dialogConfirmation, setDialogConfirmation] = useState(false);
   const [userToBeDeleted, setUserToBeDeleted] = useState(null);
 
   const getProfileDescription = (profile) => {
@@ -58,8 +58,8 @@ export default function Users() {
   };
 
   const deleteUserAlert = useCallback(() => {
-    setShow(true);
-  }, [setShow]);
+    setShowDialog(true);
+  }, [setShowDialog]);
 
   const removeUser = useCallback(
     (user) => {
@@ -110,8 +110,8 @@ export default function Users() {
   }, [refreshTable]);
 
   useEffect(() => {
-    if (alertConfirmation) {
-      setAlertConfirmation(false);
+    if (dialogConfirmation) {
+      setDialogConfirmation(false);
       if (userToBeDeleted) {
         const userName = userToBeDeleted.name;
         deleteUser(userToBeDeleted.id)
@@ -129,10 +129,10 @@ export default function Users() {
       }
     }
   }, [
-    alertConfirmation,
+    dialogConfirmation,
     userToBeDeleted,
     refreshTable,
-    setAlertConfirmation,
+    setDialogConfirmation,
     addSuccessMessage,
     addErrorMessage,
   ]);
@@ -164,17 +164,17 @@ export default function Users() {
         <tbody>{userItems}</tbody>
       </table>
 
-      <AlertDialog
+      <AcceptCancelDialog
         title="Eliminar Usuario"
         message={
           'Esta seguro que desea eliminar el usuario ' +
           (userToBeDeleted ? userToBeDeleted.name : '') +
           '?'
         }
-        show={show}
-        setShow={setShow}
-        setConfirmation={setAlertConfirmation}
-      ></AlertDialog>
+        show={showDialog}
+        setShow={setShowDialog}
+        setConfirmation={setDialogConfirmation}
+      ></AcceptCancelDialog>
     </Panel>
   );
 }

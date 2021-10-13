@@ -1,6 +1,6 @@
 import { createRef, useEffect, useState } from 'react';
 import styled from 'styled-components';
-import AlertDialog from '../alert-dialog';
+import Dialog from '../dialog/dialog';
 import Button from './buttons/button';
 import { useModel } from './fields/model-context';
 
@@ -57,6 +57,7 @@ const StyledCloseButton = styled(Button)`
   margin-right: 10px;
   position: absolute;
   display: inline-block;
+  z-index: 1;
 `;
 
 const StyledImageButton = styled.div`
@@ -68,6 +69,7 @@ const StyledImageButton = styled.div`
   display: inline-flex;
   float: right;
   position: relative;
+  cursor: pointer;
 `;
 
 const StyledFileNameLabel = styled.label`
@@ -91,9 +93,9 @@ const StyledLabelContainer = styled.div`
   white-space: nowrap;
   position: relative;
   display: inline-block;
-  width: calc(87%);
+  width: calc(85%);
   top: 5px;
-  padding-left: 40px;
+  padding-left: 42px;
 `;
 
 
@@ -304,13 +306,12 @@ export default function FileUpload(props) {
             )
         }
       </StyledContainer>
-      <AlertDialog
+      <Dialog
         title={alertTitle}
         content={alertContent}
         show={show}
         setShow={setShow}
-        actions={false}
-      ></AlertDialog>
+      ></Dialog>
     </div>
   )
 }

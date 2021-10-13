@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useHistory, useLocation } from 'react-router';
 import { Link } from 'react-router-dom';
-import AlertDialog from '../components/alert-dialog';
+import AcceptCancelDialog from '../components/dialog/accept-cancel-dialog';
 import { useAlertMessage } from '../contexts/alert-message-context';
 import { removeCustomer, getAllCustomers } from '../services/customer-service';
 import Panel from '../components/panel';
@@ -29,8 +29,8 @@ export default function Customers() {
   const { addSuccessMessage, addErrorMessage } = useAlertMessage();
   const [customerItems, setCustomerItems] = useState([]);
   const [customers, setCustomers] = useState(null);
-  const [showAlert, setShowAlert] = useState(false);
-  const [alertConfirmation, setAlertConfirmation] = useState(false);
+  const [showDialog, setShowDialog] = useState(false);
+  const [dialogConfirmation, setDialogConfirmation] = useState(false);
   const [customerToBeDeleted, setCustomerToBeDeleted] = useState(null);
   
   const getTitle = () => {
@@ -44,7 +44,7 @@ export default function Customers() {
   const removeAlert = useCallback(
     (customer) => {
       setCustomerToBeDeleted(customer);
-      setShowAlert(true);
+      setShowDialog(true);
     },
     [setCustomerToBeDeleted],
   );
@@ -83,8 +83,8 @@ export default function Customers() {
   }, [refreshTable]);
 
   useEffect(() => {
-    if (alertConfirmation) {
-      setAlertConfirmation(false);
+    if (dialogConfirmation) {
+      setDialogConfirmation(false);
       if (customerToBeDeleted) {
         const customerName = customerToBeDeleted.name;
         removeCustomer(customerToBeDeleted.id)
@@ -102,10 +102,10 @@ export default function Customers() {
       }
     }
   }, [
-    alertConfirmation,
+    dialogConfirmation,
     customerToBeDeleted,
     refreshTable,
-    setAlertConfirmation,
+    setDialogConfirmation,
     addSuccessMessage,
     addErrorMessage,
   ]);
@@ -137,17 +137,17 @@ export default function Customers() {
         <tbody>{customerItems}</tbody>
       </table>
 
-      <AlertDialog
+      <AcceptCancelDialog
         title="Eliminar Cliente"
         message={
           'Esta seguro que desea eliminar el cliente ' +
           (customerToBeDeleted ? customerToBeDeleted.name : '') +
           '?'
         }
-        show={showAlert}
-        setShow={setShowAlert}
-        setConfirmation={setAlertConfirmation}
-      ></AlertDialog>
+        show={showDialog}
+        setShow={setShowDialog}
+        setConfirmation={setDialogConfirmation}
+      ></AcceptCancelDialog>
     </Panel>
   );
 }

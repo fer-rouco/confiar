@@ -1,12 +1,13 @@
 import { createRef, useCallback, useEffect, useState } from 'react';
 import bootstrap from 'bootstrap/dist/js/bootstrap.js';
 import styled from 'styled-components';
+import Button from '../controls/buttons/button';
 
 const StyledModalContent = styled.div`
   width: fit-content
 `;
 
-export default function AlertDialog({
+export default function Dialog({
   title,
   message,
   show,
@@ -22,14 +23,6 @@ export default function AlertDialog({
     return bootstrap.Modal.getOrCreateInstance(modalRef.current);
   }, [modalRef]);
 
-  const handleConfirmation = () => {
-    if (actions) {
-      setConfirmation(true);
-    }
-    setShow(false);
-    getModal().hide();
-  };
-
   const handleClose = () => {
     if (actions) {
       setConfirmation(false);
@@ -38,22 +31,20 @@ export default function AlertDialog({
     getModal().hide();
   };
 
+  const handleAction = (action) => {
+    action.action();
+    getModal().hide();
+  };
+
   const getFooter = () => (
     <div className="modal-footer">
-      <button
-        type="button"
-        className="btn btn-secondary"
-        onClick={handleClose}
-      >
-        No
-      </button>
-      <button
-        type="button"
-        className="btn btn-primary"
-        onClick={handleConfirmation}
-      >
-        Si
-      </button>
+      {
+        (actions) ?
+          actions.map(action => (
+            <Button key={action.id} label={action.label} onClick={() => handleAction(action)} color={action.color} ></Button>
+          ))
+          : (<></>)
+      }
     </div>
   );
 

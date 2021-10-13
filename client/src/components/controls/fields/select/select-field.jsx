@@ -62,7 +62,7 @@ export default function SelectField(props) {
         {/* <option>{props.label}</option> */}
         {getOptions()}
       </StyledFormSelect>
-      <label htmlFor="floatingInput">{props.label}</label>
+      {/* <label htmlFor="floatingInput">{props.label}</label> */}
     </div>
   );
 }

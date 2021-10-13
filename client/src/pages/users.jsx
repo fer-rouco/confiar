@@ -81,7 +81,7 @@ export default function Users() {
           <StyledTD className={getTableRowClass(index)}>
             {user.lastName}
           </StyledTD>
-          <StyledTD className={getTableRowClass(index)}>{user.user}</StyledTD>
+          <StyledTD className={getTableRowClass(index)}>{user.userName}</StyledTD>
           <StyledTD className={getTableRowClass(index)}>{user.mail}</StyledTD>
           <StyledTD className={getTableRowClass(index)}>
             {getProfileDescription(user.profile)}

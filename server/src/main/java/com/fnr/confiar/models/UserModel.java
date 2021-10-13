@@ -16,7 +16,6 @@ public class UserModel extends BaseModel<User> {
   private String mail;
   private String password;
   private Short profile;
-  private StoreModel store;
 
   public UserModel(User entity) {
     super(entity);

@@ -34,10 +34,6 @@ public class UserService {
     return userRepository.findByMail(mail);
   }
 
-  public List<User> findByStoreId(Long storeId) {
-    return userRepository.findByStoreId(storeId);
-  }
-
   public List<User> findByProfile(Short profile) {
     return userRepository.findByProfile(profile);
   }

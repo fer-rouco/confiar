@@ -15,8 +15,6 @@ import './index.css';
 // import reportWebVitals from './reportWebVitals';
 import Login from './pages/login';
 import PageNotFound from './pages/page-not-found';
-import Stats from './pages/stats';
-import Stores from './pages/stores';
 import User from './pages/user';
 import Users from './pages/users';
 import ServerNotReady from './pages/server-not-ready';
@@ -30,8 +28,6 @@ getSessionInfo()
   .then((sessionInfo) => {
     const UsersWithAuth = withRouter(withAuth(Users));
     const UserWithAuth = withRouter(withAuth(User));
-    const StoresWithAuth = withRouter(withAuth(Stores));
-    const StatsWithAuth = withRouter(withAuth(Stats));
     const CustomerWithAuth = withRouter(withAuth(Customer));
     const CustomersWithAuth = withRouter(withAuth(Customers));
 
@@ -51,12 +47,9 @@ getSessionInfo()
                   <div className="row justify-content-center">
                     <div className="col">
                       <Switch>
-                        <Route exact path="/" component={StoresWithAuth} />
+                        <Route exact path="/" component={UsersWithAuth} />
                         <Route exact path="/Login">
                           <Login />
-                        </Route>
-                        <Route exact path="/Stores">
-                          <StoresWithAuth />
                         </Route>
                         <Route exact path="/Users">
                           <UsersWithAuth />
@@ -69,9 +62,6 @@ getSessionInfo()
                         </Route>
                         <Route exact path="/Customer">
                           <CustomerWithAuth />
-                        </Route>
-                        <Route exact path="/Stats">
-                          <StatsWithAuth />
                         </Route>
                         <Route component={PageNotFound} />
                         <Route component={ServerNotReady} />

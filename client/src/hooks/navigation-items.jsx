@@ -3,18 +3,11 @@ import { useSession } from '../contexts/session-context';
 import useReactPath from './path-name';
 
 const itemList = [
-  { id: 'Stores', path: '/Stores', text: 'Tiendas', icon: 'shop' },
-  { id: 'Customers', path: '/Customers', text: 'Clientes', icon: 'people' },
-  { id: 'Stats', path: '/Stats', text: 'Info de usuarios', icon: 'info-circle' },
-  { id: 'Login', path: '/Login', text: 'Login', icon: 'people' },
+  { id: 'Users', path: '/Users', text: 'Usuarios', icon: 'people', condition: 'logged-in' },
+  { id: 'Customers', path: '/Customers', text: 'Clientes', icon: 'people', condition: 'logged-in' },
+  { id: 'Login', path: '/Login', text: 'Login', icon: 'people', condition: 'not logged-in' },
 ];
 
-const storesItem = itemList.find((item) => {
-  return item.id === 'Stores';
-});
-const statsItem = itemList.find((item) => {
-  return item.id === 'Stats';
-});
 const loginItem = itemList.find((item) => {
   return item.id === 'Login';
 });
@@ -47,17 +40,15 @@ export const updateActiveItem = (itemList, defaultValue) => {
 export default function useNavigationItems(defaultValue) {
   const { session } = useSession();
   const pathname = useReactPath();
-
-  // Conditions
-  storesItem.condition = () => {
-    return session;
-  };
-  statsItem.condition = () => {
-    return session;
-  };
-  loginItem.condition = () => {
-    return !session;
-  };
+  
+  itemList.forEach((itemInLoop) => {
+    if (itemInLoop.condition.indexOf('logged-in') > -1) {
+      const not = itemInLoop.condition.indexOf('not') > -1;
+      itemInLoop.conditionFunction = () => {
+        return (not) ? !session : session;
+      };
+    }
+  });
 
   const [navigationItems, setNavigationItems] = useState(null);
 

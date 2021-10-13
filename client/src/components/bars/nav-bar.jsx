@@ -73,7 +73,7 @@ export default function NavBar(props) {
       itemsDom = (
         <ul className="navbar-nav me-auto mb-2 mb-lg-0">
           {navigationItems.map((item, index) =>
-            !item.condition || (item.condition && item.condition()) ? (
+            !item.conditionFunction || (item.conditionFunction && item.conditionFunction()) ? (
               <StyledNavItem to={item.path} key={item.id}>
                 <div className="d-inline-block align-text-top">
                   <StyledNavItemLeft className="fs-4">

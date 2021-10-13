@@ -3,7 +3,6 @@ package com.fnr.confiar.controllers;
 import com.fnr.confiar.Response;
 import com.fnr.confiar.entities.User;
 import com.fnr.confiar.models.UserModel;
-import com.fnr.confiar.services.StoreService;
 import com.fnr.confiar.services.UserService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,8 +24,6 @@ import org.springframework.web.bind.annotation.RestController;
 public class UserController extends BaseController {
   @Autowired
   UserService userService;
-  @Autowired
-  StoreService storeService;
 
   @GetMapping()
   public ResponseEntity<Response> getUsers() {
@@ -73,11 +70,6 @@ public class UserController extends BaseController {
   @GetMapping(path = "/{id}")
   public ResponseEntity<Response> getUserById(@PathVariable("id") Long id) {
     return responseOk(userService.findById(id), UserModel.class);
-  }
-
-  @GetMapping("/byStoreId/{id}")
-  public ResponseEntity<Response> getUsersByStoreId(@PathVariable("id") Long storeId) {
-    return responseEntityList(userService.findByStoreId(storeId), UserModel.class);
   }
 
   @GetMapping("/byProfile")

@@ -4,9 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Optional;
 
-import com.fnr.confiar.entities.Store;
 import com.fnr.confiar.entities.User;
-import com.fnr.confiar.repositories.StoreRepository;
 import com.fnr.confiar.repositories.UserRepository;
 
 import org.junit.jupiter.api.Test;
@@ -20,10 +18,8 @@ public class UserTest {
   @Autowired
   private UserRepository userRepository;
 
-  @Autowired
-  private StoreRepository storeRepository;
 
-  private User newUserInstance(Store store, short profile) {
+  private User newUserInstance(short profile) {
     User user = new User();
 
     // user.setId(1L);
@@ -33,22 +29,21 @@ public class UserTest {
     user.setUserName("UserTest");
     user.setPassword("UserTest99");
     user.setProfile(profile);
-    user.setStore(store);
 
     return user;
   }
 
-  private User newCashierInstance(Store store) {
-    return newUserInstance(store, (short) 1);
+  private User newCashierInstance() {
+    return newUserInstance((short) 1);
   }
 
-  private User newSupervisorInstance(Store store) {
-    return newUserInstance(store, (short) 2);
+  private User newSupervisorInstance() {
+    return newUserInstance((short) 2);
   }
 
   @Test
   void testCreate() {
-    User newUser = newCashierInstance(storeRepository.findById(1L).get());
+    User newUser = newCashierInstance();
     userRepository.save(newUser);
     User userInDb = userRepository.findByUserName(newUser.getUserName()).get();
     assert (newUser == userInDb);
@@ -87,15 +82,10 @@ public class UserTest {
     assert (supervisors.size() == 6);
   }
 
-  @Test
-  void testGetUsersByStoreId() {
-    ArrayList<User> usersInAStore = userRepository.findByStoreId(1L);
-    assert (usersInAStore.size() == 3);
-  }
 
   @Test
   void testUpdate() {
-    User newSupervisor = newSupervisorInstance(storeRepository.findById(1L).get());
+    User newSupervisor = newSupervisorInstance();
     User newSupervisorInDb = userRepository.save(newSupervisor);
     assert ("User" == newSupervisorInDb.getName());
     assert ("Test" == newSupervisorInDb.getLastName());
@@ -103,7 +93,6 @@ public class UserTest {
     assert ("UserTest" == newSupervisorInDb.getUserName());
     assert ("UserTest99" == newSupervisorInDb.getPassword());
     assert ((short) 2 == newSupervisorInDb.getProfile());
-    assert (storeRepository.findById(1L).get() == newSupervisorInDb.getStore());
 
     User userInDb = userRepository.findByUserName("UserTest").get();
     userInDb.setName("NewUser");
@@ -112,7 +101,6 @@ public class UserTest {
     userInDb.setUserName("NewUserTest");
     userInDb.setPassword("NewUserTest99");
     userInDb.setProfile((short) 1);
-    userInDb.setStore(storeRepository.findById(2L).get());
 
     User updatedUserInDb = userRepository.save(userInDb);
     assert ("NewUser" == updatedUserInDb.getName());
@@ -121,7 +109,6 @@ public class UserTest {
     assert ("NewUserTest" == updatedUserInDb.getUserName());
     assert ("NewUserTest99" == updatedUserInDb.getPassword());
     assert ((short) 1 == updatedUserInDb.getProfile());
-    assert (storeRepository.findById(2L).get() == updatedUserInDb.getStore());
 
   }
 }

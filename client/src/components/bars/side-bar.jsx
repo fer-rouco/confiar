@@ -81,7 +81,7 @@ export default function SideBar(props) {
           items: (
             <ul className="nav nav-pills flex-column mb-auto">
               {navigationItems.map((item, index) =>
-                !item.condition || (item.condition && item.condition()) ? (
+                !item.conditionFunction || (item.conditionFunction && item.conditionFunction()) ? (
                   <StyledNavItem key={item.id} className="nav-item">
                     {item.path ? (
                       <StyledNavLink

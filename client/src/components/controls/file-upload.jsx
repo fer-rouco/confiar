@@ -23,7 +23,10 @@ const StyledContainer = styled.div`
 const StyledFileContainer = styled.div`
   background-color: #ddd;
   border-radius: 5px;
-  padding: 16px;
+  padding-right: 10px;
+  padding-left: 10px;
+  padding-top: 10px;
+  height: 54px;
   margin-bottom: 10px;
 `;
 
@@ -52,6 +55,8 @@ const StyledCloseButton = styled(Button)`
   border-radius: 20px;
   padding: 10px;
   margin-right: 10px;
+  position: absolute;
+  display: inline-block;
 `;
 
 const StyledImageButton = styled.div`
@@ -66,17 +71,29 @@ const StyledImageButton = styled.div`
 `;
 
 const StyledFileNameLabel = styled.label`
-  line-height: 1.2;
-  text-overflow: ellipsis;
-  overflow: hidden;
-  white-space: nowrap;
-  position: absolute;
+  // line-height: 1.2;
+  // text-overflow: ellipsis;
+  // overflow: hidden;
+  // white-space: nowrap;
+  // position: absolute;
 `;
 
 const StyledFileSizeLabel = styled.label`
   font-size: 10px;
-  position: relative;
+  display: block;
   top: 10px;
+`;
+
+const StyledLabelContainer = styled.div`
+  line-height: 1.2;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  position: relative;
+  display: inline-block;
+  width: calc(87%);
+  top: 5px;
+  padding-left: 40px;
 `;
 
 
@@ -221,8 +238,10 @@ export default function FileUpload(props) {
       fileItem => (
         <StyledFileContainer key={fileItem.lastModified + Math.round(Math.random() * 100000)} onClick={(event) => event.stopPropagation()}>
           <StyledCloseButton close small onClick={(event) => removeItem(event, fileItem)} ></StyledCloseButton>
-          <StyledFileNameLabel>{fileItem.name}</StyledFileNameLabel>
-          <StyledFileSizeLabel>{getItemSize(fileItem.size)}</StyledFileSizeLabel>
+          <StyledLabelContainer>
+            <StyledFileNameLabel>{fileItem.name}</StyledFileNameLabel>
+            <StyledFileSizeLabel>{getItemSize(fileItem.size)}</StyledFileSizeLabel>
+          </StyledLabelContainer>
           <StyledImageButton className="bi bi-image" onClick={(event) => showItem(event, fileItem)} ></StyledImageButton>
         </StyledFileContainer>
       )

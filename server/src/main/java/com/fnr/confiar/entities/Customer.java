@@ -15,8 +15,10 @@ import com.fnr.confiar.repositories.CustomerRepository;
 import org.modelmapper.ModelMapper;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 @Data
+@EqualsAndHashCode(callSuper=false)
 @Entity
 @Table(
   name = "customer",

@@ -5,10 +5,12 @@ import java.util.List;
 import com.fnr.confiar.entities.Customer;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldNameConstants;
 
 @Data
+@EqualsAndHashCode(callSuper = false)
 @NoArgsConstructor
 @FieldNameConstants
 public class CustomerModel extends BaseModel<Customer> {

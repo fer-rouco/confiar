@@ -26,6 +26,10 @@ public class UserService {
   public List<UserProfile> getProfiles() {
     return (List<UserProfile>) userProfileRepository.findAll();
   }
+  
+  public Optional<UserProfile> findByProfileById(Long id) {
+    return userProfileRepository.findById(id);
+  }
 
   public User saveUser(User userModel) {
     return userRepository.save(userModel);
@@ -43,7 +47,7 @@ public class UserService {
     return userRepository.findByMail(mail);
   }
 
-  public List<User> findByProfile(Short profile) {
+  public List<User> findByProfile(UserProfile profile) {
     return userRepository.findByProfile(profile);
   }
 

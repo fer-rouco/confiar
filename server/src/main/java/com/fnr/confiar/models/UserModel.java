@@ -4,10 +4,12 @@ import com.fnr.confiar.entities.User;
 
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldNameConstants;
 
 @Data
+@EqualsAndHashCode(callSuper=false)
 @NoArgsConstructor
 @FieldNameConstants
 public class UserModel extends BaseModel<User> {

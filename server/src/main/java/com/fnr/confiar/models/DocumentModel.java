@@ -5,9 +5,11 @@ import java.util.Date;
 import com.fnr.confiar.entities.Document;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 @Data
+@EqualsAndHashCode(callSuper=false)
 @NoArgsConstructor
 public class DocumentModel extends BaseModel<Document> {
 

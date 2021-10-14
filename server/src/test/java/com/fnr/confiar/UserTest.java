@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.Optional;
 
 import com.fnr.confiar.entities.User;
+import com.fnr.confiar.repositories.UserProfileRepository;
 import com.fnr.confiar.repositories.UserRepository;
 
 import org.junit.jupiter.api.Test;
@@ -18,6 +19,8 @@ public class UserTest {
   @Autowired
   private UserRepository userRepository;
 
+  @Autowired
+  private UserProfileRepository userProfileRepository;
 
   private User newUserInstance(short profile) {
     User user = new User();
@@ -28,7 +31,7 @@ public class UserTest {
     user.setMail("user.test@gmail.com");
     user.setUserName("UserTest");
     user.setPassword("UserTest99");
-    // user.setProfile(profile);
+    user.setProfile(userProfileRepository.findById(Long.valueOf(profile)).get());
 
     return user;
   }
@@ -76,39 +79,39 @@ public class UserTest {
 
   @Test
   void testGetUsersByProfile() {
-    ArrayList<User> cashiers = userRepository.findByProfile((short) 1);
-    ArrayList<User> supervisors = userRepository.findByProfile((short) 2);
+    ArrayList<User> cashiers = userRepository.findByProfile(userProfileRepository.findById(1L).get());
+    ArrayList<User> supervisors = userRepository.findByProfile(userProfileRepository.findById(2L).get());
     assert (cashiers.size() == 9);
     assert (supervisors.size() == 6);
   }
 
 
-  // @Test
-  // void testUpdate() {
-  //   User newSupervisor = newSupervisorInstance();
-  //   User newSupervisorInDb = userRepository.save(newSupervisor);
-  //   assert ("User" == newSupervisorInDb.getName());
-  //   assert ("Test" == newSupervisorInDb.getLastName());
-  //   assert ("user.test@gmail.com" == newSupervisorInDb.getMail());
-  //   assert ("UserTest" == newSupervisorInDb.getUserName());
-  //   assert ("UserTest99" == newSupervisorInDb.getPassword());
-  //   assert ((short) 2 == newSupervisorInDb.getProfile());
+  @Test
+  void testUpdate() {
+    User newSupervisor = newSupervisorInstance();
+    User newSupervisorInDb = userRepository.save(newSupervisor);
+    assert ("User" == newSupervisorInDb.getName());
+    assert ("Test" == newSupervisorInDb.getLastName());
+    assert ("user.test@gmail.com" == newSupervisorInDb.getMail());
+    assert ("UserTest" == newSupervisorInDb.getUserName());
+    assert ("UserTest99" == newSupervisorInDb.getPassword());
+    assert ((short) 2 == newSupervisorInDb.getProfile().getId());
 
-  //   User userInDb = userRepository.findByUserName("UserTest").get();
-  //   userInDb.setName("NewUser");
-  //   userInDb.setLastName("NewTest");
-  //   userInDb.setMail("new.user.test@gmail.com");
-  //   userInDb.setUserName("NewUserTest");
-  //   userInDb.setPassword("NewUserTest99");
-  //   userInDb.setProfile((short) 1);
+    User userInDb = userRepository.findByUserName("UserTest").get();
+    userInDb.setName("NewUser");
+    userInDb.setLastName("NewTest");
+    userInDb.setMail("new.user.test@gmail.com");
+    userInDb.setUserName("NewUserTest");
+    userInDb.setPassword("NewUserTest99");
+    userInDb.setProfile(userProfileRepository.findById(Long.valueOf(1)).get());
 
-  //   User updatedUserInDb = userRepository.save(userInDb);
-  //   assert ("NewUser" == updatedUserInDb.getName());
-  //   assert ("NewTest" == updatedUserInDb.getLastName());
-  //   assert ("new.user.test@gmail.com" == updatedUserInDb.getMail());
-  //   assert ("NewUserTest" == updatedUserInDb.getUserName());
-  //   assert ("NewUserTest99" == updatedUserInDb.getPassword());
-  //   assert ((short) 1 == updatedUserInDb.getProfile());
+    User updatedUserInDb = userRepository.save(userInDb);
+    assert ("NewUser" == updatedUserInDb.getName());
+    assert ("NewTest" == updatedUserInDb.getLastName());
+    assert ("new.user.test@gmail.com" == updatedUserInDb.getMail());
+    assert ("NewUserTest" == updatedUserInDb.getUserName());
+    assert ("NewUserTest99" == updatedUserInDb.getPassword());
+    assert ((short) 1 == updatedUserInDb.getProfile().getId());
 
-  // }
+  }
 }

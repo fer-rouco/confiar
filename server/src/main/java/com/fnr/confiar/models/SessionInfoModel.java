@@ -3,9 +3,11 @@ package com.fnr.confiar.models;
 import com.fnr.confiar.entities.BaseEntity;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 @Data
+@EqualsAndHashCode(callSuper=false)
 @NoArgsConstructor
 public class SessionInfoModel extends BaseModel<BaseEntity> {
   private static SessionInfoModel     instance;

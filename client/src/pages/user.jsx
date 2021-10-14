@@ -9,7 +9,7 @@ import SelectField from '../components/controls/fields/select/select-field';
 import PanelForm from '../components/panel-form';
 import { useAlertMessage } from '../contexts/alert-message-context';
 import { useError } from '../contexts/error-context';
-import { findUserById, updateUser } from '../services/user-service';
+import { findUserById, getAllUserProfiles, updateUser } from '../services/user-service';
 
 const [NAME, LAST_NAME, USER_NAME, EMAIL, PASSWORD, REPEAT_PASSWORD, PROFILE] =
   [
@@ -26,6 +26,7 @@ export default function User() {
   const history = useHistory();
   const [update, setUpdate] = useState(false);
   const [model, setModel] = useState({});
+  const [profiles, setProfiles] = useState([]);
   const { addSuccessMessage, addErrorMessage } = useAlertMessage();
   const { addFieldError, cleanFieldError } = useError();
   const location = useLocation();
@@ -90,18 +91,33 @@ export default function User() {
     );
   };
 
+  function updateProfileList(response) {
+    let profileList = response.map((profile) => { return {value: profile.id, label: profile.description }; });
+    setProfiles(profileList);
+  }
+
   useEffect(() => {
+    let allUserProfilesPromise = getAllUserProfiles();
     if (location.state && location.state.userName) {
       setUpdate(true);
-      findUserById(location.state.id)
-        .then((user) => {
-          let localModel = user;
-          localModel.profile = user.profile.id;
-          setModel(localModel);
-        })
-        .catch(() => {
-          history.push('/Users');
+
+      try {
+        Promise.all([allUserProfilesPromise, findUserById(location.state.id)]).then(responses => {
+          updateProfileList(responses[0]);
+          let localUser = responses[1];
+          localUser.profile = localUser.profile.id;
+          setModel(localUser);
         });
+      } catch (err) {
+        addErrorMessage('Se produzco un error al buscar el cliente ' + location.state.userName);
+        history.push('/Users');
+      }
+    }
+    else {
+      allUserProfilesPromise.then(allUserProfiles => {
+        updateProfileList(allUserProfiles);
+        setModel({ profile: allUserProfiles[0].id })
+      });
     }
   }, [location.state]);
 
@@ -171,11 +187,7 @@ export default function User() {
             <SelectField
               attr={PROFILE.id}
               label={PROFILE.label}
-              options={[
-                { value: 1, label: 'Administrador' },
-                { value: 2, label: 'Vendedor' },
-                { value: 3, label: 'Administrativo' }
-              ]}
+              options={profiles}
               required
             ></SelectField>
           </div>

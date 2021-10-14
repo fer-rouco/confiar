@@ -32,7 +32,7 @@ public class Customer extends BaseEntity {
   private String lastName;
   @Column(length = 100)
   private String address;
-  @Column(nullable = false, unique = true, length = 100)
+  @Column(nullable = false, length = 100)
   private String mail;
   @Column(nullable = false, unique = true, length = 20)
   private String phone;

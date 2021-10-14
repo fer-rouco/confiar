@@ -25,7 +25,7 @@ const [NAME, LAST_NAME, ADDRESS, EMAIL, PHONE, IDENTITY_DOCUMENTS, PAYCHECKS] =
 export default function Customer() {
   const history = useHistory();
   const [update, setUpdate] = useState(false);
-  const [model, setModel] = useState({});
+  const [model, setModel] = useState(null);
   const { addSuccessMessage, addErrorMessage } = useAlertMessage();
   const { addFieldError, cleanFieldError } = useError();
   const location = useLocation();
@@ -86,6 +86,9 @@ export default function Customer() {
         .catch(() => {
           history.push('/Customers');
         });
+    }
+    else {
+      setModel({});
     }
   }, [location.state]);
 

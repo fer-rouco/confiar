@@ -109,9 +109,9 @@ export default function FileUpload(props) {
 
   function getFilesFromModel() {
     let localModel = model.get(props.attr);
-    if (localModel === undefined) {
-      setFilesToModel([]);
-    }
+    // if (localModel === undefined) {
+    //   setFilesToModel([]);
+    // }
     return model.get(props.attr);
   }
   
@@ -260,13 +260,13 @@ export default function FileUpload(props) {
   
   useEffect(() => {
     const filesFromServer = getFilesFromModel();
-    if (filesFromServer.length > 0) {
+    if (filesFromServer && filesFromServer.length > 0) {
       setFiles([...files, ...filesFromServer]);
     }
   }, [props.attr, model]);
   
   useEffect(() => {
-    setFilesToModel(files);
+    // setFilesToModel(files);
   }, [files]);
 
   // function base64ToByteArray(base64String) {

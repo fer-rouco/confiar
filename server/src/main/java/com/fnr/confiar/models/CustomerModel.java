@@ -6,9 +6,11 @@ import com.fnr.confiar.entities.Customer;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.experimental.FieldNameConstants;
 
 @Data
 @NoArgsConstructor
+@FieldNameConstants
 public class CustomerModel extends BaseModel<Customer> {
 
   private String name;

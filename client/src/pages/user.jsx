@@ -25,7 +25,7 @@ const [NAME, LAST_NAME, USER_NAME, EMAIL, PASSWORD, REPEAT_PASSWORD, PROFILE] =
 export default function User() {
   const history = useHistory();
   const [update, setUpdate] = useState(false);
-  const [model, setModel] = useState({});
+  const [model, setModel] = useState(null);
   const [profiles, setProfiles] = useState([]);
   const { addSuccessMessage, addErrorMessage } = useAlertMessage();
   const { addFieldError, cleanFieldError } = useError();
@@ -52,7 +52,7 @@ export default function User() {
               (update ? 'actualizado' : 'creado') +
               ' exitosamente.',
           );
-          history.push('/Users', { store: model.store });
+          history.push('/Users');
         })
         .catch((error) => {
           addFieldError(error.field, error.message);
@@ -71,7 +71,6 @@ export default function User() {
       repeatPassword: model.repeatPassword,
       profile: { id: model.profile },
     };
-    object.store = model.store;
 
     if (id) {
       object.id = id;

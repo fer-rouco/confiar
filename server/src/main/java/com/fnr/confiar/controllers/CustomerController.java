@@ -45,7 +45,7 @@ public class CustomerController extends BaseController {
     }
     catch(DataIntegrityViolationException ex) {
       if (ex.getCause().getCause().getMessage().indexOf("CUSTOMER_UNIQUE_MAIL_IDX") > -1) {
-        response = responseConflictError(null, "El mail ingresado ya existe. Ingrese uno diferente.", "mail", CustomerModel.class);
+        response = responseConflictError(null, "El mail ingresado ya existe. Ingrese uno diferente.", CustomerModel.Fields.mail, CustomerModel.class);
       }
     }
 

@@ -50,10 +50,10 @@ public class UserController extends BaseController {
     }
     catch(DataIntegrityViolationException ex) {
       if (ex.getCause().getCause().getMessage().indexOf("USER_UNIQUE_USER_IDX") > -1) {
-        response = responseConflictError(null, "El usuario ingresado ya existe. Ingrese uno diferente.", "user", UserModel.class);
+        response = responseConflictError(null, "El usuario ingresado ya existe. Ingrese uno diferente.", UserModel.Fields.userName, UserModel.class);
       }
       if (ex.getCause().getCause().getMessage().indexOf("USER_UNIQUE_MAIL_IDX") > -1) {
-        response = responseConflictError(null, "El mail ingresado ya existe. Ingrese uno diferente.", "mail", UserModel.class);
+        response = responseConflictError(null, "El mail ingresado ya existe. Ingrese uno diferente.", UserModel.Fields.mail, UserModel.class);
       }
     }
 

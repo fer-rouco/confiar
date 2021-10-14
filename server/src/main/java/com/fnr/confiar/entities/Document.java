@@ -16,8 +16,11 @@ import lombok.Data;
 @Table(name = "document")
 public class Document extends BaseEntity {
 
+  @Column(nullable = false, length = 50)
   private String name;
+  @Column(length = 10)
   private String extension;
+  @Column(nullable = false, length = 50)
   private String type;
   private Integer size;
   private Short orderNumber;

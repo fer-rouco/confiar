@@ -1,17 +1,21 @@
-import { findById, get, post, put, remove } from './base-service';
+import { get, post, remove } from './base-service';
 
 const BASE_URL = 'user';
 
-export async function findAllUsers() {
+export async function getAllUserProfiles() {
+  return get(BASE_URL + '/profiles');
+}
+
+export async function findUserById(id) {
+  return get(BASE_URL + '/' + id);
+}
+
+export async function getAllUsers() {
   return get(BASE_URL);
 }
 
-export async function createUser(createObject) {
-  return post(BASE_URL + '/create', createObject);
-}
-
 export async function updateUser(updateObject) {
-  return put(BASE_URL + '/update', updateObject);
+  return post(BASE_URL + '/update', updateObject);
 }
 
 export async function deleteUser(userId) {

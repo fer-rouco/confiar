@@ -9,9 +9,9 @@ import SelectField from '../components/controls/fields/select/select-field';
 import PanelForm from '../components/panel-form';
 import { useAlertMessage } from '../contexts/alert-message-context';
 import { useError } from '../contexts/error-context';
-import { createUser, updateUser } from '../services/user-service';
+import { findUserById, updateUser } from '../services/user-service';
 
-const [NAME, LAST_NAME, USER_NAME, EMAIL, PASSWORD, REPEAT_PASSWORD, PHONE, PROFILE] =
+const [NAME, LAST_NAME, USER_NAME, EMAIL, PASSWORD, REPEAT_PASSWORD, PROFILE] =
   [
     { id: 'name', label: 'Nombre' },
     { id: 'lastName', label: 'Apellido' },
@@ -19,20 +19,16 @@ const [NAME, LAST_NAME, USER_NAME, EMAIL, PASSWORD, REPEAT_PASSWORD, PHONE, PROF
     { id: 'mail', label: 'E-Mail' },
     { id: 'password', label: 'Contraseña' },
     { id: 'repeatPassword', label: 'Repetir Contraseña' },
-    { id: 'phone', label: 'Celular' },
     { id: 'profile', label: 'Perfil' },
   ];
 
 export default function User() {
   const history = useHistory();
   const [update, setUpdate] = useState(false);
+  const [model, setModel] = useState({});
   const { addSuccessMessage, addErrorMessage } = useAlertMessage();
   const { addFieldError, cleanFieldError } = useError();
   const location = useLocation();
-  let model = {};
-  if (location.state) {
-    model = location.state;
-  }
 
   const onCreateUser = () => {
     cleanFieldError();
@@ -45,12 +41,7 @@ export default function User() {
       );
     }
     if (valid) {
-      let responsePromise;
-      if (update) {
-        responsePromise = updateUser(createTransferObject(model.id));
-      } else {
-        responsePromise = createUser(createTransferObject());
-      }
+      let responsePromise = updateUser(createTransferObject(model.id));
       responsePromise
         .then((user) => {
           addSuccessMessage(
@@ -77,7 +68,7 @@ export default function User() {
       mail: model.mail,
       password: model.password,
       repeatPassword: model.repeatPassword,
-      profile: model.profile,
+      profile: { id: model.profile },
     };
     object.store = model.store;
 
@@ -93,16 +84,24 @@ export default function User() {
   };
 
   const getTitle = () => {
-    // let name = (location.state) ? location.state.name : "";
+    let name = (location.state) ? location.state.name : "";
     return (
-      getActionLabel() + ' usuario' + (update ? /*name*/ '' : ' nuevo') + '.'
+      getActionLabel() + ' usuario ' + (update ? name : 'nuevo') + '.'
     );
   };
 
   useEffect(() => {
     if (location.state && location.state.userName) {
       setUpdate(true);
-      // setTitle(getTitle());
+      findUserById(location.state.id)
+        .then((user) => {
+          let localModel = user;
+          localModel.profile = user.profile.id;
+          setModel(localModel);
+        })
+        .catch(() => {
+          history.push('/Users');
+        });
     }
   }, [location.state]);
 

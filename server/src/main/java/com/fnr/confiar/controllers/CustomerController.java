@@ -34,11 +34,10 @@ public class CustomerController extends BaseController {
   }
 
   private ResponseEntity<Response> createOrUpdateCustomer(CustomerModel customerModel) {
-    Customer customer = null;
-    
-    customer = (Customer) customerModel.toEntity();
-
     ResponseEntity<Response> response = null;
+    
+    Customer customer = (Customer) customerModel.toEntity();
+
     try {
       customerService.save(customer);
       customerModel.setId(customer.getId());

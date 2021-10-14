@@ -31,17 +31,32 @@ export default function Table(props) {
     const getRowKey = (column, rowObject) => {
       return column.key + '_' + rowObject.id;
     };
+    const getRowObjectProperty = (column, rowObject) => {
+      let rowObjectProperty;
+      let splittedKey = columnDefinition.key.split('.')
+      if (splittedKey.length === 1) {
+        rowObjectProperty = rowObject[columnDefinition.key];
+      }
+      else {
+        let currentProperty = rowObject;
+        splittedKey.forEach((splittedKeyItem) => {
+          currentProperty = currentProperty[splittedKeyItem];
+        });
+        rowObjectProperty = currentProperty;
+      }
+      return rowObjectProperty;
+    };
 
     switch (columnDefinition.type) {
       case 'text':
         cell = (
           (columnDefinition.target) ?               
             <StyledTH key={getRowKey(columnDefinition, rowObject)}>
-              <Link to={{ pathname: columnDefinition.target, state: rowObject }}>{rowObject[columnDefinition.key]}</Link>
+              <Link to={{ pathname: columnDefinition.target, state: rowObject }}>{getRowObjectProperty(columnDefinition, rowObject)}</Link>
             </StyledTH>
           :
             <StyledTD key={getRowKey(columnDefinition, rowObject)}>
-              {rowObject[columnDefinition.key]}
+              {getRowObjectProperty(columnDefinition, rowObject)}
             </StyledTD>
         );
         break;
@@ -83,10 +98,15 @@ export default function Table(props) {
     );
   }
 
+  function buildFooter() {
+    // TODO: Paginator
+  }
+
   return (
     <table className="table table-hover">
       {buildHeader()}
       {buildBody()}
+      {buildFooter()}
     </table>
   );
 }

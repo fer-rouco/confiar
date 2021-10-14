@@ -2,6 +2,7 @@ package com.fnr.confiar.controllers;
 
 import com.fnr.confiar.Response;
 import com.fnr.confiar.entities.User;
+import com.fnr.confiar.models.UserProfileModel;
 import com.fnr.confiar.models.UserModel;
 import com.fnr.confiar.services.UserService;
 
@@ -12,7 +13,6 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -29,29 +29,22 @@ public class UserController extends BaseController {
   public ResponseEntity<Response> getUsers() {
     return responseEntityList(userService.getUsers(), UserModel.class);
   }
-
-  @PostMapping("/create")
-  public ResponseEntity<Response> create(@RequestBody UserModel userModel) {
-    return createOrUpdateUser(true, userModel);
-  }
   
-  @PutMapping("/update")
-  public ResponseEntity<Response> update(@RequestBody UserModel userModel) {
-    return createOrUpdateUser(false, userModel);
+  @GetMapping("/profiles")
+  public ResponseEntity<Response> getProfiles() {
+    return responseEntityList(userService.getProfiles(), UserProfileModel.class);
   }
 
-  private ResponseEntity<Response> createOrUpdateUser(Boolean create, UserModel userModel) {
-    User user = null;
-    if (create) {
-      user = new User();
-    }
-    else {
-      user = userService.findById(userModel.getId()).get();
-    }
+  @PostMapping("/update")
+  public ResponseEntity<Response> update(@RequestBody UserModel userModel) {
+    return createOrUpdateUser(userModel);
+  }
 
-    user = (User) userModel.toEntity();
-
+  private ResponseEntity<Response> createOrUpdateUser(UserModel userModel) {
     ResponseEntity<Response> response = null;
+
+    User user = (User) userModel.toEntity();
+
     try {
       response = responseOk(userService.saveUser(user), UserModel.class);
     }

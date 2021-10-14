@@ -70,9 +70,9 @@ export default function Customer() {
   };
 
   const getTitle = () => {
-    // let name = (location.state) ? location.state.name : "";
+    let name = (location.state) ? location.state.name : "";
     return (
-      getActionLabel() + ' cliente' + (update ? /*name*/ '' : ' nuevo') + '.'
+      getActionLabel() + ' cliente ' + (update ? name : 'nuevo') + '.'
     );
   };
 
@@ -86,7 +86,6 @@ export default function Customer() {
         .catch(() => {
           history.push('/Customers');
         });
-      // setTitle(getTitle());
     }
   }, [location.state]);
 

@@ -131,7 +131,7 @@ export default function FileUpload(props) {
     if (splittedFileName.length > 1) {
       extension = splittedFileName[splittedFileName.length - 1];
       splittedFileName.pop();
-      name = splittedFileName.toString().replaceAll(',', '.')  
+      name = splittedFileName.toString().replaceAll(',', '.');
     }
     else {
       name = file.name;

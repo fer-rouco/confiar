@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -25,10 +26,15 @@ import lombok.Data;
 )
 public class Customer extends BaseEntity {
   
+  @Column(length = 30)
   private String name;
+  @Column(length = 30)
   private String lastName;
+  @Column(length = 100)
   private String address;
+  @Column(nullable = false, unique = true, length = 100)
   private String mail;
+  @Column(nullable = false, unique = true, length = 20)
   private String phone;
   @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
   private List<Document> identityDocuments;

@@ -2,7 +2,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { useHistory } from 'react-router';
 import AcceptCancelDialog from '../components/dialog/accept-cancel-dialog';
 import { useAlertMessage } from '../contexts/alert-message-context';
-import { deleteUser, getAllUsers } from '../services/user-service';
+import { deleteUser, findUsers } from '../services/user-service';
 import Panel from '../components/panel';
 import Table from '../components/table/table';
 import { iconColumnDefinition, textColumnDefinition } from '../components/table/column-definitions/column-definition';
@@ -10,7 +10,6 @@ import { iconColumnDefinition, textColumnDefinition } from '../components/table/
 export default function Users() {
   const history = useHistory();
   const { addSuccessMessage, addErrorMessage } = useAlertMessage();
-  const [users, setUsers] = useState(null);
   const [showDialog, setShowDialog] = useState(false);
   const [dialogConfirmation, setDialogConfirmation] = useState(false);
   const [userToBeDeleted, setUserToBeDeleted] = useState(null);
@@ -64,15 +63,15 @@ export default function Users() {
     })
   ];
 
-  const refreshTable = useCallback(() => {
-    getAllUsers().then((userList) => {
-      setUsers(userList);
-    });
-  }, [location, removeUser]);
+  // const refreshTable = useCallback(() => {
+  //   getAllUsers().then((userList) => {
+  //     setUsers(userList);
+  //   });
+  // }, [location, removeUser]);
 
-  useEffect(() => {
-    refreshTable();
-  }, [refreshTable]);
+  // useEffect(() => {
+  //   refreshTable();
+  // }, [refreshTable]);
 
   useEffect(() => {
     if (dialogConfirmation) {
@@ -84,7 +83,7 @@ export default function Users() {
             addSuccessMessage(
               'El usuario ' + userName + ' fue eliminado exitosamente.',
             );
-            refreshTable();
+            // refreshTable();
           })
           .then((errorData) => {
             if (errorData) {
@@ -96,7 +95,7 @@ export default function Users() {
   }, [
     dialogConfirmation,
     userToBeDeleted,
-    refreshTable,
+    // refreshTable,
     setDialogConfirmation,
     addSuccessMessage,
     addErrorMessage,
@@ -106,7 +105,7 @@ export default function Users() {
     <Panel
       title={getTitle()}
       size="large"
-      model={users}
+      model={{}}
       actions={[
         {
           id: 'add',
@@ -116,7 +115,7 @@ export default function Users() {
         },
       ]}
     >
-      <Table columnDefinitions={columnDefinitions} rowObjects={users} ></Table>
+      <Table columnDefinitions={columnDefinitions} requestRowObjectsFunction={findUsers} ></Table>
 
       <AcceptCancelDialog
         title="Eliminar Usuario"

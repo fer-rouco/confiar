@@ -1,27 +1,145 @@
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import Icon from '../icon';
+import withLoader from '../load-indicator';
+
+// const StyledContainer = styled.div`
+//   position: relative;
+//   border-radius: 3px;
+//   background: #ffffff;
+//   border-top: 3px solid #d2d6de;
+//   width: 100%;
+//   box-shadow: 0 1px 1px rgb(0 0 0 / 10%);
+//   padding: 5px 5px 0.1px 5px;
+// `;
+
+const StyledTR = styled.tr`
+  background-color: #FFFFFF;
+
+  &.secondary {
+    background-color: #F0F0F0;
+  }
+  
+  &.header {
+    background-color: #DDEEDD;
+  }
+`;
 
 const StyledTD = styled.td`
+  border: 1px solid #dee2e6;
   vertical-align: middle;
+
+  &.icon {
+    width: 40px;
+  }
 `;
 
 const StyledTH = styled.th`
+  border: 1px solid #dee2e6;
   vertical-align: middle;
 `;
 
-export default function Table(props) {
+const StyledCaption = styled.caption`
+  background-color: #F0F0F0;
+`;
+
+const StyledNavigatorContainer = styled.nav`
+  display: inline-block;
+  float: right;
+`;
+
+const StyledFooterData = styled.p`
+  display: inline-block;
+  float: left;
+  margin-top: 5px;
+`;
+
+
+function Table(props) {
+  const [rowObjects, setRowObjects] = useState(null);
+  const [totalPages, setTotalPages] = useState(null);
+  const [totalRows, setTotalRows] = useState(null);
+  const [currentPagePosition, setCurrentPagePosition] = useState(0);
+  let pageSize = 4;
+
+  useEffect(() => {
+    updateRowObjects();
+  }, []);
+
+  useEffect(() => {
+    updateRowObjects();
+  }, [currentPagePosition]);
+
+  function updateRowObjects() {
+    if (props.requestRowObjectsFunction) {
+      props.requestRowObjectsFunction(currentPagePosition, pageSize).then((paginator) => {
+        setRowObjects(paginator.rowObjects);
+        setTotalRows(paginator.length);
+        setTotalPages(Math.round(paginator.length / pageSize) - 1);
+      });
+    }
+    else {
+      setRowObjects(props.rowObjects);
+    }
+  }
+
+  function handleNext() {
+    let nextPagePosition = currentPagePosition + 1;
+    setCurrentPagePosition((nextPagePosition > totalPages) ? totalPages : nextPagePosition);
+  }
+  
+  function handleLast() {
+    setCurrentPagePosition(totalPages);
+  }
+
+  function handlePrevious() {
+    let previousPagePosition = currentPagePosition - 1;
+    setCurrentPagePosition((previousPagePosition < 0) ? 0 : previousPagePosition);
+  }
+
+  function handleFirst() {
+    setCurrentPagePosition(0);
+  }
+  
+  function isNextEnable() {
+    return currentPagePosition !== totalPages;
+  }
+  
+  function isLastEnable() {
+    return currentPagePosition !== totalPages;
+  }
+
+  function isPreviousEnable() {
+    return currentPagePosition !== 0;
+  }
+
+  function isFirstEnable() {
+    return currentPagePosition !== 0;
+  }
+
+  function paginatorButtonClass(isEnableFunction) {
+    return "page-item " + ((!isEnableFunction()) ? "disabled" : "");
+  }
+
+  function isEmpty() {
+    return (!rowObjects || (rowObjects && rowObjects.length === 0));
+  }
+
+  function buildEmptyCaption() {
+    return (<StyledCaption>No hay datos</StyledCaption>);
+  }
 
   function buildHeader() {
     return (
       <thead>
-        <tr>
+        <StyledTR className="header" >
           {props.columnDefinitions.map((column) => (
-            <StyledTH className="table-success" scope="col" key={column.key}>
+            <StyledTH scope="col" key={column.key}>
               {column.label}
             </StyledTH>
           ))}
-        </tr>
+        </StyledTR>
       </thead>
     );
   }
@@ -62,7 +180,7 @@ export default function Table(props) {
         break;
       case 'icon':
         cell = (
-          <StyledTD key={getRowKey(columnDefinition, rowObject)} >
+          <StyledTD key={getRowKey(columnDefinition, rowObject)} className="icon" >
             <Icon
               fontName={columnDefinition.icon}
               medium
@@ -78,20 +196,20 @@ export default function Table(props) {
 
   function buildBody() {
     const getTableRowClass = (index) => {
-      return index % 2 !== 0 ? 'table-secondary' : '';
+      return index % 2 !== 0 ? 'secondary' : '';
     };
 
     return (
       <tbody>
         {
-          props.rowObjects.map((rowObject, index) => (
-            <tr key={rowObject.id} className={getTableRowClass(index)} >
+          rowObjects.map((rowObject, index) => (
+            <StyledTR key={rowObject.id} className={getTableRowClass(index)} >
               {
                 props.columnDefinitions.map((columnDefinition) => 
                   (buildCell(columnDefinition, rowObject))
                 )
               }
-            </tr>
+            </StyledTR>
           ))
         }
       </tbody>
@@ -99,14 +217,57 @@ export default function Table(props) {
   }
 
   function buildFooter() {
-    // TODO: Paginator
+    return [
+      buildNavigator(),
+      buildFooterData()
+    ];
+  }
+
+  function buildFooterData() {
+    let lastIndex = (currentPagePosition + 1) * pageSize;
+    let showingTo = (lastIndex > totalRows) ? totalRows : lastIndex;
+    let showingFrom = (lastIndex - pageSize) + 1;
+
+    return (
+      <StyledFooterData key="footer-data" >Mostrando del {showingFrom} al {showingTo} de {totalRows} registros</StyledFooterData>
+    );
+  }
+
+  function buildNavigator() {
+    return (
+      <StyledNavigatorContainer key="navigator" >
+        <ul className="pagination justify-content-end">
+          <li className={paginatorButtonClass(isFirstEnable)} onClick={handleFirst} >
+            <a className="page-link" href="/#" ><Icon fontName="chevron-double-left" small ></Icon>Primero</a>
+          </li>
+          <li className={paginatorButtonClass(isPreviousEnable)} onClick={handlePrevious} >
+            <a className="page-link" href="/#" ><Icon fontName="chevron-left" small ></Icon>Anterior</a>
+          </li>
+          {/*
+          <li className="page-item"><a className="page-link" href="#">1</a></li>
+          <li className="page-item"><a className="page-link" href="#">2</a></li>
+          <li className="page-item"><a className="page-link" href="#">3</a></li> 
+          */}
+          <li className={paginatorButtonClass(isNextEnable)} onClick={handleNext} >
+            <a className="page-link" href="/#" >Siguiente<Icon fontName="chevron-right" small ></Icon></a>
+          </li>
+          <li className={paginatorButtonClass(isLastEnable)} onClick={handleLast} >
+            <a className="page-link" href="/#" >Último<Icon fontName="chevron-double-right" small ></Icon></a>
+          </li>
+        </ul>
+      </StyledNavigatorContainer>
+    )
   }
 
   return (
-    <table className="table table-hover">
-      {buildHeader()}
-      {buildBody()}
-      {buildFooter()}
-    </table>
+    <div>
+      <table className="table table-hover">
+        {buildHeader()}
+        {isEmpty() ? buildEmptyCaption() : buildBody()}
+      </table>
+      {isEmpty() ? <></> : buildFooter()}
+    </div>
   );
 }
+
+export default withLoader('rowObjects')(Table);

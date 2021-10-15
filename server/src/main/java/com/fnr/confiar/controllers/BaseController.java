@@ -66,7 +66,17 @@ public class BaseController {
     return buildResponse(new Response(HttpStatus.OK, modelList));
   }
 
-  private <M extends BaseModel<E>, E extends BaseEntity> M convertEntityToModel(E entity, Class<M> clazz) {
+  public <M extends BaseModel<E>, E extends BaseEntity> List<M> convertEntityListToModel(List<E> entityList, Class<M> clazz) {
+    List<M> modelList = new ArrayList<>();
+
+    entityList.forEach((E entity) -> {
+      modelList.add(convertEntityToModel(entity, clazz));
+    });
+    
+    return modelList;
+  }
+
+  public <M extends BaseModel<E>, E extends BaseEntity> M convertEntityToModel(E entity, Class<M> clazz) {
     M genericClassParameter = null;
     try {
       genericClassParameter = clazz.getDeclaredConstructor().newInstance();

@@ -4,11 +4,14 @@ import java.util.List;
 import java.util.Optional;
 
 import com.fnr.confiar.entities.UserProfile;
+import com.fnr.confiar.models.UserModel;
 import com.fnr.confiar.entities.User;
 import com.fnr.confiar.repositories.UserProfileRepository;
 import com.fnr.confiar.repositories.UserRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -19,8 +22,12 @@ public class UserService {
   @Autowired
   UserProfileRepository userProfileRepository;
 
-  public List<User> getUsers() {
-    return (List<User>) userRepository.findAll();
+  public long countUsers() {
+    return userRepository.count();
+  }
+
+  public List<User> findUsers(int pageFrom, int pageSize) {
+    return (List<User>) userRepository.findAll(PageRequest.of(pageFrom, pageSize, Sort.by(Sort.Direction.ASC, UserModel.Fields.name)));
   }
 
   public List<UserProfile> getProfiles() {

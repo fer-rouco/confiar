@@ -1,8 +1,11 @@
 package com.fnr.confiar.controllers;
 
+import java.util.List;
+
 import com.fnr.confiar.Response;
 import com.fnr.confiar.entities.User;
 import com.fnr.confiar.models.UserProfileModel;
+import com.fnr.confiar.models.PaginatorModel;
 import com.fnr.confiar.models.UserModel;
 import com.fnr.confiar.services.UserService;
 
@@ -25,9 +28,12 @@ public class UserController extends BaseController {
   @Autowired
   UserService userService;
 
-  @GetMapping()
-  public ResponseEntity<Response> getUsers() {
-    return responseEntityList(userService.getUsers(), UserModel.class);
+  @PostMapping()
+  public ResponseEntity<Response> findUsers(@RequestParam("pageFrom") int pageFrom, @RequestParam("pageSize") int pageSize) {  
+    PaginatorModel<UserModel> paginator = new PaginatorModel<UserModel>();
+    paginator.setRowObjects(convertEntityListToModel(userService.findUsers(pageFrom, pageSize), UserModel.class));
+    paginator.setLength(userService.countUsers());
+    return responseOk(paginator);
   }
   
   @GetMapping("/profiles")

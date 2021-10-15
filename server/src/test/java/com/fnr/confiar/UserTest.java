@@ -1,7 +1,7 @@
 package com.fnr.confiar;
 
-import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 
 import com.fnr.confiar.entities.User;
@@ -79,8 +79,8 @@ public class UserTest {
 
   @Test
   void testGetUsersByProfile() {
-    ArrayList<User> cashiers = userRepository.findByProfile(userProfileRepository.findById(1L).get());
-    ArrayList<User> supervisors = userRepository.findByProfile(userProfileRepository.findById(2L).get());
+    List<User> cashiers = userRepository.findByProfile(userProfileRepository.findById(1L).get());
+    List<User> supervisors = userRepository.findByProfile(userProfileRepository.findById(2L).get());
     assert (cashiers.size() == 9);
     assert (supervisors.size() == 6);
   }

@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
+import Button from '../controls/buttons/button';
 import Icon from '../icon';
 import withLoader from '../load-indicator';
 
@@ -23,6 +24,7 @@ const StyledTR = styled.tr`
   
   &.header {
     background-color: #DDEEDD;
+    color: #20B2AA;
   }
 `;
 
@@ -61,26 +63,39 @@ function Table(props) {
   const [totalPages, setTotalPages] = useState(null);
   const [totalRows, setTotalRows] = useState(null);
   const [currentPagePosition, setCurrentPagePosition] = useState(0);
-  let pageSize = 4;
-
-  useEffect(() => {
-    updateRowObjects();
-  }, []);
+  let pageSize = 3;
 
   useEffect(() => {
     updateRowObjects();
   }, [currentPagePosition]);
 
   function updateRowObjects() {
+    const calculateTotalPages = (length) => {
+      let calculatedTotalPages = Math.round(length / pageSize) - 1;
+      return (calculatedTotalPages < 0) ? 0 : calculatedTotalPages;
+    }
+
     if (props.requestRowObjectsFunction) {
       props.requestRowObjectsFunction(currentPagePosition, pageSize).then((paginator) => {
-        setRowObjects(paginator.rowObjects);
         setTotalRows(paginator.length);
-        setTotalPages(Math.round(paginator.length / pageSize) - 1);
+        setTotalPages(calculateTotalPages(paginator.length));
+        setRowObjects(paginator.rowObjects);
       });
     }
     else {
-      setRowObjects(props.rowObjects);
+      setTotalRows(props.rowObjects.length);
+      setTotalPages(calculateTotalPages(props.rowObjects.length));
+
+      // TODO: Fix this stuff.
+      let lastIndex = (currentPagePosition + 1) * pageSize;
+      let showingFrom = (lastIndex - pageSize) + 1;
+
+      var rowObjectsCopy = Object.assign([], props.rowObjects);
+      if (pageSize < props.rowObjects.length) {
+        rowObjectsCopy.splice(showingFrom -1, pageSize)
+      }
+
+      setRowObjects(rowObjectsCopy);
     }
   }
 
@@ -238,10 +253,10 @@ function Table(props) {
       <StyledNavigatorContainer key="navigator" >
         <ul className="pagination justify-content-end">
           <li className={paginatorButtonClass(isFirstEnable)} onClick={handleFirst} >
-            <a className="page-link" href="/#" ><Icon fontName="chevron-double-left" small ></Icon>Primero</a>
+            <Button className="page-link" label="Primero" left={<Icon fontName="chevron-double-left" small ></Icon>} ></Button>
           </li>
           <li className={paginatorButtonClass(isPreviousEnable)} onClick={handlePrevious} >
-            <a className="page-link" href="/#" ><Icon fontName="chevron-left" small ></Icon>Anterior</a>
+            <Button className="page-link" label="Anterior" left={<Icon fontName="chevron-left" small ></Icon>}></Button>
           </li>
           {/*
           <li className="page-item"><a className="page-link" href="#">1</a></li>
@@ -249,10 +264,10 @@ function Table(props) {
           <li className="page-item"><a className="page-link" href="#">3</a></li> 
           */}
           <li className={paginatorButtonClass(isNextEnable)} onClick={handleNext} >
-            <a className="page-link" href="/#" >Siguiente<Icon fontName="chevron-right" small ></Icon></a>
+            <Button className="page-link" label="Siguiente" right={<Icon fontName="chevron-right" small ></Icon>}></Button>
           </li>
           <li className={paginatorButtonClass(isLastEnable)} onClick={handleLast} >
-            <a className="page-link" href="/#" >Último<Icon fontName="chevron-double-right" small ></Icon></a>
+            <Button className="page-link" label="Último" right={<Icon fontName="chevron-double-right" small ></Icon>} ></Button>
           </li>
         </ul>
       </StyledNavigatorContainer>

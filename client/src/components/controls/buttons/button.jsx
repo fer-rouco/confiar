@@ -38,7 +38,9 @@ export default function Button(props) {
 
   return (
     <button type={getType()} className={getClasses()} disabled={props.disabled} onClick={props.onClick} >
+      {props.left}
       {props.label}
+      {props.right}
     </button>
   );
 }

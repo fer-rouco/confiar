@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import Button from '../controls/buttons/button';
+import SelectField from '../controls/fields/select/select-field';
 import Icon from '../icon';
 import withLoader from '../load-indicator';
 
@@ -60,6 +61,7 @@ const StyledFooterData = styled.p`
 
 function Table(props) {
   const [rowObjects, setRowObjects] = useState(null);
+  const [rowObjectsCache, setRowObjectsCache] = useState(null);
   const [totalPages, setTotalPages] = useState(null);
   const [totalRows, setTotalRows] = useState(null);
   const [currentPagePosition, setCurrentPagePosition] = useState(0);
@@ -71,31 +73,28 @@ function Table(props) {
 
   function updateRowObjects() {
     const calculateTotalPages = (length) => {
-      let calculatedTotalPages = Math.round(length / pageSize) - 1;
+      let calculatedTotalPages = Math.ceil(length / pageSize) - 1;
       return (calculatedTotalPages < 0) ? 0 : calculatedTotalPages;
+    }
+
+    const setTableStates = (rowObjectsParam, length) => {
+      setTotalRows(length);
+      setTotalPages(calculateTotalPages(length));
+      setRowObjects(rowObjectsParam);
     }
 
     if (props.requestRowObjectsFunction) {
       props.requestRowObjectsFunction(currentPagePosition, pageSize).then((paginator) => {
-        setTotalRows(paginator.length);
-        setTotalPages(calculateTotalPages(paginator.length));
-        setRowObjects(paginator.rowObjects);
+        setTableStates(paginator.rowObjects, paginator.length);
       });
     }
     else {
-      setTotalRows(props.rowObjects.length);
-      setTotalPages(calculateTotalPages(props.rowObjects.length));
-
-      // TODO: Fix this stuff.
-      let lastIndex = (currentPagePosition + 1) * pageSize;
-      let showingFrom = (lastIndex - pageSize) + 1;
-
-      var rowObjectsCopy = Object.assign([], props.rowObjects);
-      if (pageSize < props.rowObjects.length) {
-        rowObjectsCopy.splice(showingFrom -1, pageSize)
+      let pages = [];
+      for (let index = 0; index < props.rowObjects.length; index += pageSize) {
+        pages.push(props.rowObjects.slice(index, index + pageSize));        
       }
 
-      setRowObjects(rowObjectsCopy);
+      setTableStates(pages[currentPagePosition], props.rowObjects.length);
     }
   }
 
@@ -251,6 +250,19 @@ function Table(props) {
   function buildNavigator() {
     return (
       <StyledNavigatorContainer key="navigator" >
+        {/* <SelectField
+          attr='pageSize'
+          label='Page Size'
+          options={[
+            {value: 10, label: "10" },
+            {value: 20, label: "20" },
+            {value: 30, label: "30" },
+            {value: 40, label: "40" },
+            {value: 50, label: "50" }
+          ]}
+          required
+        ></SelectField> */}
+
         <ul className="pagination justify-content-end">
           <li className={paginatorButtonClass(isFirstEnable)} onClick={handleFirst} >
             <Button className="page-link" label="Primero" left={<Icon fontName="chevron-double-left" small ></Icon>} ></Button>

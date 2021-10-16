@@ -1,3 +1,13 @@
+import styled from "styled-components";
+
+const StyledIcon = styled.button((props) => {
+  return `
+    &.disabled {
+      opacity: 40%;
+    }
+  `;
+});
+
 export default function Button(props) {
   const getType = () => {
     return props.type ? props.type : 'button';
@@ -32,6 +42,10 @@ export default function Button(props) {
     close = props.close ? 'btn-close' : '';
 
     classes += (close ? close : color) + ' ' + size + ' ';
+
+    if (props.disabled) {
+      classes += 'disabled';
+    }
 
     return classes.trim();
   };

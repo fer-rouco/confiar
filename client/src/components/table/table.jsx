@@ -65,7 +65,7 @@ function Table(props) {
   const [totalPages, setTotalPages] = useState(null);
   const [totalRows, setTotalRows] = useState(null);
   const [currentPagePosition, setCurrentPagePosition] = useState(0);
-  let pageSize = 3;
+  let pageSize = 5;
 
   useEffect(() => {
     updateRowObjects();
@@ -265,10 +265,10 @@ function Table(props) {
 
         <ul className="pagination justify-content-end">
           <li className={paginatorButtonClass(isFirstEnable)} onClick={handleFirst} >
-            <Button className="page-link" label="Primero" left={<Icon fontName="chevron-double-left" small ></Icon>} ></Button>
+            <Button className="page-link" label="Primero" left={<Icon fontName="chevron-double-left" small disabled={!isFirstEnable()} ></Icon>} disabled={!isFirstEnable()} ></Button>
           </li>
           <li className={paginatorButtonClass(isPreviousEnable)} onClick={handlePrevious} >
-            <Button className="page-link" label="Anterior" left={<Icon fontName="chevron-left" small ></Icon>}></Button>
+            <Button className="page-link" label="Anterior" left={<Icon fontName="chevron-left" small disabled={!isPreviousEnable()} ></Icon>} disabled={!isPreviousEnable()} ></Button>
           </li>
           {/*
           <li className="page-item"><a className="page-link" href="#">1</a></li>
@@ -276,10 +276,10 @@ function Table(props) {
           <li className="page-item"><a className="page-link" href="#">3</a></li> 
           */}
           <li className={paginatorButtonClass(isNextEnable)} onClick={handleNext} >
-            <Button className="page-link" label="Siguiente" right={<Icon fontName="chevron-right" small ></Icon>}></Button>
+            <Button className="page-link" label="Siguiente" right={<Icon fontName="chevron-right" small disabled={!isNextEnable()} ></Icon>} disabled={!isNextEnable()} ></Button>
           </li>
           <li className={paginatorButtonClass(isLastEnable)} onClick={handleLast} >
-            <Button className="page-link" label="Último" right={<Icon fontName="chevron-double-right" small ></Icon>} ></Button>
+            <Button className="page-link" label="Último" right={<Icon fontName="chevron-double-right" small disabled={!isLastEnable()} ></Icon>} disabled={!isLastEnable()} ></Button>
           </li>
         </ul>
       </StyledNavigatorContainer>

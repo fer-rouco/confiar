@@ -58,35 +58,86 @@ const StyledFooterData = styled.p`
   margin-top: 5px;
 `;
 
-
 function Table(props) {
+  const [rowObjectsCache, setRowObjectsCache] = useState([]);
   const [rowObjects, setRowObjects] = useState(null);
-  const [rowObjectsCache, setRowObjectsCache] = useState(null);
   const [totalPages, setTotalPages] = useState(null);
   const [totalRows, setTotalRows] = useState(null);
   const [currentPagePosition, setCurrentPagePosition] = useState(0);
-  let pageSize = 5;
+  const [previousPagePosition, setPreviousPagePosition] = useState(-1);
+  let pageSize = 3;
 
   useEffect(() => {
     updateRowObjects();
   }, [currentPagePosition]);
 
+  function calculateTotalPages(length) {
+    let calculatedTotalPages = Math.ceil(length / pageSize) - 1;
+    return (calculatedTotalPages < 0) ? 0 : calculatedTotalPages;
+  }
+
+  function setTableStates(rowObjectsParam, length) {
+    setTotalRows(length);
+    setTotalPages(calculateTotalPages(length));
+    setRowObjects(rowObjectsParam);
+  }
+
+  function requestRowObjects() {
+    props.requestRowObjectsFunction(currentPagePosition, pageSize).then((paginator) => {
+      // Set current rowObjects
+      setTableStates(paginator.rowObjects, paginator.length);
+    });
+  }
+
+  function requestRowObjectsForCache(jumpPages) {
+    // Set Previous rowObjects in cache
+    if ((currentPagePosition > previousPagePosition) && !jumpPages) {
+      rowObjectsCache[0] = rowObjects;
+    }
+    else {
+      if ((currentPagePosition - 1) >= 0) {
+        props.requestRowObjectsFunction(currentPagePosition - 1, pageSize).then((paginatorForPreviousPage) => {
+          rowObjectsCache[0] = paginatorForPreviousPage.rowObjects;
+        });
+      }
+      else {
+        rowObjectsCache[0] = null;
+      }
+    }
+    
+    // Set Next rowObjects in cache
+    if ((currentPagePosition < previousPagePosition) && !jumpPages) {
+      rowObjectsCache[1] = rowObjects;
+    }
+    else {
+      if (((currentPagePosition + 1) <= totalPages) || (totalPages === null)) {
+        props.requestRowObjectsFunction(currentPagePosition + 1, pageSize).then((paginatorForPreviousPage) => {
+          rowObjectsCache[1] = paginatorForPreviousPage.rowObjects;
+        });
+      }
+      else {
+        rowObjectsCache[1] = null;
+      }
+    }
+  }
+
   function updateRowObjects() {
-    const calculateTotalPages = (length) => {
-      let calculatedTotalPages = Math.ceil(length / pageSize) - 1;
-      return (calculatedTotalPages < 0) ? 0 : calculatedTotalPages;
-    }
-
-    const setTableStates = (rowObjectsParam, length) => {
-      setTotalRows(length);
-      setTotalPages(calculateTotalPages(length));
-      setRowObjects(rowObjectsParam);
-    }
-
     if (props.requestRowObjectsFunction) {
-      props.requestRowObjectsFunction(currentPagePosition, pageSize).then((paginator) => {
-        setTableStates(paginator.rowObjects, paginator.length);
-      });
+      let jumpPages = Math.abs(previousPagePosition - currentPagePosition) !== 1;
+      if (previousPagePosition > -1 && !jumpPages) {
+        // Previous -> rowObjectsCache index 0
+        if (currentPagePosition < previousPagePosition) {
+          setRowObjects(rowObjectsCache[0]);
+        }
+        // Next -> rowObjectsCache index 1
+        if (currentPagePosition > previousPagePosition) {
+          setRowObjects(rowObjectsCache[1]);
+        }
+      }
+      else {
+        requestRowObjects();
+      }
+      requestRowObjectsForCache(jumpPages);
     }
     else {
       let pages = [];
@@ -100,19 +151,23 @@ function Table(props) {
 
   function handleNext() {
     let nextPagePosition = currentPagePosition + 1;
+    setPreviousPagePosition(currentPagePosition);
     setCurrentPagePosition((nextPagePosition > totalPages) ? totalPages : nextPagePosition);
   }
   
   function handleLast() {
+    setPreviousPagePosition(currentPagePosition);
     setCurrentPagePosition(totalPages);
   }
 
   function handlePrevious() {
     let previousPagePosition = currentPagePosition - 1;
+    setPreviousPagePosition(currentPagePosition);
     setCurrentPagePosition((previousPagePosition < 0) ? 0 : previousPagePosition);
   }
 
   function handleFirst() {
+    setPreviousPagePosition(currentPagePosition);
     setCurrentPagePosition(0);
   }
   

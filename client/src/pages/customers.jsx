@@ -1,11 +1,12 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useHistory, useLocation } from 'react-router';
-import AcceptCancelDialog from '../components/dialog/accept-cancel-dialog';
+import Dialog from '../components/dialog/dialog';
 import { useAlertMessage } from '../contexts/alert-message-context';
 import { removeCustomer, getAllCustomers } from '../services/customer-service';
 import Panel from '../components/panel';
 import Table from '../components/table/table';
 import { iconColumnDefinition, textColumnDefinition } from '../components/table/column-definitions/column-definition';
+import { yesNoDialogConfig } from '../components/dialog/dialog-config';
 
 export default function Customers() {
   const history = useHistory();
@@ -13,7 +14,6 @@ export default function Customers() {
   const { addSuccessMessage, addErrorMessage } = useAlertMessage();
   const [customers, setCustomers] = useState(null);
   const [showDialog, setShowDialog] = useState(false);
-  const [dialogConfirmation, setDialogConfirmation] = useState(false);
   const [customerToBeDeleted, setCustomerToBeDeleted] = useState(null);
   
   const getTitle = () => {
@@ -52,6 +52,24 @@ export default function Customers() {
       onClick: (rowObject) => removeAlert(rowObject)
     })
   ];
+    
+  const dialogConfig = yesNoDialogConfig({
+    title: 'Eliminar Cliente',
+    message: 'Esta seguro que desea eliminar el cliente ' + (customerToBeDeleted ? customerToBeDeleted.name : '') + '?',
+    onAccept: () => {
+      removeCustomer(customerToBeDeleted.id)
+        .then(() => {
+          addSuccessMessage(
+            'El cliente ' + customerToBeDeleted.name + ' fue eliminado exitosamente.',
+          );
+        })
+        .then((errorData) => {
+          if (errorData) {
+            addErrorMessage(errorData.message);
+          }
+        });
+    }
+  });
 
   const refreshTable = useCallback(() => {
     getAllCustomers().then((customerList) => {
@@ -63,34 +81,6 @@ export default function Customers() {
     refreshTable();
   }, [refreshTable]);
 
-  useEffect(() => {
-    if (dialogConfirmation) {
-      setDialogConfirmation(false);
-      if (customerToBeDeleted) {
-        const customerName = customerToBeDeleted.name;
-        removeCustomer(customerToBeDeleted.id)
-          .then((customer) => {
-            addSuccessMessage(
-              'El usuario ' + customerName + ' fue eliminado exitosamente.',
-            );
-            refreshTable();
-          })
-          .then((errorData) => {
-            if (errorData) {
-              addErrorMessage(errorData.message);
-            }
-          });
-      }
-    }
-  }, [
-    dialogConfirmation,
-    customerToBeDeleted,
-    refreshTable,
-    setDialogConfirmation,
-    addSuccessMessage,
-    addErrorMessage,
-  ]);
-
   return (
     <Panel
       title={getTitle()}
@@ -98,7 +88,7 @@ export default function Customers() {
       model={customers}
       actions={[
         {
-          id: 'add',
+          key: 'add',
           icon: 'plus',
           action: create,
           tooltip: 'Crear un cliente nuevo.',
@@ -107,17 +97,7 @@ export default function Customers() {
     >
       <Table columnDefinitions={columnDefinitions} rowObjects={customers} ></Table>
 
-      <AcceptCancelDialog
-        title="Eliminar Cliente"
-        message={
-          'Esta seguro que desea eliminar el cliente ' +
-          (customerToBeDeleted ? customerToBeDeleted.name : '') +
-          '?'
-        }
-        show={showDialog}
-        setShow={setShowDialog}
-        setConfirmation={setDialogConfirmation}
-      ></AcceptCancelDialog>
+      <Dialog config={dialogConfig} show={showDialog} setShow={setShowDialog} ></Dialog>
     </Panel>
   );
 }

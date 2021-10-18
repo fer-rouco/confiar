@@ -8,15 +8,10 @@ const StyledModalContent = styled.div`
 `;
 
 export default function Dialog({
-  title,
-  message,
+  config,
   show,
-  setShow,
-  setConfirmation,
-  content,
-  actions
+  setShow
 }) {
-  const [titleToShow, setTitleToShow] = useState(null);
   const modalRef = createRef();
 
   const getModal = useCallback(() => {
@@ -24,9 +19,6 @@ export default function Dialog({
   }, [modalRef]);
 
   const handleClose = () => {
-    if (actions) {
-      setConfirmation(false);
-    }
     setShow(false);
     getModal().hide();
   };
@@ -39,14 +31,37 @@ export default function Dialog({
   const getFooter = () => (
     <div className="modal-footer">
       {
-        (actions) ?
-          actions.map(action => (
-            <Button key={action.id} label={action.label} onClick={() => handleAction(action)} color={action.color} ></Button>
+        (config.actions) ?
+          config.actions.map(action => (
+            <Button key={action.key} label={action.label} onClick={() => handleAction(action)} color={action.color} ></Button>
           ))
           : (<></>)
       }
     </div>
   );
+
+  if (config) {
+    if (config.actions) {
+      const actionAccept = config.actions.find((action) => { return action.key === 'accept' || action.key === 'yes'; });
+      const actionCancel = config.actions.find((action) => { return action.key === 'cancel' || action.key === 'no'; });
+      const actionAcceptFunction = actionAccept.action;
+      const actionCancelFunction = actionCancel.action;
+      
+      actionAccept.action = () => {
+        if (actionAcceptFunction) {
+          actionAcceptFunction();
+        }
+        setShow(false);
+      };
+    
+      actionCancel.action = () => {
+        if (actionCancelFunction) {
+          actionCancelFunction();
+        }
+        setShow(false);
+      };    
+    }
+  }  
 
   useEffect(() => {
     if (show) {
@@ -70,17 +85,12 @@ export default function Dialog({
           <StyledModalContent className="modal-content">
             <div className="modal-header">
               <h5 className="modal-title" id="modalLabel">
-                {title}
+                {config.title}
               </h5>
-              <button
-                type="button"
-                className="btn-close"
-                aria-label="Close"
-                onClick={handleClose}
-              ></button>
+              <Button onClick={handleClose} close ></Button>
             </div>
-            {(content) ? (content) : (<div className="modal-body">{message}</div>)}
-            {(!actions) ? (<></>) : (getFooter()) }
+            {(config.content) ? (config.content) : (<div className="modal-body">{config.message}</div>)}
+            {(!config.actions) ? (<></>) : (getFooter()) }
           </StyledModalContent>
         </div>
       </div>

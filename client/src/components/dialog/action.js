@@ -1,7 +1,7 @@
 
-function action(id, label, action, color, focused, enabled) {
+function action(key, label, action, color, focused, enabled) {
   return {
-    id,
+    key,
     label,
     action,
     color,
@@ -10,38 +10,38 @@ function action(id, label, action, color, focused, enabled) {
   }
 }
 
-export function actionAccept() {
+export function actionAccept(actionFunction) {
   return action(
     'accept',
     'Aceptar',
-    () => { console.log("Aceptado!!!"); },
+    actionFunction,
     'primary'
     );
 }
 
-export function actionYes() {
+export function actionYes(actionFunction) {
   return action(
     'yes',
     'Si',
-    () => { console.log("Yeees!!!"); },
+    actionFunction,
     'primary'
     );
 }
 
-export function actionCancel() {
+export function actionCancel(actionFunction) {
   return action(
     'cancel',
     'Cancelar',
-    () => { console.log("Cancelado!!!"); },
+    actionFunction,
     'secondary'
     );
 }
 
-export function actionNo() {
+export function actionNo(actionFunction) {
   return action(
     'no',
     'No',
-    () => { console.log("Noooo!!!"); },
+    actionFunction,
     'secondary'
     );
 }

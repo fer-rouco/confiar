@@ -1,6 +1,7 @@
-import { createRef, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import Dialog from '../dialog/dialog';
+import { contentDialogConfig } from '../dialog/dialog-config';
 import Button from './buttons/button';
 import { useModel } from './fields/model-context';
 
@@ -102,8 +103,7 @@ const StyledLabelContainer = styled.div`
 export default function FileUpload(props) {
   const [files, setFiles] = useState([]);
   const [show, setShow] = useState(false);
-  const [alertTitle, setAlertTitle] = useState(null);
-  const [alertContent, setAlertContent] = useState(null);
+  const [dialogConfig, setDialogConfig] = useState({});
   const [isDragOver, setIsDragOver] = useState(false);
   const model = useModel();
 
@@ -205,8 +205,12 @@ export default function FileUpload(props) {
   
   const showItem = (event, fileToShow) => {
     event.stopPropagation();
-    setAlertTitle(getAlertTitle(fileToShow));
-    setAlertContent(getAlertImageContainer(fileToShow));
+
+    setDialogConfig(contentDialogConfig({
+      title: getAlertTitle(fileToShow),
+      content: getAlertImageContainer(fileToShow)
+    }));
+
     setShow(true);
   }
 
@@ -306,12 +310,7 @@ export default function FileUpload(props) {
             )
         }
       </StyledContainer>
-      <Dialog
-        title={alertTitle}
-        content={alertContent}
-        show={show}
-        setShow={setShow}
-      ></Dialog>
+      <Dialog config={dialogConfig} show={show} setShow={setShow} ></Dialog>
     </div>
   )
 }

@@ -51,7 +51,7 @@ export default function Button(props) {
   };
 
   return (
-    <button type={getType()} className={getClasses()} disabled={props.disabled} onClick={props.onClick} >
+    <button {...props} type={getType()} className={getClasses()} >
       {props.left}
       {props.label}
       {props.right}

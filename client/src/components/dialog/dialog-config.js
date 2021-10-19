@@ -30,20 +30,12 @@ export function actionsDialogConfig(props) {
 
 export function acceptCancelDialogConfig(props) {
   let definition = messageDialogConfig(props);
-
-  const actionAccept = actionAccept(props.onAccept);
-  const actionCancel = actionCancel(props.onCancel);
-
-  definition.actions = [actionCancel, actionAccept];
+  definition.actions = [actionCancel(props.onCancel), actionAccept(props.onAccept)];
   return definition;
 }
 
 export function yesNoDialogConfig(props) {
   let definition = messageDialogConfig(props);
-
-  // const actionYes = ;
-  // const actionNo = actionNo(props.onCancel);
-
   definition.actions = [actionNo(props.onCancel), actionYes(props.onAccept)];
   return definition;
 }

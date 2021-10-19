@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
+import { useDialog } from '../../contexts/dialog-context';
 import Button from '../controls/buttons/button';
 import SelectField from '../controls/fields/select/select-field';
 import Icon from '../icon';
@@ -65,12 +66,33 @@ function Table(props) {
   const [totalRows, setTotalRows] = useState(null);
   const [currentPagePosition, setCurrentPagePosition] = useState(0);
   const [previousPagePosition, setPreviousPagePosition] = useState(-1);
+  const [shouldUpdate, setShouldUpdate] = useState(false);
+  const dialog = useDialog();
   let pageSize = 3;
 
   useEffect(() => {
-    updateRowObjects();
-  }, [currentPagePosition]);
+    props.columnDefinitions.map((columnDefinition) => {
+      if (columnDefinition.dialogConfig) {
+        dialog.setConfig(columnDefinition.dialogConfig);
+      }
+    });  
+  }, []);
 
+  useEffect(() => {
+    updateRowObjects();
+    setShouldUpdate(false);
+  }, [currentPagePosition, props.rowObjects]);
+
+  useEffect(() => {
+    // this shouldUpdate stuff was made to avoid call updateRowObjects two times when the page load.
+    if (shouldUpdate) {
+      setRowObjectsCache([]);
+      updateRowObjects();
+      dialog.setActionExecuted(false);
+    }
+    setShouldUpdate(true);
+  }, [dialog.getActionExecuted()]);
+  
   function calculateTotalPages(length) {
     let calculatedTotalPages = Math.ceil(length / pageSize) - 1;
     return (calculatedTotalPages < 0) ? 0 : calculatedTotalPages;
@@ -234,6 +256,15 @@ function Table(props) {
       return rowObjectProperty;
     };
 
+    const onIconClick = (model) => {
+      if (columnDefinition.onClick) {
+        columnDefinition.onClick(model)
+      }
+      else if (columnDefinition.dialogConfig) {
+        dialog.showDialog(model);
+      }
+    }
+
     switch (columnDefinition.type) {
       case 'text':
         cell = (
@@ -253,7 +284,7 @@ function Table(props) {
             <Icon
               fontName={columnDefinition.icon}
               medium
-              onClick={() => columnDefinition.onClick(rowObject)}
+              onClick={onIconClick.bind(this, rowObject)}
             ></Icon>
           </StyledTD>
         );

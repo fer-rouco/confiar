@@ -5,10 +5,12 @@ import ReactDOM from 'react-dom';
 import { BrowserRouter, Route, Switch, withRouter } from 'react-router-dom';
 import AlertMessage from './components/alert-message';
 import { BarsProvider } from './components/bars/bars-context';
+import Dialog from './components/dialog/dialog';
 import NavBar from './components/bars/nav-bar';
 import SideBar from './components/bars/side-bar';
 import withAuth from './components/protected-routes';
 import { AlertMessageProvider } from './contexts/alert-message-context';
+import { DialogProvider } from './contexts/dialog-context';
 import { ErrorProvider } from './contexts/error-context';
 import { SessionProvider } from './contexts/session-context';
 import './index.css';
@@ -36,42 +38,45 @@ getSessionInfo()
         {/* <Tooltip></Tooltip> */}
         <AlertMessageProvider>
           <AlertMessage></AlertMessage>
-          <ErrorProvider>
-            <BrowserRouter>
-              <SessionProvider>
-                <BarsProvider>
-                  <NavBar title="Confiar" />
-                  <SideBar icon="cart3"></SideBar>
-                </BarsProvider>
-                <div className="container">
-                  <div className="row justify-content-center">
-                    <div className="col">
-                      <Switch>
-                        <Route exact path="/" component={UsersWithAuth} />
-                        <Route exact path="/Login">
-                          <Login />
-                        </Route>
-                        <Route exact path="/Users">
-                          <UsersWithAuth />
-                        </Route>
-                        <Route exact path="/User">
-                          <UserWithAuth />
-                        </Route>
-                        <Route exact path="/Customers">
-                          <CustomersWithAuth />
-                        </Route>
-                        <Route exact path="/Customer">
-                          <CustomerWithAuth />
-                        </Route>
-                        <Route component={PageNotFound} />
-                        <Route component={ServerNotReady} />
-                      </Switch>
+          <DialogProvider>
+            <Dialog></Dialog>
+            <ErrorProvider>
+              <BrowserRouter>
+                <SessionProvider>
+                  <BarsProvider>
+                    <NavBar title="Confiar" />
+                    <SideBar icon="cart3"></SideBar>
+                  </BarsProvider>
+                  <div className="container">
+                    <div className="row justify-content-center">
+                      <div className="col">
+                        <Switch>
+                          <Route exact path="/" component={UsersWithAuth} />
+                          <Route exact path="/Login">
+                            <Login />
+                          </Route>
+                          <Route exact path="/Users">
+                            <UsersWithAuth />
+                          </Route>
+                          <Route exact path="/User">
+                            <UserWithAuth />
+                          </Route>
+                          <Route exact path="/Customers">
+                            <CustomersWithAuth />
+                          </Route>
+                          <Route exact path="/Customer">
+                            <CustomerWithAuth />
+                          </Route>
+                          <Route component={PageNotFound} />
+                          <Route component={ServerNotReady} />
+                        </Switch>
+                      </div>
                     </div>
                   </div>
-                </div>
-              </SessionProvider>
-            </BrowserRouter>
-          </ErrorProvider>
+                </SessionProvider>
+              </BrowserRouter>
+            </ErrorProvider>
+          </DialogProvider>
         </AlertMessageProvider>
       </React.StrictMode>
     );

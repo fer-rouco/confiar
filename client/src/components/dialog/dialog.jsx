@@ -2,30 +2,39 @@ import { createRef, useCallback, useEffect, useState } from 'react';
 import bootstrap from 'bootstrap/dist/js/bootstrap.js';
 import styled from 'styled-components';
 import Button from '../controls/buttons/button';
+import { useDialog } from '../../contexts/dialog-context';
+
 
 const StyledModalContent = styled.div`
   width: fit-content
 `;
 
-export default function Dialog({
-  config,
-  show,
-  setShow
-}) {
+export default function Dialog() {
+  const dialogContext = useDialog();
   const modalRef = createRef();
+  const config = dialogContext.getConfig();
 
-  const getModal = useCallback(() => {
-    return bootstrap.Modal.getOrCreateInstance(modalRef.current);
-  }, [modalRef]);
+  function getMessage() {
+    let message = config.message;
+    Object.entries(dialogContext.getModel()).forEach((entry) => {
+      let attr = entry[0].toUpperCase();
+      let value = entry[1];
+      message = message.replaceAll('<%' + attr + '%>', value);
+    })
+    return message
+  }
 
   const handleClose = () => {
-    setShow(false);
-    getModal().hide();
+    dialogContext.hideDialog();
   };
 
   const handleAction = (action) => {
-    action.action();
-    getModal().hide();
+    dialogContext.setActionExecuted(false);
+    if (action.action) {
+      action.action(dialogContext.getModel());
+    }
+    dialogContext.setActionExecuted(true);
+    dialogContext.hideDialog();
   };
 
   const getFooter = () => (
@@ -40,34 +49,17 @@ export default function Dialog({
     </div>
   );
 
-  if (config) {
-    if (config.actions) {
-      const actionAccept = config.actions.find((action) => { return action.key === 'accept' || action.key === 'yes'; });
-      const actionCancel = config.actions.find((action) => { return action.key === 'cancel' || action.key === 'no'; });
-      const actionAcceptFunction = actionAccept.action;
-      const actionCancelFunction = actionCancel.action;
-      
-      actionAccept.action = () => {
-        if (actionAcceptFunction) {
-          actionAcceptFunction();
-        }
-        setShow(false);
-      };
-    
-      actionCancel.action = () => {
-        if (actionCancelFunction) {
-          actionCancelFunction();
-        }
-        setShow(false);
-      };    
-    }
-  }  
-
   useEffect(() => {
-    if (show) {
-      getModal().show();
+    const modal = bootstrap.Modal.getOrCreateInstance(modalRef.current)
+
+    if (dialogContext.shouldShowDialog()) {
+      modal.show();
     }
-  }, [show, getModal]);
+    else {
+      modal.hide();
+    }
+
+  }, [dialogContext, modalRef]);
 
   return (
     <div>
@@ -89,7 +81,7 @@ export default function Dialog({
               </h5>
               <Button onClick={handleClose} close ></Button>
             </div>
-            {(config.content) ? (config.content) : (<div className="modal-body">{config.message}</div>)}
+            {(config.content) ? (config.content) : (<div className="modal-body">{getMessage()}</div>)}
             {(!config.actions) ? (<></>) : (getFooter()) }
           </StyledModalContent>
         </div>

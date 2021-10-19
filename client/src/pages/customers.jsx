@@ -37,7 +37,7 @@ export default function Customers() {
       icon: 'trash-fill',
       dialogConfig: {
         title: 'Eliminar Cliente',
-        message: 'Esta seguro que desea eliminar el cliente <%NAME%> ?',
+        message: 'Esta seguro que desea eliminar el cliente <%NAME%>?',
         onAccept: (model) => {
           removeCustomer(model.id)
             .then(() => {

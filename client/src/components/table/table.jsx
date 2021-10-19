@@ -46,6 +46,9 @@ const StyledTH = styled.th`
 
 const StyledCaption = styled.caption`
   background-color: #F0F0F0;
+  .text {
+    padding-left: 10px;
+  }
 `;
 
 const StyledNavigatorContainer = styled.nav`
@@ -218,7 +221,7 @@ function Table(props) {
   }
 
   function buildEmptyCaption() {
-    return (<StyledCaption>No hay datos</StyledCaption>);
+    return (<StyledCaption><span className="text" >No hay datos</span></StyledCaption>);
   }
 
   function buildHeader() {

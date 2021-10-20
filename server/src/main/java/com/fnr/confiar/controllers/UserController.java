@@ -1,7 +1,5 @@
 package com.fnr.confiar.controllers;
 
-import java.util.List;
-
 import com.fnr.confiar.Response;
 import com.fnr.confiar.entities.User;
 import com.fnr.confiar.models.UserProfileModel;

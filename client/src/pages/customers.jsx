@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useHistory, useLocation } from 'react-router';
 import { useAlertMessage } from '../contexts/alert-message-context';
 import { useDialog } from '../contexts/dialog-context';
@@ -13,53 +13,58 @@ export default function Customers() {
   const dialog = useDialog();
   const { addSuccessMessage, addErrorMessage } = useAlertMessage();
   const [customers, setCustomers] = useState(null);
+  const [columnDefinitions, setColumnDefinitions] = useState(null);
 
   function create() {
     history.push('/Customer');
   };
 
-  const columnDefinitions = [
-    textColumnDefinition({
-      key: 'name',
-      label: 'Nombre',
-      target: '/Customer'
-    }),
-    textColumnDefinition({
-      key: 'lastName',
-      label: 'Apellido'
-    }),
-    textColumnDefinition({
-      key: 'mail', 
-      label: 'Mail'
-    }),
-    removeColumnDefinition({
-      key: 'remove',
-      icon: 'trash-fill',
-      dialogConfig: {
-        title: 'Eliminar Cliente',
-        message: 'Esta seguro que desea eliminar el cliente <%NAME%>?',
-        onAccept: (model) => {
-          removeCustomer(model.id)
-            .then(() => {
-              addSuccessMessage(
-                'El cliente ' + model.name + ' fue eliminado exitosamente.',
-              );
-            })
-            .then((errorData) => {
-              if (errorData) {
-                addErrorMessage(errorData.message);
-              }
-            });
-        }
-      }
-    })
-  ];
+  useEffect(() => {
+    setColumnDefinitions(
+      [
+        textColumnDefinition({
+          key: 'name',
+          label: 'Nombre',
+          target: '/Customer'
+        }),
+        textColumnDefinition({
+          key: 'lastName',
+          label: 'Apellido'
+        }),
+        textColumnDefinition({
+          key: 'mail', 
+          label: 'Mail'
+        }),
+        removeColumnDefinition({
+          key: 'remove',
+          icon: 'trash-fill',
+          dialogConfig: {
+            title: 'Eliminar Cliente',
+            message: 'Esta seguro que desea eliminar el cliente <%NAME%>?',
+            onAccept: (model) => {
+              return removeCustomer(model.id)
+                .then(() => {
+                  addSuccessMessage(
+                    'El cliente ' + model.name + ' fue eliminado exitosamente.',
+                  );
+                })
+                .then((errorData) => {
+                  if (errorData) {
+                    addErrorMessage(errorData.message);
+                  }
+                });
+            }
+          }
+        })
+      ]
+    );
+  }, [setColumnDefinitions]);
 
   useEffect(() => {
     getAllCustomers().then((customerList) => {
       setCustomers(customerList);
     });
-  }, [location, dialog.getActionExecuted()]);
+  }, [location, dialog.getAfterConfirmationFlag()]);
 
   return (
     <Panel

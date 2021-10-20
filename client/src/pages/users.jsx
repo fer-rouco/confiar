@@ -1,6 +1,5 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useHistory } from 'react-router';
-import { yesNoDialogConfig } from '../components/dialog/dialog-config';
 import { useAlertMessage } from '../contexts/alert-message-context';
 import { deleteUser, findUsers } from '../services/user-service';
 import Panel from '../components/panel';
@@ -10,11 +9,6 @@ import { removeColumnDefinition, textColumnDefinition } from '../components/tabl
 export default function Users() {
   const history = useHistory();
   const { addSuccessMessage, addErrorMessage } = useAlertMessage();
-  const [userToBeDeleted, setUserToBeDeleted] = useState(null);
-
-  const getTitle = () => {
-    return 'Usuarios.';
-  };
 
   const createUser = () => {
     history.push('/User');
@@ -49,12 +43,11 @@ export default function Users() {
         title: 'Eliminar Usuario',
         message: 'Esta seguro que desea eliminar el usuario <%NAME%>?',
         onAccept: (model) => {
-          deleteUser(model.id)
+          return deleteUser(model.id)
             .then((user) => {
               addSuccessMessage(
                 'El usuario ' + model.name + ' fue eliminado exitosamente.',
               );
-              // refreshTable();
             })
             .then((errorData) => {
               if (errorData) {
@@ -68,7 +61,7 @@ export default function Users() {
 
   return (
     <Panel
-      title={getTitle()}
+      title='Usuarios.'
       size="large"
       model={{}}
       actions={[

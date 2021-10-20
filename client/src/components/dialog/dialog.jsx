@@ -29,11 +29,11 @@ export default function Dialog() {
   };
 
   const handleAction = (action) => {
-    dialogContext.setActionExecuted(false);
     if (action.action) {
-      action.action(dialogContext.getModel());
+      action.action(dialogContext.getModel()).then(() => {
+        dialogContext.setAfterConfirmationFlag(action.key === 'accept');
+      });
     }
-    dialogContext.setActionExecuted(true);
     dialogContext.hideDialog();
   };
 
@@ -52,7 +52,8 @@ export default function Dialog() {
   useEffect(() => {
     const modal = bootstrap.Modal.getOrCreateInstance(modalRef.current)
 
-    if (dialogContext.shouldShowDialog()) {
+    if (dialogContext.getDialogVisibility()) {
+      dialogContext.setAfterConfirmationFlag(false);
       modal.show();
     }
     else {

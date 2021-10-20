@@ -4,7 +4,7 @@ const DialogContext = createContext(() => {});
 
 export function DialogProvider(props) {
   const [showDialogState, setShowDialogState] = useState(false);
-  const [actionExecutedState, setActionExecutedState] = useState(false);
+  const [afterConfirmation, setAfterConfirmation] = useState(false);
   const [dialogConfig, setDialogConfig] = useState({});
   const [modelState, setModelState] = useState({});
 
@@ -19,7 +19,7 @@ export function DialogProvider(props) {
     setShowDialogState(false);
   }
 
-  const shouldShowDialog = () => {
+  const getDialogVisibility = () => {
     return showDialogState;
   }
 
@@ -39,27 +39,27 @@ export function DialogProvider(props) {
     return modelState;
   }
 
-  const getActionExecuted = () => {
-    return actionExecutedState;
+  const getAfterConfirmationFlag = () => {
+    return afterConfirmation;
   }
 
-  const setActionExecuted = (actionExecutedParam) => {
-    setActionExecutedState(actionExecutedParam);
+  const setAfterConfirmationFlag = (afterConfirmationFlag) => {
+    setAfterConfirmation(afterConfirmationFlag);
   }
     
   const value = useMemo(() => {
     return {
       showDialog,
       hideDialog,
-      shouldShowDialog,
+      getDialogVisibility,
       setConfig,
       getConfig,
       setModel,
       getModel,
-      setActionExecuted,
-      getActionExecuted
+      setAfterConfirmationFlag,
+      getAfterConfirmationFlag
     };
-  }, [showDialogState, dialogConfig, modelState, actionExecutedState]);
+  }, [showDialogState, dialogConfig, modelState, afterConfirmation]);
 
   return <DialogContext.Provider value={value} {...props} />;
 }

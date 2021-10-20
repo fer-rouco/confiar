@@ -1,5 +1,5 @@
 
-function action(key, label, action, color, focused, enabled) {
+function buildAction(key, label, action, color, focused, enabled) {
   return {
     key,
     label,
@@ -10,38 +10,35 @@ function action(key, label, action, color, focused, enabled) {
   }
 }
 
-export function actionAccept(actionFunction) {
-  return action(
+function buildActionAccept(label, actionFunction) {
+  return buildAction(
     'accept',
-    'Aceptar',
+    label,
     actionFunction,
     'primary'
-    );
+  );
+}
+
+function buildActionCancel(label, actionFunction) {
+  return buildAction(
+    'cancel',
+    label,
+    actionFunction,
+    'secondary'
+  );
+}
+export function actionAccept(actionFunction) {
+  return buildActionAccept('Aceptar', actionFunction);
 }
 
 export function actionYes(actionFunction) {
-  return action(
-    'yes',
-    'Si',
-    actionFunction,
-    'primary'
-    );
+  return buildActionAccept('Si', actionFunction);
 }
 
 export function actionCancel(actionFunction) {
-  return action(
-    'cancel',
-    'Cancelar',
-    actionFunction,
-    'secondary'
-    );
+  return buildActionCancel('Cancelar', actionFunction);
 }
 
 export function actionNo(actionFunction) {
-  return action(
-    'no',
-    'No',
-    actionFunction,
-    'secondary'
-    );
+  return buildActionCancel('No', actionFunction);
 }

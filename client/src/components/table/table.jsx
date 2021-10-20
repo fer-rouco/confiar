@@ -63,15 +63,13 @@ const StyledFooterData = styled.p`
 `;
 
 function Table(props) {
-  const [rowObjectsCache, setRowObjectsCache] = useState([]);
   const [rowObjects, setRowObjects] = useState(null);
   const [totalPages, setTotalPages] = useState(null);
   const [totalRows, setTotalRows] = useState(null);
   const [currentPagePosition, setCurrentPagePosition] = useState(0);
   const [previousPagePosition, setPreviousPagePosition] = useState(-1);
-  const [shouldUpdate, setShouldUpdate] = useState(false);
   const dialog = useDialog();
-  let pageSize = 3;
+  let pageSize = 2;
 
   useEffect(() => {
     props.columnDefinitions.map((columnDefinition) => {
@@ -82,95 +80,60 @@ function Table(props) {
   }, []);
 
   useEffect(() => {
-    updateRowObjects();
-    setShouldUpdate(false);
-  }, [currentPagePosition, props.rowObjects]);
-
-  useEffect(() => {
-    // this shouldUpdate stuff was made to avoid call updateRowObjects two times when the page load.
-    if (shouldUpdate) {
-      setRowObjectsCache([]);
-      updateRowObjects();
-      dialog.setActionExecuted(false);
+    if (props.requestRowObjectsFunction) {
+      updateRowObjectsWithPaginator();
     }
-    setShouldUpdate(true);
-  }, [dialog.getActionExecuted()]);
+    else {
+      updateRowObjects();
+    }
+  }, [currentPagePosition, props.rowObjects]);
+     
+  useEffect(() => {
+    if (dialog.getAfterConfirmationFlag()) {
+      updateRowObjectsWithPaginator();
+    }
+  }, [dialog.getAfterConfirmationFlag()]);
   
   function calculateTotalPages(length) {
     let calculatedTotalPages = Math.ceil(length / pageSize) - 1;
     return (calculatedTotalPages < 0) ? 0 : calculatedTotalPages;
   }
 
-  function setTableStates(rowObjectsParam, length) {
-    setTotalRows(length);
-    setTotalPages(calculateTotalPages(length));
-    setRowObjects(rowObjectsParam);
-  }
-
-  function requestRowObjects() {
+  function updateRowObjectsWithPaginator() {
     props.requestRowObjectsFunction(currentPagePosition, pageSize).then((paginator) => {
       // Set current rowObjects
-      setTableStates(paginator.rowObjects, paginator.length);
+      const rowObjectsLength = paginator.length;
+      const totalPagesLocal = calculateTotalPages(rowObjectsLength);
+
+      setTotalRows(rowObjectsLength);
+      setTotalPages(totalPagesLocal);
+      
+      if (currentPagePosition > totalPagesLocal) {
+        setRowObjects(paginator.rowObjects);
+        setCurrentPagePosition(totalPagesLocal);
+      } else {
+        setRowObjects(paginator.rowObjects);
+      }
     });
   }
 
-  function requestRowObjectsForCache(jumpPages) {
-    // Set Previous rowObjects in cache
-    if ((currentPagePosition > previousPagePosition) && !jumpPages) {
-      rowObjectsCache[0] = rowObjects;
-    }
-    else {
-      if ((currentPagePosition - 1) >= 0) {
-        props.requestRowObjectsFunction(currentPagePosition - 1, pageSize).then((paginatorForPreviousPage) => {
-          rowObjectsCache[0] = paginatorForPreviousPage.rowObjects;
-        });
-      }
-      else {
-        rowObjectsCache[0] = null;
-      }
-    }
-    
-    // Set Next rowObjects in cache
-    if ((currentPagePosition < previousPagePosition) && !jumpPages) {
-      rowObjectsCache[1] = rowObjects;
-    }
-    else {
-      if (((currentPagePosition + 1) <= totalPages) || (totalPages === null)) {
-        props.requestRowObjectsFunction(currentPagePosition + 1, pageSize).then((paginatorForPreviousPage) => {
-          rowObjectsCache[1] = paginatorForPreviousPage.rowObjects;
-        });
-      }
-      else {
-        rowObjectsCache[1] = null;
-      }
-    }
-  }
-
   function updateRowObjects() {
-    if (props.requestRowObjectsFunction) {
-      let jumpPages = Math.abs(previousPagePosition - currentPagePosition) !== 1;
-      if (previousPagePosition > -1 && !jumpPages) {
-        // Previous -> rowObjectsCache index 0
-        if (currentPagePosition < previousPagePosition) {
-          setRowObjects(rowObjectsCache[0]);
-        }
-        // Next -> rowObjectsCache index 1
-        if (currentPagePosition > previousPagePosition) {
-          setRowObjects(rowObjectsCache[1]);
-        }
-      }
-      else {
-        requestRowObjects();
-      }
-      requestRowObjectsForCache(jumpPages);
+    let pages = [];
+    for (let index = 0; index < props.rowObjects.length; index += pageSize) {
+      pages.push(props.rowObjects.slice(index, index + pageSize));        
     }
-    else {
-      let pages = [];
-      for (let index = 0; index < props.rowObjects.length; index += pageSize) {
-        pages.push(props.rowObjects.slice(index, index + pageSize));        
-      }
 
-      setTableStates(pages[currentPagePosition], props.rowObjects.length);
+    const rowObjectsLength = props.rowObjects.length;
+    const totalPagesLocal = calculateTotalPages(rowObjectsLength);
+
+    setTotalRows(rowObjectsLength);
+    setTotalPages(totalPagesLocal);
+
+    if (currentPagePosition > totalPagesLocal) {
+      setRowObjects(pages[totalPagesLocal]);
+      setCurrentPagePosition(totalPagesLocal);
+    } else {
+      setRowObjects(pages[currentPagePosition]);
     }
   }
 
@@ -186,9 +149,9 @@ function Table(props) {
   }
 
   function handlePrevious() {
-    let previousPagePosition = currentPagePosition - 1;
+    let previousPagePositionLocal = currentPagePosition - 1;
     setPreviousPagePosition(currentPagePosition);
-    setCurrentPagePosition((previousPagePosition < 0) ? 0 : previousPagePosition);
+    setCurrentPagePosition((previousPagePositionLocal < 0) ? 0 : previousPagePositionLocal);
   }
 
   function handleFirst() {

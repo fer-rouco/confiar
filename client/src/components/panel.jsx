@@ -94,10 +94,6 @@ const StyledAcctionContainer = styled.div`
   ${StyledBorder};
   border-radius: 6px;
   margin-top: 8px;
-
-  & > .separation {
-    padding: 0px;
-  }
 `;
 
 // prop.size: "small", "medium", "large"
@@ -132,6 +128,7 @@ function Panel(props) {
                       fontName={action.icon}
                       onClick={() => action.action()}
                       medium
+                      noPadding
                     ></Icon>
                   </StyledAcctionContainer>
                 ))}

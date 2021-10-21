@@ -24,7 +24,7 @@ export default function Form(props) {
   return (
     <ModelProvider model={model}>
       <FormProvider {...methods}>
-        <form onSubmit={onSubmit} ref={formRef}>
+        <form onSubmit={onSubmit} ref={formRef} {...props} >
           {props.children}
         </form>
       </FormProvider>

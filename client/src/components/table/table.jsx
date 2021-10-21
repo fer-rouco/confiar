@@ -3,7 +3,8 @@ import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { useDialog } from '../../contexts/dialog-context';
 import Button from '../controls/buttons/button';
-import SelectField from '../controls/fields/select/select-field';
+import NumericField from '../controls/fields/input/numeric-field';
+import Form from '../form';
 import Icon from '../icon';
 import withLoader from '../load-indicator';
 
@@ -56,10 +57,28 @@ const StyledNavigatorContainer = styled.nav`
   float: right;
 `;
 
+const StyledForm = styled(Form)`
+  display: inline-flex;
+`;
+
 const StyledFooterData = styled.p`
   display: inline-block;
   float: left;
   margin-top: 5px;
+`;
+
+const StyledHeaderParagraph = styled.p`
+  display: inline;
+  float: left;
+  padding-right: 3px;
+  padding-left: 6px;
+  margin-bottom: 0px;
+  margin-top: 4px;
+`;
+
+const StyledNumericField = styled(NumericField)`
+  display: inline;
+  positiion: absolute;
 `;
 
 function Table(props) {
@@ -68,39 +87,57 @@ function Table(props) {
   const [totalRows, setTotalRows] = useState(null);
   const [currentPagePosition, setCurrentPagePosition] = useState(0);
   const [previousPagePosition, setPreviousPagePosition] = useState(-1);
+  const [model] = useState({ pageSize: (props.pageSize) ? props.pageSize : 2 });
   const dialog = useDialog();
-  let pageSize = 2;
+
 
   useEffect(() => {
-    props.columnDefinitions.map((columnDefinition) => {
-      if (columnDefinition.dialogConfig) {
-        dialog.setConfig(columnDefinition.dialogConfig);
-      }
-    });  
+    if (props.columnDefinitions) {
+      props.columnDefinitions.map((columnDefinition) => {
+        if (columnDefinition.dialogConfig) {
+          dialog.setConfig(columnDefinition.dialogConfig);
+        }
+      });
+    }
+    else {
+      console.error(
+        "El componente de la tabla espera como parametro obligatorio columnDefinitions (definición de las columnas de la tabla)."
+      );
+    }
   }, []);
 
   useEffect(() => {
-    if (props.requestRowObjectsFunction) {
-      updateRowObjectsWithPaginator();
-    }
-    else {
-      updateRowObjects();
-    }
-  }, [currentPagePosition, props.rowObjects]);
+    update();
+  }, [model, currentPagePosition, props.rowObjects]);
      
   useEffect(() => {
     if (dialog.getAfterConfirmationFlag()) {
       updateRowObjectsWithPaginator();
     }
   }, [dialog.getAfterConfirmationFlag()]);
+
+  function update() {
+    if (props.requestRowObjectsFunction) {
+      updateRowObjectsWithPaginator();
+    }
+    else if (props.rowObjects) {
+      updateRowObjects();
+    }
+    else {
+      console.error(
+        "El componente de la tabla espera como parametro rowObjects (lista de objetos) o " + 
+        "requestRowObjectsFunction (funcion que llama al servicio que obtiene la lista de objetos)"
+      );
+    }
+  }
   
   function calculateTotalPages(length) {
-    let calculatedTotalPages = Math.ceil(length / pageSize) - 1;
+    let calculatedTotalPages = Math.ceil(length / model.pageSize) - 1;
     return (calculatedTotalPages < 0) ? 0 : calculatedTotalPages;
   }
 
   function updateRowObjectsWithPaginator() {
-    props.requestRowObjectsFunction(currentPagePosition, pageSize).then((paginator) => {
+    props.requestRowObjectsFunction(currentPagePosition, model.pageSize).then((paginator) => {
       // Set current rowObjects
       const rowObjectsLength = paginator.length;
       const totalPagesLocal = calculateTotalPages(rowObjectsLength);
@@ -119,8 +156,8 @@ function Table(props) {
 
   function updateRowObjects() {
     let pages = [];
-    for (let index = 0; index < props.rowObjects.length; index += pageSize) {
-      pages.push(props.rowObjects.slice(index, index + pageSize));        
+    for (let index = 0; index < props.rowObjects.length; index += model.pageSize) {
+      pages.push(props.rowObjects.slice(index, index + model.pageSize));        
     }
 
     const rowObjectsLength = props.rowObjects.length;
@@ -188,17 +225,24 @@ function Table(props) {
   }
 
   function buildHeader() {
-    return (
-      <thead>
-        <StyledTR className="header" >
-          {props.columnDefinitions.map((column) => (
-            <StyledTH scope="col" key={column.key}>
-              {column.label}
-            </StyledTH>
-          ))}
-        </StyledTR>
-      </thead>
-    );
+    let header;
+    if (props.columnDefinitions) {
+      header = (
+        <thead>
+          <StyledTR className="header" >
+            {props.columnDefinitions.map((column) => (
+              <StyledTH scope="col" key={column.key}>
+                {column.label}
+              </StyledTH>
+            ))}
+          </StyledTR>
+        </thead>
+      );
+    }
+    else {
+      header = <></>;
+    }
+    return header;
   }
 
   function buildCell(columnDefinition, rowObject) {
@@ -222,12 +266,12 @@ function Table(props) {
       return rowObjectProperty;
     };
 
-    const onIconClick = (model) => {
+    const onIconClick = (rowObjectLocal) => {
       if (columnDefinition.onClick) {
-        columnDefinition.onClick(model)
+        columnDefinition.onClick(rowObjectLocal);
       }
       else if (columnDefinition.dialogConfig) {
-        dialog.showDialog(model);
+        dialog.showDialog(rowObjectLocal);
       }
     }
 
@@ -290,9 +334,9 @@ function Table(props) {
   }
 
   function buildFooterData() {
-    let lastIndex = (currentPagePosition + 1) * pageSize;
+    let lastIndex = (currentPagePosition + 1) * model.pageSize;
     let showingTo = (lastIndex > totalRows) ? totalRows : lastIndex;
-    let showingFrom = (lastIndex - pageSize) + 1;
+    let showingFrom = (lastIndex - model.pageSize) + 1;
 
     return (
       <StyledFooterData key="footer-data" >Mostrando del {showingFrom} al {showingTo} de {totalRows} registros</StyledFooterData>
@@ -302,19 +346,6 @@ function Table(props) {
   function buildNavigator() {
     return (
       <StyledNavigatorContainer key="navigator" >
-        {/* <SelectField
-          attr='pageSize'
-          label='Page Size'
-          options={[
-            {value: 10, label: "10" },
-            {value: 20, label: "20" },
-            {value: 30, label: "30" },
-            {value: 40, label: "40" },
-            {value: 50, label: "50" }
-          ]}
-          required
-        ></SelectField> */}
-
         <ul className="pagination justify-content-end">
           <li className={paginatorButtonClass(isFirstEnable)} onClick={handleFirst} >
             <Button className="page-link" label="Primero" left={<Icon fontName="chevron-double-left" small disabled={!isFirstEnable()} ></Icon>} disabled={!isFirstEnable()} ></Button>
@@ -338,8 +369,19 @@ function Table(props) {
     )
   }
 
+  function buildPageSizeChooser() {
+    return (
+      <StyledForm onSubmit={updateRowObjectsWithPaginator} model={model} >
+        <StyledHeaderParagraph>Mostrar</StyledHeaderParagraph>
+        <StyledNumericField attr="pageSize" label="Paginas" small width="50px" avoidValidations min='2' max='100' step='2' onChange={update} ></StyledNumericField>
+        <StyledHeaderParagraph>Filas</StyledHeaderParagraph>
+      </StyledForm>
+    );
+  }
+
   return (
     <div>
+      {buildPageSizeChooser()}
       <table className="table table-hover">
         {buildHeader()}
         {isEmpty() ? buildEmptyCaption() : buildBody()}

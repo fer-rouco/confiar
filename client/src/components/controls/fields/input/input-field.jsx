@@ -16,6 +16,13 @@ const StyledErrorMessage = styled.div`
 const StyledFormControl = styled.input`
   margin-top: 10px;
   margin-bottom: 10px;
+
+  &.small-mode:not(:placeholder-shown) {
+    padding: 4px;
+    height: 30px;
+    margin: 2px;
+  }
+
 `;
 
 // props: register, type, attr, label, required, validationObject
@@ -43,9 +50,22 @@ export default function InputField(props) {
   }, [getField]);
 
   const updateField = () => {
-    let value = getValue();
+    let rawValue = getValue();
+    let value;
+    
+    if (props.type === 'number') {
+      value = Number.parseFloat(rawValue);
+    }
+    else {
+      value = rawValue;
+    }
+
     model.set(props.attr, value);
     setValue(props.attr, value);
+    
+    if (props.onChange) {
+      props.onChange();
+    }
   };
 
   const cleanErrorClasses = useCallback(() => {
@@ -68,18 +88,20 @@ export default function InputField(props) {
   }, [getField, errors, fieldError, props.attr]);
 
   const handleErrorClasses = useCallback(() => {
-    if (getValue()) {
-      cleanErrorClasses();
-      updateErrorClasses();
-    } else {
-      if (
-        errors &&
-        errors[props.attr] &&
-        errors[props.attr].type === 'required'
-      ) {
+    if (!props.avoidValidations) {
+      if (getValue()) {
+        cleanErrorClasses();
         updateErrorClasses();
       } else {
-        cleanErrorClasses();
+        if (
+          errors &&
+          errors[props.attr] &&
+          errors[props.attr].type === 'required'
+        ) {
+          updateErrorClasses();
+        } else {
+          cleanErrorClasses();
+        }
       }
     }
   }, [getValue, cleanErrorClasses, updateErrorClasses, errors, props.attr]);
@@ -141,14 +163,18 @@ export default function InputField(props) {
   }
 
   return (
-    <div className="form-floating" ref={fieldRef}>
+    <div className="form-floating" ref={fieldRef} style={{ width: props.width }}>
       <StyledFormControl
         {...register(props.attr, validationObject)}
         type={props.type}
-        className="field form-control"
+        className={"field form-control " + ((props.small) ? "small-mode" : "")}
+        style={{ width: props.width }}
         id={getId()}
         placeholder={toCamelCase(props.attr)}
         onChange={updateField}
+        min={props.min}
+        max={props.max}
+        step={props.step}
       />
       <StyledErrorMessage>
         {errors && errors[props.attr]
@@ -157,7 +183,7 @@ export default function InputField(props) {
           ? fieldError.message
           : ''}
       </StyledErrorMessage>
-      <label htmlFor="floatingInput">{props.label}</label>
+      {(props.small) ? <></>: <label htmlFor="floatingInput">{props.label}</label>}
     </div>
   );
 }

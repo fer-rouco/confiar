@@ -165,7 +165,7 @@ export default function FileUpload(props) {
         filesObjects.push(file);
         if (dropedFiles.length === filesObjects.length) {
           setFiles([...files, ...filesObjects]);
-          setFilesToModel(filesObjects);
+          setFilesToModel([...files, ...filesObjects]);
         }
       });
     });

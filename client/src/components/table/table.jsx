@@ -8,16 +8,6 @@ import Form from '../form';
 import Icon from '../icon';
 import withLoader from '../load-indicator';
 
-// const StyledContainer = styled.div`
-//   position: relative;
-//   border-radius: 3px;
-//   background: #ffffff;
-//   border-top: 3px solid #d2d6de;
-//   width: 100%;
-//   box-shadow: 0 1px 1px rgb(0 0 0 / 10%);
-//   padding: 5px 5px 0.1px 5px;
-// `;
-
 const StyledTR = styled.tr`
   background-color: #FFFFFF;
 
@@ -91,7 +81,7 @@ function Table(props) {
   const [totalRows, setTotalRows] = useState(null);
   const [currentPagePosition, setCurrentPagePosition] = useState(0);
   const [previousPagePosition, setPreviousPagePosition] = useState(-1);
-  const [model] = useState({ pageSize: (props.pageSize) ? props.pageSize : 2 });
+  const [model] = useState({ pageSize: (props.pageSize) ? props.pageSize : 10 });
   const dialog = useDialog();
 
 
@@ -141,21 +131,23 @@ function Table(props) {
   }
 
   function updateRowObjectsWithPaginator() {
-    props.requestRowObjectsFunction(currentPagePosition, model.pageSize).then((paginator) => {
-      // Set current rowObjects
-      const rowObjectsLength = paginator.length;
-      const totalPagesLocal = calculateTotalPages(rowObjectsLength);
-
-      setTotalRows(rowObjectsLength);
-      setTotalPages(totalPagesLocal);
-      
-      if (currentPagePosition > totalPagesLocal) {
-        setRowObjects(paginator.rowObjects);
-        setCurrentPagePosition(totalPagesLocal);
-      } else {
-        setRowObjects(paginator.rowObjects);
-      }
-    });
+    if (props.requestRowObjectsFunction) { 
+      props.requestRowObjectsFunction(currentPagePosition, model.pageSize).then((paginator) => {
+        // Set current rowObjects
+        const rowObjectsLength = paginator.length;
+        const totalPagesLocal = calculateTotalPages(rowObjectsLength);
+  
+        setTotalRows(rowObjectsLength);
+        setTotalPages(totalPagesLocal);
+        
+        if (currentPagePosition > totalPagesLocal) {
+          setRowObjects(paginator.rowObjects);
+          setCurrentPagePosition(totalPagesLocal);
+        } else {
+          setRowObjects(paginator.rowObjects);
+        }
+      });
+    }
   }
 
   function updateRowObjects() {
@@ -377,7 +369,7 @@ function Table(props) {
     return (
       <StyledForm onSubmit={updateRowObjectsWithPaginator} model={model} >
         <StyledHeaderParagraph>Mostrar</StyledHeaderParagraph>
-        <StyledNumericField attr="pageSize" label="Paginas" small width="50px" avoidValidations min='2' max='100' step='2' onChange={update} ></StyledNumericField>
+        <StyledNumericField attr="pageSize" label="Paginas" small width="50px" avoidValidations min='10' max='100' step='10' onChange={update} ></StyledNumericField>
         <StyledHeaderParagraph className="separation" >filas</StyledHeaderParagraph>
       </StyledForm>
     );

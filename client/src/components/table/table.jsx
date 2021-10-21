@@ -343,7 +343,7 @@ function Table(props) {
     let showingFrom = (lastIndex - model.pageSize) + 1;
 
     return (
-      <StyledFooterData key="footer-data" >Mostrando del {showingFrom} al {showingTo} de {totalRows} registros</StyledFooterData>
+      <StyledFooterData key="footer-data" >Mostrando del {showingFrom} al {showingTo} de un total de {totalRows} registros</StyledFooterData>
     );
   }
 
@@ -378,7 +378,7 @@ function Table(props) {
       <StyledForm onSubmit={updateRowObjectsWithPaginator} model={model} >
         <StyledHeaderParagraph>Mostrar</StyledHeaderParagraph>
         <StyledNumericField attr="pageSize" label="Paginas" small width="50px" avoidValidations min='2' max='100' step='2' onChange={update} ></StyledNumericField>
-        <StyledHeaderParagraph className="separation" >Filas</StyledHeaderParagraph>
+        <StyledHeaderParagraph className="separation" >filas</StyledHeaderParagraph>
       </StyledForm>
     );
   }

@@ -59,6 +59,7 @@ const StyledNavigatorContainer = styled.nav`
 
 const StyledForm = styled(Form)`
   display: inline-flex;
+  margin-bottom: 1rem;
 `;
 
 const StyledFooterData = styled.p`
@@ -71,9 +72,12 @@ const StyledHeaderParagraph = styled.p`
   display: inline;
   float: left;
   padding-right: 3px;
-  padding-left: 6px;
   margin-bottom: 0px;
   margin-top: 4px;
+
+  &.separation {
+    padding-left: 5px;
+  }
 `;
 
 const StyledNumericField = styled(NumericField)`
@@ -374,7 +378,7 @@ function Table(props) {
       <StyledForm onSubmit={updateRowObjectsWithPaginator} model={model} >
         <StyledHeaderParagraph>Mostrar</StyledHeaderParagraph>
         <StyledNumericField attr="pageSize" label="Paginas" small width="50px" avoidValidations min='2' max='100' step='2' onChange={update} ></StyledNumericField>
-        <StyledHeaderParagraph>Filas</StyledHeaderParagraph>
+        <StyledHeaderParagraph className="separation" >Filas</StyledHeaderParagraph>
       </StyledForm>
     );
   }

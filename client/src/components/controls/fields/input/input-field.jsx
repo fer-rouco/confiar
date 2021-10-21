@@ -20,7 +20,7 @@ const StyledFormControl = styled.input`
   &.small-mode:not(:placeholder-shown) {
     padding: 4px;
     height: 30px;
-    margin: 2px;
+    margin: 0;
   }
 
 `;

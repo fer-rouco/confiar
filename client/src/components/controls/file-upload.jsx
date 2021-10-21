@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import Dialog from '../dialog/dialog';
+import { useDialog } from '../../contexts/dialog-context';
 import { contentDialogConfig } from '../dialog/dialog-config';
 import Button from './buttons/button';
 import { useModel } from './fields/model-context';
@@ -102,26 +102,16 @@ const StyledLabelContainer = styled.div`
 
 export default function FileUpload(props) {
   const [files, setFiles] = useState([]);
-  const [show, setShow] = useState(false);
-  const [dialogConfig, setDialogConfig] = useState({});
   const [isDragOver, setIsDragOver] = useState(false);
-  const model = useModel();
+  const modelContext = useModel();
+  const dialogContext = useDialog();
 
   function getFilesFromModel() {
-    let localModel = model.get(props.attr);
-    // if (localModel === undefined) {
-    //   setFilesToModel([]);
-    // }
-    return model.get(props.attr);
+    return modelContext.get(props.attr);
   }
   
   function setFilesToModel(files) {
-    model.set(props.attr, files);
-  }
-
-  function getModelSize() {
-    let localModel = getFilesFromModel();
-    return (localModel) ? localModel.length : 0;
+    modelContext.set(props.attr, files);
   }
 
   function createFileInfoObject(file, content) {
@@ -181,7 +171,7 @@ export default function FileUpload(props) {
     });
   }
 
-  const browseFiles = () => {
+  function browseFiles() {
     let input = document.createElement('input');
     input.type = 'file';
     input.multiple = 'multiple';
@@ -194,7 +184,7 @@ export default function FileUpload(props) {
   }
 
 
-  const removeItem = (event, fileToRemove) => {
+  function removeItem(event, fileToRemove) {
     event.stopPropagation();
     const filesBeforeRemove = files.filter((fileItem) => { 
       return fileItem != fileToRemove; 
@@ -203,43 +193,43 @@ export default function FileUpload(props) {
     setFilesToModel(filesBeforeRemove);
   }
   
-  const showItem = (event, fileToShow) => {
+  function showItem(event, fileToShow) {
     event.stopPropagation();
 
-    setDialogConfig(contentDialogConfig({
+    dialogContext.setConfig(contentDialogConfig({
       title: getAlertTitle(fileToShow),
       content: getAlertImageContainer(fileToShow)
     }));
 
-    setShow(true);
+    dialogContext.showDialog();
   }
 
-  const getItemSize = (size) => {
+  function getItemSize(size) {
     return Math.round(size / 1024) + " KB";
   }
 
-  const handleDragOver = (event) => {
+  function handleDragOver(event) {
     event.stopPropagation();
     event.preventDefault();
 
     setIsDragOver(true);
   }
 
-  const handleDragLeave = (event) => {
+  function handleDragLeave(event) {
     event.stopPropagation();
     event.preventDefault();
 
     setIsDragOver(false);
  }
 
-  const handleDrop = (event) => {
+ function handleDrop(event) {
     event.preventDefault();
     setIsDragOver(false);
 
     readAndSetFilesToState(event.dataTransfer.files);
  }
 
-  const buildFilesRepresentationInDOM = () => (
+ const buildFilesRepresentationInDOM = () => (
     files.map(
       fileItem => (
         <StyledFileContainer key={fileItem.lastModified + Math.round(Math.random() * 100000)} onClick={(event) => event.stopPropagation()}>
@@ -258,7 +248,7 @@ export default function FileUpload(props) {
     <StyledImageContainer src={base64AddPrefix(fileToShow) + fileToShow.content} ></StyledImageContainer>
   );
     
-  const getAlertTitle = (fileToShow) => {
+  function getAlertTitle(fileToShow) {
     return fileToShow.name;
   };
   
@@ -267,7 +257,7 @@ export default function FileUpload(props) {
     if (filesFromServer && filesFromServer.length > 0) {
       setFiles([...files, ...filesFromServer]);
     }
-  }, [props.attr, model]);
+  }, [props.attr, modelContext]);
   
   useEffect(() => {
     // setFilesToModel(files);
@@ -310,7 +300,6 @@ export default function FileUpload(props) {
             )
         }
       </StyledContainer>
-      <Dialog config={dialogConfig} show={show} setShow={setShow} ></Dialog>
     </div>
   )
 }

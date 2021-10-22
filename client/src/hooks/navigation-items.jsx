@@ -4,7 +4,7 @@ import useReactPath from './path-name';
 
 const itemList = [
   { id: 'Users', path: '/Users', text: 'Usuarios', icon: 'people', condition: 'logged-in' },
-  { id: 'Customers', path: '/Customers', text: 'Clientes', icon: 'people', condition: 'logged-in' },
+  { id: 'Customers', path: '/Customers', text: 'Clientes', icon: 'person-plus', condition: 'logged-in' },
   { id: 'Login', path: '/Login', text: 'Login', icon: 'people', condition: 'not logged-in' },
 ];
 

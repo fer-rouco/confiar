@@ -1,8 +1,8 @@
 import React from 'react';
-import { useAlertMessage } from '../contexts/alert-message-context';
+import { useAlertMessage } from '../../contexts/alert-message-context';
 import styled from 'styled-components';
 import Icon from './icon';
-import Button from './controls/buttons/button';
+import Button from '../controls/buttons/button';
 
 const StyledAlertMessage = styled.div`
   // floating

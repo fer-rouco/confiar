@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { useBars } from './bars-context';
 import { useSession } from '../../contexts/session-context';
 import useNavigationItems from '../../hooks/navigation-items';
-import Icon from '../icon';
+import Icon from '../general/icon';
 import useReactPath from '../../hooks/path-name';
 
 const StyledSideBar = styled.div`

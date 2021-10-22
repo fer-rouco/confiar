@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useHistory } from 'react-router';
 import { useAlertMessage } from '../contexts/alert-message-context';
 import { deleteUser, findUsers } from '../services/user-service';
-import Panel from '../components/panel';
+import Panel from '../components/containers/panel';
 import Table from '../components/table/table';
 import { removeColumnDefinition, textColumnDefinition } from '../components/table/column-definitions/column-definition';
 

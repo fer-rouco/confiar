@@ -4,9 +4,9 @@ import styled from 'styled-components';
 import { useDialog } from '../../contexts/dialog-context';
 import Button from '../controls/buttons/button';
 import NumericField from '../controls/fields/input/numeric-field';
-import Form from '../form';
-import Icon from '../icon';
-import withLoader from '../load-indicator';
+import Form from '../containers/form';
+import Icon from '../general/icon';
+import withLoader from '../general/load-indicator';
 
 const StyledTR = styled.tr`
   background-color: #FFFFFF;

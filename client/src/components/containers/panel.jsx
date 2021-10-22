@@ -1,7 +1,7 @@
 import { createRef, useEffect } from 'react';
 import styled from 'styled-components';
-import Icon from './icon';
-import withLoader from './load-indicator';
+import Icon from './../general/icon';
+import withLoader from './../general/load-indicator';
 
 const StyledBoxShadow = `
   box-shadow: 7px 7px 3px rgb(0 0 0 / 50%);

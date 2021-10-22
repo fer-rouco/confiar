@@ -1,6 +1,6 @@
 import { createRef, useEffect, useState } from 'react';
 import { useForm, FormProvider } from 'react-hook-form';
-import { ModelProvider } from './controls/fields/model-context';
+import { ModelProvider } from './../controls/fields/model-context';
 
 // props: model, onSubmit
 export default function Form(props) {

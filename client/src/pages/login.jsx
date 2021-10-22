@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { useSession } from '../contexts/session-context';
-import PanelForm from '../components/panel-form';
+import PanelForm from '../components/containers/panel-form';
 import TextField from '../components/controls/fields/input/text-field';
 import PasswordField from '../components/controls/fields/input/password-field';
 import SubmitButton from '../components/controls/buttons/submit-button';

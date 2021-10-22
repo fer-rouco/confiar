@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { useBars } from './bars-context';
 import useNavigationItems from '../../hooks/navigation-items';
-import Icon from '../icon';
+import Icon from '../general/icon';
 // import { useGlobalEvent, useDebouncedFn } from "beautiful-react-hooks";
 
 const StyledNavToggler = styled.button`

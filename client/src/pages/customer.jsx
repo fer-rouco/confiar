@@ -5,7 +5,7 @@ import SubmitButton from '../components/controls/buttons/submit-button';
 import MailField from '../components/controls/fields/input/mail-field';
 import PhoneField from '../components/controls/fields/input/phone-field';
 import TextField from '../components/controls/fields/input/text-field';
-import PanelForm from '../components/panel-form';
+import PanelForm from '../components/containers/panel-form';
 import { useAlertMessage } from '../contexts/alert-message-context';
 import { useError } from '../contexts/error-context';
 import { createCustomer, findCustomerById, updateCustomer } from '../services/customer-service';
@@ -79,7 +79,7 @@ export default function Customer() {
   useEffect(() => {
     cleanFieldError();
   }, []) 
-  
+
   useEffect(() => {
     if (location.state && location.state.id) {
       setUpdate(true);

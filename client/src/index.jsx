@@ -89,7 +89,7 @@ getSessionInfo()
             <div className="row justify-content-center">
               <div className="col">
                 <Switch>
-                  <Route exact path="/" component={ServerNotReady} />
+                  <Route component={ServerNotReady} />
                 </Switch>
               </div>
             </div>

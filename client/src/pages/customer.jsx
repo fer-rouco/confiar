@@ -77,6 +77,10 @@ export default function Customer() {
   };
 
   useEffect(() => {
+    cleanFieldError();
+  }, []) 
+  
+  useEffect(() => {
     if (location.state && location.state.id) {
       setUpdate(true);
       findCustomerById(location.state.id)

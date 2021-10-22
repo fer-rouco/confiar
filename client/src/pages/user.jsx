@@ -96,6 +96,10 @@ export default function User() {
   }
 
   useEffect(() => {
+    cleanFieldError();
+  }, []);
+
+  useEffect(() => {
     let allUserProfilesPromise = getAllUserProfiles();
     if (location.state && location.state.userName) {
       setUpdate(true);

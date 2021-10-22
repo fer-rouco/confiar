@@ -4,11 +4,14 @@ import java.lang.reflect.Field;
 import java.util.Iterator;
 import java.util.Set;
 
+import javax.servlet.http.HttpServletRequest;
+
 import com.fnr.confiar.ErrorResponse;
 import com.fnr.confiar.Response;
 import com.fnr.confiar.entities.BaseEntity;
 import com.fnr.confiar.models.BaseModel;
 import com.fnr.confiar.services.MessageService;
+import com.fnr.confiar.utils.StringUtil;
 
 import org.hibernate.exception.ConstraintViolationException;
 import org.reflections.Reflections;
@@ -34,6 +37,12 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
   //   return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
   // }
 
+  @ExceptionHandler(value = Exception.class)
+  public ResponseEntity<Response> defaultErrorHandler(HttpServletRequest req, Exception e) throws Exception {
+    ErrorResponse responseBody = new ErrorResponse(HttpStatus.CONFLICT, new BaseModel<BaseEntity>(null), messageService.getMessage("general.error"), null);
+    return ResponseEntity.status(responseBody.getStatus()).body(responseBody);
+  }
+
   @ExceptionHandler({ ResponseException.class, ConstraintViolationException.class, DataIntegrityViolationException.class })
   public ResponseEntity<Response> handleBadRequest(Exception ex, WebRequest request) {
     ErrorResponse responseBody = null;
@@ -47,8 +56,8 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
       
       if (ex.getLocalizedMessage().indexOf(entityName) > -1) {
         for (Field f : clazz.getDeclaredFields()) {
-          if (ex.getLocalizedMessage().indexOf("(" + camelCaseToUnderscores(f.getName()).toUpperCase() + ")") > -1) {
-            responseBody = new ErrorResponse(HttpStatus.CONFLICT, new BaseModel<BaseEntity>(null), messageService.getMessage("error.field." + f.getName()), f.getName());
+          if (ex.getLocalizedMessage().indexOf("(" + StringUtil.camelCaseToUnderscores(f.getName()).toUpperCase() + ")") > -1) {
+            responseBody = new ErrorResponse(HttpStatus.CONFLICT, new BaseModel<BaseEntity>(null), messageService.getMessage("field.error." + f.getName()), f.getName());
             break;
           }
         }
@@ -56,20 +65,10 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     if (responseBody == null) {
-      responseBody = new ErrorResponse(HttpStatus.CONFLICT, new BaseModel<BaseEntity>(null), "Error desconocido.", null);
+      responseBody = new ErrorResponse(HttpStatus.CONFLICT, new BaseModel<BaseEntity>(null), messageService.getMessage("general.error"), null);
     }
 
     return ResponseEntity.status(responseBody.getStatus()).body(responseBody);
-
   }
 
-  private String camelCaseToUnderscores(String camel) {
-    String underscore;
-    underscore = String.valueOf(Character.toLowerCase(camel.charAt(0)));
-    for (int i = 1; i < camel.length(); i++) {
-      underscore += Character.isLowerCase(camel.charAt(i)) ? String.valueOf(camel.charAt(i))
-                   : "_" + String.valueOf(Character.toLowerCase(camel.charAt(i)));
-    }
-    return underscore;
-  }
 }

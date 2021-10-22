@@ -17,7 +17,7 @@ const [NAME, LAST_NAME, ADDRESS, EMAIL, PHONE, IDENTITY_DOCUMENTS, PAYCHECKS] =
     { id: 'lastName', label: 'Apellido' },
     { id: 'address', label: 'Dirección' },
     { id: 'mail', label: 'E-Mail' },
-    { id: 'phone', label: 'Celular' },
+    { id: 'phone', label: 'Telefono' },
     { id: 'identityDocuments', label: 'DNI (Frente y Dorso)' },
     { id: 'paychecks', label: 'Recibos de sueldo' },
   ];

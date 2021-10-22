@@ -33,7 +33,7 @@ export default function Customers() {
         }),
         textColumnDefinition({
           key: 'mail', 
-          label: 'Mail'
+          label: 'E-Mail'
         }),
         removeColumnDefinition({
           key: 'remove',

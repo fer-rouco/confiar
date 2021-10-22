@@ -8,7 +8,6 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.persistence.UniqueConstraint;
 
 import com.fnr.confiar.repositories.CustomerRepository;
 
@@ -20,12 +19,7 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper=false)
 @Entity
-@Table(
-  name = "customer",
-  uniqueConstraints = {
-    @UniqueConstraint(name = "customer_unique_mail_idx", columnNames = {"mail"})
-  }
-)
+@Table(name = "customer")
 public class Customer extends BaseEntity {
   
   @Column(length = 30)
@@ -34,7 +28,7 @@ public class Customer extends BaseEntity {
   private String lastName;
   @Column(length = 100)
   private String address;
-  @Column(nullable = false, length = 100)
+  @Column(nullable = false, unique = true, length = 100)
   private String mail;
   @Column(nullable = false, unique = true, length = 20)
   private String phone;

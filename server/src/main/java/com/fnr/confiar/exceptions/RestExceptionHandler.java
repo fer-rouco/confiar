@@ -8,9 +8,11 @@ import com.fnr.confiar.ErrorResponse;
 import com.fnr.confiar.Response;
 import com.fnr.confiar.entities.BaseEntity;
 import com.fnr.confiar.models.BaseModel;
+import com.fnr.confiar.services.MessageService;
 
 import org.hibernate.exception.ConstraintViolationException;
 import org.reflections.Reflections;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,6 +24,9 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 @ControllerAdvice
 public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 
+  @Autowired
+  private MessageService messageService;
+  
   // @ExceptionHandler({ ResponseException.class })
   // protected ResponseEntity<Response> handleNotFound(Exception ex, WebRequest request) {
   //   // return handleExceptionInternal(ex, "Book not found", new HttpHeaders(), HttpStatus.NOT_FOUND, request);
@@ -43,7 +48,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
       if (ex.getLocalizedMessage().indexOf(entityName) > -1) {
         for (Field f : clazz.getDeclaredFields()) {
           if (ex.getLocalizedMessage().indexOf("(" + camelCaseToUnderscores(f.getName()).toUpperCase() + ")") > -1) {
-            responseBody = new ErrorResponse(HttpStatus.CONFLICT, new BaseModel<BaseEntity>(null), "El " + f.getName() + " ingresado ya existe. Ingrese uno diferente.", f.getName());
+            responseBody = new ErrorResponse(HttpStatus.CONFLICT, new BaseModel<BaseEntity>(null), messageService.getMessage("error.field." + f.getName()), f.getName());
             break;
           }
         }

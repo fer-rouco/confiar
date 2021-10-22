@@ -1,5 +1,4 @@
-import axios from 'axios';
-import { get, post, remove } from './base-service';
+import { get, post, postPaginator, remove } from './base-service';
 
 const BASE_URL = 'user';
 
@@ -12,10 +11,7 @@ export async function findUserById(id) {
 }
 
 export async function findUsers(pageFrom, pageSize) {
-  var formdata = new FormData();
-  formdata.append("pageFrom", pageFrom);
-  formdata.append("pageSize", pageSize);
-  return post(BASE_URL, formdata);
+  return postPaginator(BASE_URL, pageFrom, pageSize);
 }
 
 export async function updateUser(updateObject) {

@@ -1,5 +1,7 @@
 package com.fnr.confiar.entities;
 
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -38,13 +40,19 @@ public class Customer extends BaseEntity {
   private List<Document> paychecks;
 
   public static List<Customer> reduce(List<CustomerRepository.ReducedCustomer> entities) {
-    ModelMapper modelMapper = new ModelMapper();
+    List<Customer> customers = null;
     
-    List<Customer> customers = entities.stream().map((CustomerRepository.ReducedCustomer entity) -> {
-      Customer cust = new Customer();
-      modelMapper.map(entity, cust);
-      return cust;
-    }).collect(Collectors.toList());
+    ModelMapper modelMapper = new ModelMapper();
+    try {
+      customers = entities.stream().map((CustomerRepository.ReducedCustomer entity) -> {
+        Customer cust = new Customer();
+        modelMapper.map(entity, cust);
+        return cust;
+      }).collect(Collectors.toList());
+    }
+    catch(ClassCastException ex) {
+      ex.printStackTrace();
+    }
     
     return customers;
   }

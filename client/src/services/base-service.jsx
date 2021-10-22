@@ -49,6 +49,13 @@ export async function post(url, body) {
   return await processRequest(Axios.post(SERVER_URL + url, body));
 }
 
+export async function postPaginator(url, pageFrom, pageSize) {
+  var formdata = new FormData();
+  formdata.append("pageFrom", pageFrom);
+  formdata.append("pageSize", pageSize);
+  return post(url, formdata);
+}
+
 export async function put(url, body) {
   return await processRequest(Axios.put(SERVER_URL + url, body));
 }

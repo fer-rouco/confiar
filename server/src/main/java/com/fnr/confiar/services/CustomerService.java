@@ -4,9 +4,12 @@ import java.util.List;
 import java.util.Optional;
 
 import com.fnr.confiar.entities.Customer;
+import com.fnr.confiar.models.CustomerModel;
 import com.fnr.confiar.repositories.CustomerRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -14,13 +17,16 @@ public class CustomerService {
   @Autowired
   CustomerRepository customerRepository;
 
+  public long countCustomers() {
+    return customerRepository.count();
+  }
+
   public List<Customer> findAll() {
     return (List<Customer>) customerRepository.findAll();
   }
-
-  public List<Customer> findAllBounded() {
-    // return (List<Customer>) Customer.convert(customerRepository.findAllBy(CustomerRepository.BoundedCustomer.class));
-    return (List<Customer>) Customer.reduce(customerRepository.findAllBy());
+  
+  public List<Customer> findCustomers(int pageFrom, int pageSize) {
+    return (List<Customer>) Customer.reduce(customerRepository.findAllBy(PageRequest.of(pageFrom, pageSize, Sort.by(Sort.Direction.ASC, CustomerModel.Fields.name))));
   }
 
   public Customer save(Customer userModel) {

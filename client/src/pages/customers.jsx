@@ -1,18 +1,16 @@
 import { useEffect, useState } from 'react';
-import { useHistory, useLocation } from 'react-router';
+import { useHistory } from 'react-router';
 import { useAlertMessage } from '../contexts/alert-message-context';
 import { useDialog } from '../contexts/dialog-context';
-import { removeCustomer, getAllCustomers } from '../services/customer-service';
+import { removeCustomer, findCustomers } from '../services/customer-service';
 import Panel from '../components/containers/panel';
 import Table from '../components/table/table';
 import { removeColumnDefinition, textColumnDefinition } from '../components/table/column-definitions/column-definition';
 
 export default function Customers() {
   const history = useHistory();
-  const location = useLocation();
   const dialog = useDialog();
   const { addSuccessMessage, addErrorMessage } = useAlertMessage();
-  const [customers, setCustomers] = useState(null);
   const [columnDefinitions, setColumnDefinitions] = useState(null);
 
   function create() {
@@ -60,17 +58,11 @@ export default function Customers() {
     );
   }, [setColumnDefinitions]);
 
-  useEffect(() => {
-    getAllCustomers().then((customerList) => {
-      setCustomers(customerList);
-    });
-  }, [location, dialog.getAfterConfirmationFlag()]);
-
   return (
     <Panel
       title="Clientes"
       size="large"
-      model={customers}
+      model={{}}
       actions={[
         {
           key: 'add',
@@ -80,7 +72,7 @@ export default function Customers() {
         },
       ]}
     >
-      <Table columnDefinitions={columnDefinitions} rowObjects={customers} ></Table>
+      <Table columnDefinitions={columnDefinitions} requestRowObjectsFunction={findCustomers} ></Table>
     </Panel>
   );
 }

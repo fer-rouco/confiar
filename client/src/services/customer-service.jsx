@@ -1,4 +1,4 @@
-import { get, post, remove as removeById } from './base-service';
+import { get, post, postPaginator, remove as removeById } from './base-service';
 
 const BASE_URL = 'customer';
 
@@ -6,8 +6,8 @@ export async function findCustomerById(id) {
   return get(BASE_URL + '/' + id);
 }
 
-export async function getAllCustomers(createObject) {
-  return get(BASE_URL);
+export async function findCustomers(pageFrom, pageSize) {
+  return postPaginator(BASE_URL, pageFrom, pageSize);
 }
 
 export async function updateCustomer(updateObject) {

@@ -3,6 +3,7 @@ package com.fnr.confiar.controllers;
 import com.fnr.confiar.Response;
 import com.fnr.confiar.entities.Customer;
 import com.fnr.confiar.models.CustomerModel;
+import com.fnr.confiar.models.PaginatorModel;
 import com.fnr.confiar.services.CustomerService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 
@@ -21,10 +23,13 @@ import org.springframework.web.bind.annotation.RestController;
 public class CustomerController extends BaseController {
   @Autowired
   CustomerService customerService;
-
-  @GetMapping()
-  public ResponseEntity<Response> getCustomers() {
-    return responseEntityList(customerService.findAllBounded(), CustomerModel.class);
+  
+  @PostMapping()
+  public ResponseEntity<Response> findCustomers(@RequestParam("pageFrom") int pageFrom, @RequestParam("pageSize") int pageSize) {  
+    PaginatorModel<CustomerModel> paginator = new PaginatorModel<CustomerModel>();
+    paginator.setRowObjects(convertEntityListToModel(customerService.findCustomers(pageFrom, pageSize), CustomerModel.class));
+    paginator.setLength(customerService.countCustomers());
+    return responseOk(paginator);
   }
   
   @PostMapping("/update")

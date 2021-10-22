@@ -79,12 +79,10 @@ const StyledTitle = styled.h2`
 `;
 
 const StyledAcctionsContainer = styled.div`
-  ${StyledHeaderBorderRadius};
-  ${StyledHeaderBoxShadow};
   position: absolute;
   margin-right: 10px;
   right: 0px;
-  top: 5px;
+  top: 6px;
   height: 50px;
   padding-left: 8px;
   padding-right: 8px;
@@ -92,8 +90,16 @@ const StyledAcctionsContainer = styled.div`
 
 const StyledAcctionContainer = styled.div`
   ${StyledBorder};
+  ${StyledHeaderBoxShadow};
   border-radius: 6px;
   margin-top: 8px;
+
+  &:active {
+    box-shadow: none;
+    
+    margin-top: 12px;
+    margin-right: -4px;
+  }
 `;
 
 // prop.size: "small", "medium", "large"

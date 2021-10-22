@@ -8,7 +8,6 @@ import com.fnr.confiar.models.UserModel;
 import com.fnr.confiar.services.UserService;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -45,21 +44,9 @@ public class UserController extends BaseController {
   }
 
   private ResponseEntity<Response> createOrUpdateUser(UserModel userModel) {
-    ResponseEntity<Response> response = null;
-
     User user = (User) userModel.toEntity();
 
-    try {
-      response = responseOk(userService.saveUser(user), UserModel.class);
-    }
-    catch(DataIntegrityViolationException ex) {
-      if (ex.getCause().getCause().getMessage().indexOf("USER_UNIQUE_USER_IDX") > -1) {
-        response = responseConflictError(null, "El usuario ingresado ya existe. Ingrese uno diferente.", UserModel.Fields.userName, UserModel.class);
-      }
-      if (ex.getCause().getCause().getMessage().indexOf("USER_UNIQUE_MAIL_IDX") > -1) {
-        response = responseConflictError(null, "El mail ingresado ya existe. Ingrese uno diferente.", UserModel.Fields.mail, UserModel.class);
-      }
-    }
+    ResponseEntity<Response> response = responseOk(userService.saveUser(user), UserModel.class);
 
     return response;
   }

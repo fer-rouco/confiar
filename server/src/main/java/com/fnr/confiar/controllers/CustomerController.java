@@ -6,7 +6,6 @@ import com.fnr.confiar.models.CustomerModel;
 import com.fnr.confiar.services.CustomerService;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -33,21 +32,12 @@ public class CustomerController extends BaseController {
     return createOrUpdateCustomer(customerModel);
   }
 
-  private ResponseEntity<Response> createOrUpdateCustomer(CustomerModel customerModel) {
-    ResponseEntity<Response> response = null;
-    
+  private ResponseEntity<Response> createOrUpdateCustomer(CustomerModel customerModel) {   
     Customer customer = (Customer) customerModel.toEntity();
 
-    try {
-      customerService.save(customer);
-      customerModel.setId(customer.getId());
-      response = responseOk(customerModel);
-    }
-    catch(DataIntegrityViolationException ex) {
-      if (ex.getCause().getCause().getMessage().indexOf("CUSTOMER_UNIQUE_MAIL_IDX") > -1) {
-        response = responseConflictError(null, "El mail ingresado ya existe. Ingrese uno diferente.", CustomerModel.Fields.mail, CustomerModel.class);
-      }
-    }
+    customerService.save(customer);
+    customerModel.setId(customer.getId());
+    ResponseEntity<Response> response = responseOk(customerModel);
 
     return response;
   }

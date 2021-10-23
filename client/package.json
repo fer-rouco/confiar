@@ -16,7 +16,7 @@
   "dependencies": {
     "@amcharts/amcharts4": "^4.10.22",
     "@popperjs/core": "^2.10.1",
-    "axios": "^0.21.1",
+    "axios": "^0.22.0",
     "beautiful-react-hooks": "^0.35.0",
     "bootstrap": "^5.1.0",
     "bootstrap-icons": "^1.5.0",

@@ -111,7 +111,7 @@ function Panel(props) {
       titleRef.current.classList.remove('full-width');
       titleRef.current.classList.add('with-action-width');
     }
-  });
+  }, []);
 
   return (
     <StyledContainer className={'container panel-container ' + props.size}>

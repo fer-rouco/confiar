@@ -1,4 +1,3 @@
-import { useEffect, useState } from 'react';
 import { useHistory } from 'react-router';
 import { useAlertMessage } from '../contexts/alert-message-context';
 import { deleteUser, findUsers } from '../services/user-service';

@@ -81,7 +81,7 @@ function Table(props) {
   const [totalRows, setTotalRows] = useState(null);
   const [currentPagePosition, setCurrentPagePosition] = useState(0);
   const [previousPagePosition, setPreviousPagePosition] = useState(-1);
-  const [model] = useState({ pageSize: (props.pageSize) ? props.pageSize : 10 });
+  const [settings] = useState({ pageSize: (props.pageSize) ? props.pageSize : 10 });
   const dialog = useDialog();
 
 
@@ -102,7 +102,7 @@ function Table(props) {
 
   useEffect(() => {
     update();
-  }, [model, currentPagePosition, props.rowObjects]);
+  }, [settings, currentPagePosition, props.rowObjects]);
      
   useEffect(() => {
     if (dialog.getAfterConfirmationFlag()) {
@@ -126,13 +126,13 @@ function Table(props) {
   }
   
   function calculateTotalPages(length) {
-    let calculatedTotalPages = Math.ceil(length / model.pageSize) - 1;
+    let calculatedTotalPages = Math.ceil(length / settings.pageSize) - 1;
     return (calculatedTotalPages < 0) ? 0 : calculatedTotalPages;
   }
 
   function updateRowObjectsWithPaginator() {
     if (props.requestRowObjectsFunction) { 
-      props.requestRowObjectsFunction(currentPagePosition, model.pageSize).then((paginator) => {
+      props.requestRowObjectsFunction(currentPagePosition, settings.pageSize).then((paginator) => {
         // Set current rowObjects
         const rowObjectsLength = paginator.length;
         const totalPagesLocal = calculateTotalPages(rowObjectsLength);
@@ -152,8 +152,8 @@ function Table(props) {
 
   function updateRowObjects() {
     let pages = [];
-    for (let index = 0; index < props.rowObjects.length; index += model.pageSize) {
-      pages.push(props.rowObjects.slice(index, index + model.pageSize));        
+    for (let index = 0; index < props.rowObjects.length; index += settings.pageSize) {
+      pages.push(props.rowObjects.slice(index, index + settings.pageSize));        
     }
 
     const rowObjectsLength = props.rowObjects.length;
@@ -330,9 +330,9 @@ function Table(props) {
   }
 
   function buildFooterData() {
-    let lastIndex = (currentPagePosition + 1) * model.pageSize;
+    let lastIndex = (currentPagePosition + 1) * settings.pageSize;
     let showingTo = (lastIndex > totalRows) ? totalRows : lastIndex;
-    let showingFrom = (lastIndex - model.pageSize) + 1;
+    let showingFrom = (lastIndex - settings.pageSize) + 1;
 
     return (
       <StyledFooterData key="footer-data" >Mostrando del {showingFrom} al {showingTo} de un total de {totalRows} registros</StyledFooterData>
@@ -367,7 +367,7 @@ function Table(props) {
 
   function buildPageSizeChooser() {
     return (
-      <StyledForm onSubmit={updateRowObjectsWithPaginator} model={model} >
+      <StyledForm onSubmit={updateRowObjectsWithPaginator} model={settings} >
         <StyledHeaderParagraph>Mostrar</StyledHeaderParagraph>
         <StyledNumericField attr="pageSize" label="Paginas" small width="50px" avoidValidations min='10' max='100' step='10' onChange={update} ></StyledNumericField>
         <StyledHeaderParagraph className="separation" >filas</StyledHeaderParagraph>

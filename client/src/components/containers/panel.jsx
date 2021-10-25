@@ -16,9 +16,9 @@ const StyledContainer = styled.div`
   ${StyledBorder};
 
   border-radius: 25px;
-  padding: 30px;
+  padding: 20px;
   background-color: #fff;
-  margin-top: 30px;
+  margin-bottom: 20px;
 
   &.small {
     width: 600px;
@@ -59,7 +59,7 @@ const StyledHeaderContainer = `
 const StyledHeader = styled.div`
   ${StyledHeaderContainer};
   position: relative;
-  margin-bottom: 30px;
+  margin-bottom: 20px;
   height: 68px;
 `;
 

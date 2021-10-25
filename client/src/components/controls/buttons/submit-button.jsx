@@ -2,8 +2,7 @@ import Button from './button';
 import styled from 'styled-components';
 
 const StyledButton = styled(Button)`
-  margin-top: 10px;
-  margin-bottom: 10px;
+  margin-top: 12px;
 `;
 
 export default function SubmitButton(props) {

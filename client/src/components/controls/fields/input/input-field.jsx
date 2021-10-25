@@ -14,14 +14,32 @@ const StyledErrorMessage = styled.div`
 `;
 
 const StyledFormControl = styled.input`
+
   &.floating-mode {
-    margin-top: 10px;
-    margin-bottom: 10px;  
+    height: 40px;
+    margin-bottom: 8px;
   }
 
   &.small-mode:not(:placeholder-shown) {
     padding: 4px;
     margin: 0;
+  }
+
+  &.form-control:focus, &.form-control:not(:placeholder-shown) {
+    padding-top: 1.25rem;
+  }
+  
+  &.form-control.small-mode:focus, &.form-control.small-mode:not(:placeholder-shown) {
+    padding-top: 0.25rem;
+  }
+
+  &.form-control ~ label {
+    padding-top: 8px;
+  }
+
+  &.form-control:focus ~ label, &.form-control:not(:placeholder-shown) ~ label {
+    opacity: 0.50;
+    transform: scale(0.70) translateY(-0.5rem) translateX(0.30rem);
   }
 
 `;

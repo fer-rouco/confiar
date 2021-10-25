@@ -4,9 +4,27 @@ import styled from 'styled-components';
 import { useModel } from '../model-context';
 
 const StyledFormSelect = styled.select`
-  margin-top: 10px;
-  margin-bottom: 10px;
-  font-size: 1rem;
+  &.form-select {
+    height: 40px;
+    padding-top: 14px !important;
+    padding-bottom: 8px !important;
+    margin-bottom: 8px !important;
+    font-size: 1rem;
+    padding-left: 0.75rem;
+  }
+
+  &.form-select:focus, &.form-select:not(:placeholder-shown) {
+    padding-top: 1.25rem;
+  }
+
+  &.form-select ~ label {
+    padding-top: 8px;
+  }
+  
+  &.form-select:focus ~ label, &.form-select:not(:placeholder-shown) ~ label {
+    opacity: 0.50;
+    transform: scale(0.70) translateY(-0.5rem) translateX(0.30rem);
+  }
 `;
 
 // props: register, attr, label, options
@@ -51,7 +69,7 @@ export default function SelectField(props) {
   });
 
   return (
-    <div ref={fieldRef}>
+    <div ref={fieldRef} className="form-floating" >
       <StyledFormSelect
         {...register(props.attr)}
         id={getId(props.attr)}
@@ -62,7 +80,7 @@ export default function SelectField(props) {
         {/* <option>{props.label}</option> */}
         {getOptions()}
       </StyledFormSelect>
-      {/* <label htmlFor="floatingInput">{props.label}</label> */}
+      <label htmlFor="floatingInput">{props.label}</label>
     </div>
   );
 }

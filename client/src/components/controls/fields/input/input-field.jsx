@@ -14,12 +14,13 @@ const StyledErrorMessage = styled.div`
 `;
 
 const StyledFormControl = styled.input`
-  margin-top: 10px;
-  margin-bottom: 10px;
+  &.floating-mode {
+    margin-top: 10px;
+    margin-bottom: 10px;  
+  }
 
   &.small-mode:not(:placeholder-shown) {
     padding: 4px;
-    height: 30px;
     margin: 0;
   }
 
@@ -163,14 +164,16 @@ export default function InputField(props) {
   }
 
   return (
-    <div className="form-floating" ref={fieldRef} style={{ width: props.width }}>
+    <div className={(!props.small) ? "form-floating" : "input-group mb-3" } ref={fieldRef} style={{ width: props.width }}>
+      {(props.small && props.label) ? <span className="input-group-text">{props.label}</span> : <></>}
       <StyledFormControl
         {...register(props.attr, validationObject)}
         type={props.type}
-        className={"field form-control " + ((props.small) ? "small-mode" : "")}
+        className={"field form-control " + ((props.small) ? "small-mode" : "floating-mode")}
         style={{ width: props.width }}
         id={getId()}
-        placeholder={toCamelCase(props.attr)}
+        // placeholder={toCamelCase(props.attr)}
+        placeholder={(props.placeholder) ? props.placeholder : ((props.small) ? "" : props.label)}
         onChange={updateField}
         min={props.min}
         max={props.max}
@@ -183,7 +186,7 @@ export default function InputField(props) {
           ? fieldError.message
           : ''}
       </StyledErrorMessage>
-      {(props.small) ? <></>: <label htmlFor="floatingInput">{props.label}</label>}
+      {(!props.small && props.label) ? <label htmlFor="floatingInput">{props.label}</label> : <></>}
     </div>
   );
 }

@@ -63,7 +63,7 @@ const StyledHeader = styled.div`
   height: 68px;
 `;
 
-const StyledTitle = styled.h2`
+const StyledTitle = styled.h3`
   ${StyledHeaderContainer};
   position: absolute;
   font-family: cursive;
@@ -76,6 +76,14 @@ const StyledTitle = styled.h2`
   &.with-action-width {
     width: calc(100% - 75px);
   }
+`;
+
+const StyledSubTitle = styled.h6`
+  ${StyledHeaderContainer};
+  position: relative;
+  font-family: cursive;
+  width: 100%;
+  margin-bottom: 20px;
 `;
 
 const StyledAcctionsContainer = styled.div`
@@ -113,36 +121,65 @@ function Panel(props) {
     }
   }, []);
 
+  function buildActions() {
+    let actions;
+    if (props.actions) {
+      actions = (
+        <StyledAcctionsContainer>
+          {props.actions.map((action, index) => (
+            <StyledAcctionContainer
+              className="btn-secondary"
+              key={action.key}
+              data-toggle="tooltip"
+              title={action.tooltip}
+            >
+              <Icon
+                fontName={action.icon}
+                onClick={() => action.action()}
+                medium
+                noPadding
+              ></Icon>
+            </StyledAcctionContainer>
+          ))}
+        </StyledAcctionsContainer>
+      );
+    }
+    return actions;
+  }
+
+  function buildTitle() {
+    let title;
+    if (props.title) {
+      title = (
+        <StyledHeader>
+          <StyledTitle ref={titleRef} className="full-width">
+            {props.title}
+          </StyledTitle>
+          {buildActions()}
+        </StyledHeader>
+      );
+    }
+    return title;
+  }
+
+  function buildSubTitle() {
+    let subTitle;
+    if (props.subTitle) {
+      subTitle = (
+        <StyledSubTitle className="full-width">
+          {props.subTitle}
+        </StyledSubTitle>
+      );
+    }
+    return subTitle;
+  }
+
   return (
     <StyledContainer className={'container panel-container ' + props.size}>
       <div className="row justify-content-center">
         <div>
-          <StyledHeader>
-            <StyledTitle ref={titleRef} className="full-width">
-              {props.title}
-            </StyledTitle>
-            {props.actions ? (
-              <StyledAcctionsContainer>
-                {props.actions.map((action, index) => (
-                  <StyledAcctionContainer
-                    className="btn-secondary"
-                    key={action.key}
-                    data-toggle="tooltip"
-                    title={action.tooltip}
-                  >
-                    <Icon
-                      fontName={action.icon}
-                      onClick={() => action.action()}
-                      medium
-                      noPadding
-                    ></Icon>
-                  </StyledAcctionContainer>
-                ))}
-              </StyledAcctionsContainer>
-            ) : (
-              <></>
-            )}
-          </StyledHeader>
+          {buildTitle()}
+          {buildSubTitle()}
           {props.children}
         </div>
       </div>

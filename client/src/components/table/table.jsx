@@ -7,6 +7,8 @@ import NumericField from '../controls/fields/input/numeric-field';
 import Form from '../containers/form';
 import Icon from '../general/icon';
 import withLoader from '../general/load-indicator';
+import PanelForm from '../containers/panel-form';
+import TextField from '../controls/fields/input/text-field';
 
 const StyledTR = styled.tr`
   background-color: #FFFFFF;
@@ -80,9 +82,10 @@ function Table(props) {
   const [totalRows, setTotalRows] = useState(null);
   const [currentPagePosition, setCurrentPagePosition] = useState(0);
   const [previousPagePosition, setPreviousPagePosition] = useState(-1);
-  const [settings] = useState({ pageSize: (props.pageSize) ? props.pageSize : 10 });
+  const settingsState = useState({ pageSize: (props.pageSize) ? props.pageSize : 10 });
+  const [settings] = settingsState;
+  const filtersState = useState({});
   const dialog = useDialog();
-
 
   useEffect(() => {
     if (props.columnDefinitions) {
@@ -101,7 +104,7 @@ function Table(props) {
 
   useEffect(() => {
     update();
-  }, [settings, currentPagePosition, props.rowObjects]);
+  }, [settings, currentPagePosition, props.rowObjects, filtersState[0]]);
      
   useEffect(() => {
     if (dialog.getAfterConfirmationFlag()) {
@@ -131,7 +134,7 @@ function Table(props) {
 
   function updateRowObjectsWithPaginator() {
     if (props.requestRowObjectsFunction) { 
-      props.requestRowObjectsFunction(currentPagePosition, settings.pageSize).then((paginator) => {
+      props.requestRowObjectsFunction(currentPagePosition, settings.pageSize, filtersState[0]).then((paginator) => {
         // Set current rowObjects
         const rowObjectsLength = paginator.length;
         const totalPagesLocal = calculateTotalPages(rowObjectsLength);
@@ -364,11 +367,73 @@ function Table(props) {
     )
   }
 
+  function buildFilters() {
+    let filtersDOM = null;
+    
+    if (props.filters) {
+    
+      let filtersToBuild = [];
+
+      props.filters.map((filterProp) => {
+        let columnDefinition = props.columnDefinitions.find((columnDefinitionToCompare) => { return columnDefinitionToCompare.key === filterProp; })
+        if (columnDefinition) {
+          let filter = null;
+          switch (columnDefinition.type) {
+            case 'text':
+              filter = (
+                <TextField attr={columnDefinition.key} label={columnDefinition.label} avoidValidations ></TextField>
+              );
+              break;
+          }
+          if (filter) {
+            filtersToBuild.push(filter)
+          }
+        }
+      });
+
+      const buidlFilter = (filterItemToBuild) => (
+        (filterItemToBuild) ? (
+          <div className="col-md-4" >
+            {filterItemToBuild}
+          </div>
+        ) : (
+          <></>
+        )
+      );
+
+      let rows = [];
+      for (let filtersToBuildIndex = 0; filtersToBuildIndex < filtersToBuild.length; filtersToBuildIndex += 3) {
+        const filterToBuild0 = filtersToBuild[filtersToBuildIndex];
+        const filterToBuild1 = filtersToBuild[filtersToBuildIndex + 1];
+        const filterToBuild2 = filtersToBuild[filtersToBuildIndex + 2];
+        rows.push(
+          <div className="row" key={"filter-row-" + filtersToBuildIndex} >
+            {buidlFilter(filterToBuild0)}
+            {buidlFilter(filterToBuild1)}
+            {buidlFilter(filterToBuild2)}
+          </div>      
+        )
+      }
+
+      filtersDOM = (
+        <PanelForm subTitle="Filtros" model={filtersState} >
+          {
+            rows.map((row) => (row))
+          }
+        </PanelForm>
+      )  
+    }
+    else {
+      filtersDOM = (<></>)
+    }
+    return filtersDOM;
+  }
+
   function buildPageSizeChooser() {
     return (
-      <StyledForm onSubmit={updateRowObjectsWithPaginator} model={settings} >
+      <StyledForm onSubmit={updateRowObjectsWithPaginator} model={settingsState} >
         <StyledHeaderParagraph>Mostrar</StyledHeaderParagraph>
-        <StyledNumericField attr="pageSize" small width="55px" avoidValidations min='10' max='100' step='10' onChange={update} ></StyledNumericField>
+        <StyledNumericField attr="pageSize" small width="55px" avoidValidations min='10' max='100' step='10' ></StyledNumericField>
         <StyledHeaderParagraph className="separation" >filas</StyledHeaderParagraph>
       </StyledForm>
     );
@@ -376,6 +441,7 @@ function Table(props) {
 
   return (
     <div>
+      {buildFilters()}
       {buildPageSizeChooser()}
       <table className="table table-hover">
         {buildHeader()}

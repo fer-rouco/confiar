@@ -4,15 +4,6 @@ import { removeCustomer, findCustomers } from '../services/customer-service';
 import Panel from '../components/containers/panel';
 import Table from '../components/table/table';
 import { removeColumnDefinition, textColumnDefinition } from '../components/table/column-definitions/column-definition';
-// import Form from '../components/containers/form';
-// import TextField from '../components/controls/fields/input/text-field';
-
-// TODO: Filtros
-// const [NAME] =
-//   [
-//     { id: 'name', label: 'Nombre' }
-//   ];
-
 
 export default function Customers() {
   const history = useHistory();
@@ -22,7 +13,7 @@ export default function Customers() {
     history.push('/Customer');
   };
 
-  let columnDefinitions = [
+  const columnDefinitions = [
     textColumnDefinition({
       key: 'name',
       label: 'Nombre',
@@ -59,10 +50,15 @@ export default function Customers() {
     })
   ];
 
+  const filters = [
+    columnDefinitions[0].key,
+    columnDefinitions[1].key,
+    columnDefinitions[2].key
+  ];
+
   return (
     <Panel
       title="Clientes"
-      size="large"
       model={{}}
       actions={[
         {
@@ -73,15 +69,7 @@ export default function Customers() {
         },
       ]}
     >
-      {/* TODO: Filtros */}
-      {/* <Form>
-        <div className="row">
-          <div className="col-md-3">
-            <TextField attr={NAME.id} label={NAME.label} ></TextField>
-          </div>
-        </div>
-      </Form> */}
-      <Table columnDefinitions={columnDefinitions} requestRowObjectsFunction={findCustomers} ></Table>
+      <Table columnDefinitions={columnDefinitions} requestRowObjectsFunction={findCustomers} filters={filters} ></Table>
     </Panel>
   );
 }

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import { useSession } from '../contexts/session-context';
 import PanelForm from '../components/containers/panel-form';
@@ -10,15 +10,17 @@ const [USER, PASSWORD] = ['user', 'password'];
 
 export default function Login() {
   const { logIn } = useSession();
+  const modelState = useState(null);
+  const [model] = modelState;
 
-  const doLogin = (userData) => {
-    if (userData.user && userData.password) {
-      logIn(userData.user, userData.password);
+  const doLogin = () => {
+    if (model.user && model.password) {
+      logIn(model.user, model.password);
     }
   };
 
   return (
-    <PanelForm title="Login" size="small" onSubmit={doLogin} model={{}} >
+    <PanelForm title="Login" size="small" onSubmit={doLogin} model={modelState} >
       <div className="container">
         <div className="row justify-content-center">
           <div className="col-md-6">

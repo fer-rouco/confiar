@@ -25,7 +25,8 @@ const [NAME, LAST_NAME, USER_NAME, EMAIL, PASSWORD, REPEAT_PASSWORD, PROFILE] =
 export default function User() {
   const history = useHistory();
   const [update, setUpdate] = useState(false);
-  const [model, setModel] = useState(null);
+  const modelState = useState(null);
+  const [model, setModel] = modelState;
   const [profiles, setProfiles] = useState([]);
   const { addSuccessMessage, addErrorMessage } = useAlertMessage();
   const { addFieldError, cleanFieldError } = useError();
@@ -125,12 +126,7 @@ export default function User() {
   }, [location.state]);
 
   return (
-    <PanelForm
-      title={getTitle()}
-      size="medium"
-      model={model}
-      onSubmit={onCreateUser}
-    >
+    <PanelForm title={getTitle()} size="medium" model={modelState} onSubmit={onCreateUser} >
       <div className="container">
         <div className="row">
           <div className="col-md-6">

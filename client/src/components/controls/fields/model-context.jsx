@@ -1,32 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 const ModelContext = React.createContext(() => {});
 
 export function ModelProvider(props) {
-  const [model, setModel] = React.useState(props.model);
+  const modelState = (props.model) ? props.model : useState(null);
 
-  React.useEffect(() => {
-    setModel(props.model);
-  }, [props.model]);
-
-  const value = React.useMemo(() => {
-    function set(attr, value) {
-      if (model) {
-        model[attr] = value;
-      }
-    }
-
-    function get(attr) {
-      return model ? model[attr] : undefined;
-    }
-
-    return {
-      set,
-      get,
-    };
-  }, [model]);
-
-  return <ModelContext.Provider value={value} {...props} />;
+  return <ModelContext.Provider value={modelState} {...props} />;
 }
 
 export function useModel() {

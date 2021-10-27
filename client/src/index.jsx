@@ -47,7 +47,7 @@ getSessionInfo()
                     <NavBar title="Confiar" />
                     <SideBar icon="cart3"></SideBar>
                   </BarsProvider>
-                  <div className="container">
+                  <div className="container mt-3">
                     <div className="row justify-content-center">
                       <div className="col">
                         <Switch>

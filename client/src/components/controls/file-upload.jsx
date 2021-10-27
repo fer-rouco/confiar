@@ -100,17 +100,18 @@ const StyledLabelContainer = styled.div`
 
 
 export default function FileUpload(props) {
-  const [files, setFiles] = useState([]);
   const [isDragOver, setIsDragOver] = useState(false);
-  const modelContext = useModel();
+  const [model, setModel] = useModel();
   const dialogContext = useDialog();
 
   function getFilesFromModel() {
-    return modelContext.get(props.attr);
+    return (model && model[props.attr]) ? model[props.attr] : [];
   }
   
   function setFilesToModel(files) {
-    modelContext.set(props.attr, files);
+    let modelCopy = Object.assign({}, model);
+    modelCopy[props.attr] = files;
+    setModel(modelCopy);
   }
 
   function createFileInfoObject(file, content) {
@@ -159,12 +160,12 @@ export default function FileUpload(props) {
   function readAndSetFilesToState(dataTransferFiles) {
     let dropedFiles = Array.from(dataTransferFiles);
     let filesObjects = [];
+    const modelFiles = getFilesFromModel();
     dropedFiles.forEach((fileItem) => {
       readFile(fileItem).then((file) => {
         filesObjects.push(file);
         if (dropedFiles.length === filesObjects.length) {
-          setFiles([...files, ...filesObjects]);
-          setFilesToModel([...files, ...filesObjects]);
+          setFilesToModel([...modelFiles, ...filesObjects]);
         }
       });
     });
@@ -185,10 +186,9 @@ export default function FileUpload(props) {
 
   function removeItem(event, fileToRemove) {
     event.stopPropagation();
-    const filesBeforeRemove = files.filter((fileItem) => { 
+    const filesBeforeRemove = getFilesFromModel().filter((fileItem) => { 
       return fileItem != fileToRemove; 
     })
-    setFiles(filesBeforeRemove);
     setFilesToModel(filesBeforeRemove);
   }
   
@@ -229,7 +229,7 @@ export default function FileUpload(props) {
  }
 
  const buildFilesRepresentationInDOM = () => (
-    files.map(
+    getFilesFromModel().map(
       fileItem => (
         <StyledFileContainer key={fileItem.lastModified + Math.round(Math.random() * 100000)} onClick={(event) => event.stopPropagation()}>
           <StyledCloseButton close small onClick={(event) => removeItem(event, fileItem)} ></StyledCloseButton>
@@ -250,17 +250,6 @@ export default function FileUpload(props) {
   function getAlertTitle(fileToShow) {
     return fileToShow.name;
   };
-  
-  useEffect(() => {
-    const filesFromServer = getFilesFromModel();
-    if (filesFromServer && filesFromServer.length > 0) {
-      setFiles([...files, ...filesFromServer]);
-    }
-  }, [props.attr, modelContext]);
-  
-  useEffect(() => {
-    // setFilesToModel(files);
-  }, [files]);
 
   // function base64ToByteArray(base64String) {
   //   return Uint8Array.from(atob(base64String), c => c.charCodeAt(0));
@@ -289,7 +278,7 @@ export default function FileUpload(props) {
       <StyledContainer className={(isDragOver) ? 'onDragOver' : ''} onClick={browseFiles} onDrop={event => handleDrop(event)} onDragOver={event => handleDragOver(event)} onDragLeave={event => handleDragLeave(event)} >
         <StyledLabel>{props.label}</StyledLabel>
         {
-          (files.length === 0) ? 
+          (getFilesFromModel().length === 0) ? 
             (
               <StyledLabel>Arrastre y suelte sus archivos o haga click aqui para <StyledSpan tabIndex="0">Navegar</StyledSpan></StyledLabel>
             )

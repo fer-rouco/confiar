@@ -4,25 +4,30 @@ import { ModelProvider } from './../controls/fields/model-context';
 
 // props: model, onSubmit
 export default function Form(props) {
-  const methods = useForm({ defaultValues: props.model });
-  const [model, setModel] = useState(props.model);
+  const methods = (props.model) ? useForm({ defaultValues: props.model[0] }) : {};
   const formRef = createRef();
 
-  useEffect(() => {
-    formRef.current.getElementsByClassName('field')[0].focus();
-    setModel(props.model);
-  }, [props.model]);
+  // TODO: Fix this focus stuff...
+  // useEffect(() => {
+  //   const field = formRef.current.getElementsByClassName('field')[0];
+  //   if (field) {
+  //     field.focus();
+  //   }
+    
+  // }, [props.model]);
 
   const onSubmit = (event) => {
-    if (props.model) {
-      Object.assign(props.model, model);
+    if (methods.handleSubmit) {
+      methods.handleSubmit(props.onSubmit)();
     }
-    methods.handleSubmit(props.onSubmit)();
+    else {
+      props.onSubmit();
+    }
     event.preventDefault();
   };
 
   return (
-    <ModelProvider model={model}>
+    <ModelProvider model={props.model}>
       <FormProvider {...methods}>
         <form onSubmit={onSubmit} ref={formRef} className={props.className} >
           {props.children}

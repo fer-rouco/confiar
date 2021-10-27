@@ -25,9 +25,13 @@ public class CustomerController extends BaseController {
   CustomerService customerService;
   
   @PostMapping()
-  public ResponseEntity<Response> findCustomers(@RequestParam("pageFrom") int pageFrom, @RequestParam("pageSize") int pageSize) {  
+  public ResponseEntity<Response> findCustomers(
+    @RequestParam("pageFrom") int pageFrom,
+    @RequestParam("pageSize") int pageSize,
+    @RequestParam(value = CustomerModel.Fields.name, required = false) String name
+  ) {  
     PaginatorModel<CustomerModel> paginator = new PaginatorModel<CustomerModel>();
-    paginator.setRowObjects(convertEntityListToModel(customerService.findCustomers(pageFrom, pageSize), CustomerModel.class));
+    paginator.setRowObjects(convertEntityListToModel(customerService.findCustomersByName(pageFrom, pageSize, name), CustomerModel.class));
     paginator.setLength(customerService.countCustomers());
     return responseOk(paginator);
   }

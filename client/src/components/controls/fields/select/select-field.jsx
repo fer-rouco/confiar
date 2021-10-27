@@ -30,7 +30,7 @@ const StyledFormSelect = styled.select`
 // props: register, attr, label, options
 export default function SelectField(props) {
   const { register, setValue } = useFormContext();
-  const model = useModel();
+  const [model, setModel] = useModel();
   const fieldRef = createRef();
 
   const getId = () => {
@@ -56,8 +56,15 @@ export default function SelectField(props) {
 
   const onChange = () => {
     let value = getValue();
-    model.set(props.attr, value);
-    setValue(props.attr, model.get(props.attr));
+
+    model[props.attr] = value;
+
+    let modelCopy = Object.assign({}, model);
+    modelCopy[props.attr] = value;
+    setModel(modelCopy);
+    if (setValue) {
+      setValue(props.attr, value);
+    }
 
     if (props.onChange) {
       props.onChange(value);
@@ -65,13 +72,15 @@ export default function SelectField(props) {
   };
 
   useEffect(() => {
-    setValue(props.attr, model.get(props.attr));
-  });
+    if (setValue && model) {
+      setValue(props.attr, model[props.attr]);
+    }
+  }, [setValue, props.attr, model]);
 
   return (
     <div ref={fieldRef} className="form-floating" >
       <StyledFormSelect
-        {...register(props.attr)}
+        {...register ? {...register(props.attr)} : (null)}
         id={getId(props.attr)}
         className="field form-select form-select-lg mb-4"
         required={props.required}

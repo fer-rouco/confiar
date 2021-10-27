@@ -6,8 +6,8 @@ export async function findCustomerById(id) {
   return get(BASE_URL + '/' + id);
 }
 
-export async function findCustomers(pageFrom, pageSize) {
-  return postPaginator(BASE_URL, pageFrom, pageSize);
+export async function findCustomers(pageFrom, pageSize, filters) {
+  return postPaginator(BASE_URL, pageFrom, pageSize, filters);
 }
 
 export async function updateCustomer(updateObject) {

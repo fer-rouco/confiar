@@ -25,8 +25,14 @@ public class CustomerService {
     return (List<Customer>) customerRepository.findAll();
   }
   
-  public List<Customer> findCustomers(int pageFrom, int pageSize) {
-    return (List<Customer>) Customer.reduce(customerRepository.findAllBy(PageRequest.of(pageFrom, pageSize, Sort.by(Sort.Direction.ASC, CustomerModel.Fields.name))));
+  public List<Customer> findCustomersByName(int pageFrom, int pageSize, String nameParam) {
+    String name = String.format(QueryConstants.LIKE, (nameParam != null) ? nameParam: "");
+    return (List<Customer>) Customer.reduce(
+      customerRepository.findAllByNameLikeIgnoreCase(
+        PageRequest.of(pageFrom, pageSize, Sort.by(Sort.Direction.ASC, CustomerModel.Fields.name)),
+        name
+      )
+    );
   }
 
   public Customer save(Customer userModel) {

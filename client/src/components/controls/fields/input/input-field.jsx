@@ -46,14 +46,10 @@ const StyledFormControl = styled.input`
 
 // props: register, type, attr, label, required, validationObject
 export default function InputField(props) {
-  const {
-    register,
-    setValue,
-    formState: { errors },
-  } = useFormContext();
-  const { fieldError } = useError();
-  const model = useModel();
+  const { register, setValue, formState: { errors } } = useFormContext();
+  const [model, setModel] = useModel();
   const fieldRef = createRef();
+  const { fieldError } = useError();
 
   const getId = () => {
     return 'input-' + props.attr;
@@ -79,8 +75,12 @@ export default function InputField(props) {
       value = rawValue;
     }
 
-    model.set(props.attr, value);
-    setValue(props.attr, value);
+    let modelCopy = Object.assign({}, model);
+    modelCopy[props.attr] = value;
+    setModel(modelCopy);
+    if (setValue) {
+      setValue(props.attr, value);
+    }
     
     if (props.onChange) {
       props.onChange();
@@ -126,7 +126,9 @@ export default function InputField(props) {
   }, [getValue, cleanErrorClasses, updateErrorClasses, errors, props.attr]);
 
   useEffect(() => {
-    setValue(props.attr, model.get(props.attr));
+    if (setValue && model) {
+      setValue(props.attr, model[props.attr]);
+    }
   }, [setValue, props.attr, model]);
 
   useEffect(() => {
@@ -185,7 +187,7 @@ export default function InputField(props) {
     <div className={(!props.small) ? "form-floating" : "input-group mb-3" } ref={fieldRef} style={{ width: props.width }}>
       {(props.small && props.label) ? <span className="input-group-text">{props.label}</span> : <></>}
       <StyledFormControl
-        {...register(props.attr, validationObject)}
+        {...register ? {...register(props.attr, validationObject)} : (null)}
         type={props.type}
         className={"field form-control " + ((props.small) ? "small-mode" : "floating-mode")}
         style={{ width: props.width }}
@@ -198,11 +200,7 @@ export default function InputField(props) {
         step={props.step}
       />
       <StyledErrorMessage>
-        {errors && errors[props.attr]
-          ? errors[props.attr].message
-          : fieldError.field === props.attr
-          ? fieldError.message
-          : ''}
+        {errors && errors[props.attr] ? errors[props.attr].message : ((fieldError.field === props.attr) ? fieldError.message : '')}
       </StyledErrorMessage>
       {(!props.small && props.label) ? <label htmlFor="floatingInput">{props.label}</label> : <></>}
     </div>

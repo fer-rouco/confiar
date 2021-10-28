@@ -3,6 +3,7 @@ package com.fnr.confiar.controllers;
 import com.fnr.confiar.Response;
 import com.fnr.confiar.entities.Customer;
 import com.fnr.confiar.models.CustomerModel;
+import com.fnr.confiar.models.FilterModel;
 import com.fnr.confiar.models.PaginatorModel;
 import com.fnr.confiar.services.CustomerService;
 
@@ -14,7 +15,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 
@@ -25,13 +25,9 @@ public class CustomerController extends BaseController {
   CustomerService customerService;
   
   @PostMapping()
-  public ResponseEntity<Response> findCustomers(
-    @RequestParam("pageFrom") int pageFrom,
-    @RequestParam("pageSize") int pageSize,
-    @RequestParam(value = CustomerModel.Fields.name, required = false) String name
-  ) {  
+  public ResponseEntity<Response> findCustomers(@RequestBody FilterModel filters) {
     PaginatorModel<CustomerModel> paginator = new PaginatorModel<CustomerModel>();
-    paginator.setRowObjects(convertEntityListToModel(customerService.findCustomersByName(pageFrom, pageSize, name), CustomerModel.class));
+    paginator.setRowObjects(convertEntityListToModel(customerService.findByFilters(filters, Customer.class), CustomerModel.class));
     paginator.setLength(customerService.countCustomers());
     return responseOk(paginator);
   }

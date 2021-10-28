@@ -49,15 +49,26 @@ export async function post(url, body) {
   return await processRequest(Axios.post(SERVER_URL + url, body));
 }
 
-export async function postPaginator(url, pageFrom, pageSize, filters) {
-  var formdata = new FormData();
-  formdata.append("pageFrom", pageFrom);
-  formdata.append("pageSize", pageSize);
+export async function postPaginator(url, pageFrom, pageSize, projectionFieldsParam, filtersParam) {
+  var formdata = { pageFrom, pageSize }
 
-  if (filters) {
-    Object.entries(filters).forEach((filter) => {
-      formdata.append(filter[0], filter[1]);
-    })
+  if (projectionFieldsParam) {
+    var projectionFields = ['id']
+    
+    projectionFieldsParam.forEach((projectionField) => {
+      projectionFields.push(projectionField);
+    });
+  
+    formdata.projectionFields = projectionFields;
+  }
+  if (filtersParam) {
+    var filters = {}
+    
+    Object.entries(filtersParam).forEach((filter) => {
+      filters[filter[0]] = filter[1];
+    });
+  
+    formdata.filters = filters;
   }
 
   return post(url, formdata);

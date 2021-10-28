@@ -134,7 +134,13 @@ function Table(props) {
 
   function updateRowObjectsWithPaginator() {
     if (props.requestRowObjectsFunction) { 
-      props.requestRowObjectsFunction(currentPagePosition, settings.pageSize, filtersState[0]).then((paginator) => {
+      let projectionFields = props.columnDefinitions.map((columnDefinition) => {
+        return (columnDefinition.type != 'icon') ? columnDefinition.key : null
+      }).filter((projectionField) => {
+        return projectionField !== null; 
+      });
+
+      props.requestRowObjectsFunction(currentPagePosition, settings.pageSize, projectionFields, filtersState[0]).then((paginator) => {
         // Set current rowObjects
         const rowObjectsLength = paginator.length;
         const totalPagesLocal = calculateTotalPages(rowObjectsLength);

@@ -10,6 +10,10 @@ import withLoader from '../general/load-indicator';
 import PanelForm from '../containers/panel-form';
 import TextField from '../controls/fields/input/text-field';
 
+const StyledTable = styled.table`
+  margin-bottom: 20px;
+`;
+
 const StyledTR = styled.tr`
   background-color: #FFFFFF;
 
@@ -47,6 +51,9 @@ const StyledCaption = styled.caption`
 const StyledNavigatorContainer = styled.nav`
   display: inline-block;
   float: right;
+  & .pagination {
+    margin-bottom: 0;
+  }
 `;
 
 const StyledForm = styled(Form)`
@@ -449,10 +456,10 @@ function Table(props) {
     <div>
       {buildFilters()}
       {buildPageSizeChooser()}
-      <table className="table table-hover">
+      <StyledTable className="table table-hover">
         {buildHeader()}
         {isEmpty() ? buildEmptyCaption() : buildBody()}
-      </table>
+      </StyledTable>
       {isEmpty() ? <></> : buildFooter()}
     </div>
   );

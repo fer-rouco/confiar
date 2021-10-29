@@ -16,7 +16,7 @@ const StyledContainer = styled.div`
   ${StyledBorder};
 
   border-radius: 25px;
-  padding: 20px;
+  padding: 20px 20px 0 20px; // Top - Right - Bottom - Left
   background-color: #fff;
   margin-bottom: 20px;
 

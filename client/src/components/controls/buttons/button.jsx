@@ -1,7 +1,9 @@
 import styled from "styled-components";
 
-const StyledIcon = styled.button((props) => {
+const StyledButton = styled.button((props) => {
   return `
+    margin-bottom: 20px;
+
     &.disabled {
       opacity: 40%;
     }
@@ -51,10 +53,10 @@ export default function Button(props) {
   };
 
   return (
-    <button type={getType()} className={getClasses()} disabled={props.disabled} onClick={props.onClick} onKeyPress={props.onKeyPress} >
+    <StyledButton type={getType()} className={getClasses()} disabled={props.disabled} onClick={props.onClick} onKeyPress={props.onKeyPress} >
       {props.left}
       {props.label}
       {props.right}
-    </button>
+    </StyledButton>
   );
 }

@@ -15,15 +15,14 @@ import org.modelmapper.ModelMapper;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
 @Data
 @EqualsAndHashCode(callSuper=false)
+@NoArgsConstructor
 @Entity
 @Table(name = "customer")
 public class Customer extends BaseEntity {
-
-  public Customer() {
-  }
 
   public Customer(Long id, String name, String lastName, String mail) {
     this.setId(id);

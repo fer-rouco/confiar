@@ -10,8 +10,8 @@ export async function findUserById(id) {
   return get(BASE_URL + '/' + id);
 }
 
-export async function findUsers(pageFrom, pageSize) {
-  return postPaginator(BASE_URL, pageFrom, pageSize);
+export async function findUsers(pageFrom, pageSize, projectionFields, filters) {
+  return postPaginator(BASE_URL, pageFrom, pageSize, projectionFields, filters);
 }
 
 export async function updateUser(updateObject) {

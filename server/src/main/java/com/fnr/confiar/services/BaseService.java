@@ -22,7 +22,7 @@ public class BaseService<E extends BaseEntity> {
   @Autowired
   public EntityManager entityManager;
     
-  public List<E> findByFilters(FilterModel filter, Class<E> entityClass) {   
+  public List<E> findByFilters(FilterModel filter, Class<E> entityClass) {
     CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
     CriteriaQuery<E> createQuery = criteriaBuilder.createQuery(entityClass);
 
@@ -39,7 +39,7 @@ public class BaseService<E extends BaseEntity> {
 
     List<Path<E>> paths = new ArrayList<>();
     for (String projectionField : filter.getProjectionFields()) {
-      paths.add(root.get(projectionField));
+      paths.add(root.get(projectionField.split("\\.")[0]));
     }
     createQuery.multiselect(paths.toArray(Path[]::new));
 

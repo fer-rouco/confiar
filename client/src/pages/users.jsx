@@ -31,10 +31,10 @@ export default function Users() {
       key: 'mail', 
       label: 'E-Mail'
     }),
-    textColumnDefinition({
-      key: 'profile.description', 
-      label: 'Perfil'
-    }),
+    // textColumnDefinition({
+    //   key: 'profile.description', 
+    //   label: 'Perfil'
+    // }),
     removeColumnDefinition({
       key: 'remove',
       icon: 'trash-fill',
@@ -58,6 +58,14 @@ export default function Users() {
     })
   ];
 
+  const filters = [
+    columnDefinitions[0].key,
+    columnDefinitions[1].key,
+    columnDefinitions[2].key,
+    columnDefinitions[3].key,
+    // columnDefinitions[4].key
+  ];
+
   return (
     <Panel
       title='Usuarios.'
@@ -72,7 +80,7 @@ export default function Users() {
         },
       ]}
     >
-      <Table columnDefinitions={columnDefinitions} requestRowObjectsFunction={findUsers} ></Table>
+      <Table columnDefinitions={columnDefinitions} requestRowObjectsFunction={findUsers} filters={filters} ></Table>
     </Panel>
   );
 }

@@ -15,7 +15,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 @Service
-public class UserService {
+public class UserService extends BaseService<User> {
   @Autowired
   UserRepository userRepository;
   

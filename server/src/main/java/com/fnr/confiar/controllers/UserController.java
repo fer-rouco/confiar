@@ -3,6 +3,7 @@ package com.fnr.confiar.controllers;
 import com.fnr.confiar.Response;
 import com.fnr.confiar.entities.User;
 import com.fnr.confiar.models.UserProfileModel;
+import com.fnr.confiar.models.FilterModel;
 import com.fnr.confiar.models.PaginatorModel;
 import com.fnr.confiar.models.UserModel;
 import com.fnr.confiar.services.UserService;
@@ -26,9 +27,9 @@ public class UserController extends BaseController {
   UserService userService;
 
   @PostMapping()
-  public ResponseEntity<Response> findUsers(@RequestParam("pageFrom") int pageFrom, @RequestParam("pageSize") int pageSize) {  
+  public ResponseEntity<Response> findUsers(@RequestBody FilterModel filters) {  
     PaginatorModel<UserModel> paginator = new PaginatorModel<UserModel>();
-    paginator.setRowObjects(convertEntityListToModel(userService.findUsers(pageFrom, pageSize), UserModel.class));
+    paginator.setRowObjects(convertEntityListToModel(userService.findByFilters(filters, User.class), UserModel.class));
     paginator.setLength(userService.countUsers());
     return responseOk(paginator);
   }

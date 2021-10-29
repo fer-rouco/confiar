@@ -8,7 +8,7 @@ const StyledFormSelect = styled.select`
     height: 40px;
     padding-top: 14px !important;
     padding-bottom: 8px !important;
-    margin-bottom: 8px !important;
+    margin-bottom: 20px !important;
     font-size: 1rem;
     padding-left: 0.75rem;
   }

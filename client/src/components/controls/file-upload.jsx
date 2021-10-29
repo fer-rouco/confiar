@@ -10,7 +10,7 @@ const StyledContainer = styled.div`
   border: 1px solid #ddd;
   border-radius: 5px;
   padding: 16px;
-  margin-bottom: 8px;
+  margin-bottom: 20px;
 
   &.onDragOver {
     border-color: #86b7fe;

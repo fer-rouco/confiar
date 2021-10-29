@@ -7,17 +7,17 @@ import { useModel } from '../model-context';
 
 const StyledErrorMessage = styled.div`
   color: red;
-  padding-left: 20px;
+  padding-left: 16px;
   font-size: 10px;
   position: absolute;
-  top: 60px;
+  top: 40px;
 `;
 
 const StyledFormControl = styled.input`
 
   &.floating-mode {
     height: 40px;
-    margin-bottom: 8px;
+    margin-bottom: 20px;
   }
 
   &.small-mode:not(:placeholder-shown) {

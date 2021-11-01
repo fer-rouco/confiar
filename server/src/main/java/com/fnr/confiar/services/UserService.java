@@ -3,15 +3,18 @@ package com.fnr.confiar.services;
 import java.util.List;
 import java.util.Optional;
 
-import com.fnr.confiar.entities.UserProfile;
-import com.fnr.confiar.models.UserModel;
 import com.fnr.confiar.entities.User;
+import com.fnr.confiar.entities.UserProfile;
+import com.fnr.confiar.models.BaseModel;
+import com.fnr.confiar.models.FilterModel;
 import com.fnr.confiar.repositories.UserProfileRepository;
 import com.fnr.confiar.repositories.UserRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -26,8 +29,22 @@ public class UserService extends BaseService<User> {
     return userRepository.count();
   }
 
-  public List<User> findUsers(int pageFrom, int pageSize) {
-    return (List<User>) userRepository.findAll(PageRequest.of(pageFrom, pageSize, Sort.by(Sort.Direction.ASC, UserModel.Fields.name)));
+  public List<User> findUsers(FilterModel filter) {
+    Specification<User> spec = findByFiltersSpecification(filter);
+    Page<User> page = null;
+    try {
+      if (spec != null) {
+        page = userRepository.findAll(spec, PageRequest.of(filter.getPageFrom(), filter.getPageSize(), Sort.by(Sort.Direction.ASC, BaseModel.Fields.id)));
+      }
+      else {
+        page = userRepository.findAll(PageRequest.of(filter.getPageFrom(), filter.getPageSize(), Sort.by(Sort.Direction.ASC, BaseModel.Fields.id)));
+      }
+    }
+    catch(Exception e) {
+      e.printStackTrace();
+    }
+
+    return page.getContent();
   }
 
   public List<UserProfile> getProfiles() {

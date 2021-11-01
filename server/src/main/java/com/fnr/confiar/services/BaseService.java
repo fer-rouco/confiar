@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 import javax.persistence.EntityManager;
@@ -18,17 +17,23 @@ import javax.persistence.criteria.Root;
 
 import com.fnr.confiar.entities.BaseEntity;
 import com.fnr.confiar.models.FilterModel;
-import com.fnr.confiar.models.UserModel;
+import com.fnr.confiar.repositories.specs.GenericSpecificationsBuilder;
+import com.fnr.confiar.repositories.specs.SpecificationFactory;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.domain.Specification;
 
 public class BaseService<E extends BaseEntity> {
+
+  
+  @Autowired
+  private SpecificationFactory<E> specificationFactory;
   
   @Autowired
   public EntityManager entityManager;
-    
-  public List<E> findByFilters(FilterModel filter, Class<E> entityClass) {
+   
+  public List<E> findByFiltersCriteria(FilterModel filter, Class<E> entityClass) {
     CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
     // CriteriaQuery<E> createQuery = criteriaBuilder.createQuery(entityClass);
     CriteriaQuery<Tuple> createQuery = criteriaBuilder.createTupleQuery();
@@ -69,4 +74,16 @@ public class BaseService<E extends BaseEntity> {
 
     return list;
   }
+
+  public Specification<E> findByFiltersSpecification(FilterModel filter) {
+    GenericSpecificationsBuilder<E> builder = new GenericSpecificationsBuilder<>();
+
+    for (Map.Entry<String, String> filterItem : filter.getFilters().entrySet()) {
+      builder.with(specificationFactory.isLike(filterItem.getKey(), filterItem.getValue()));
+    }
+
+    Specification<E> spec = builder.build();
+    return spec;
+  }
+
 }

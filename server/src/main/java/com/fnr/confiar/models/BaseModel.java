@@ -11,10 +11,12 @@ import org.modelmapper.ModelMapper;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.experimental.FieldNameConstants;
 
 @Data
 @EqualsAndHashCode
 @NoArgsConstructor
+@FieldNameConstants
 public class BaseModel<T extends BaseEntity> {
   protected static ModelMapper modelMapper = new ModelMapper();
 

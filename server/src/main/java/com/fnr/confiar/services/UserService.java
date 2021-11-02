@@ -29,24 +29,6 @@ public class UserService extends BaseService<User> {
     return userRepository.count();
   }
 
-  public List<User> findUsers(FilterModel filter) {
-    Specification<User> spec = findByFiltersSpecification(filter);
-    Page<User> page = null;
-    try {
-      if (spec != null) {
-        page = userRepository.findAll(spec, PageRequest.of(filter.getPageFrom(), filter.getPageSize(), Sort.by(Sort.Direction.ASC, BaseModel.Fields.id)));
-      }
-      else {
-        page = userRepository.findAll(PageRequest.of(filter.getPageFrom(), filter.getPageSize(), Sort.by(Sort.Direction.ASC, BaseModel.Fields.id)));
-      }
-    }
-    catch(Exception e) {
-      e.printStackTrace();
-    }
-
-    return page.getContent();
-  }
-
   public List<UserProfile> getProfiles() {
     return (List<UserProfile>) userProfileRepository.findAll();
   }

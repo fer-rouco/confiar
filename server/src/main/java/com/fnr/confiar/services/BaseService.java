@@ -8,12 +8,13 @@ import java.util.stream.Collectors;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Tuple;
+import javax.persistence.TupleElement;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Path;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
+import javax.persistence.criteria.Selection;
 
 import com.fnr.confiar.entities.BaseEntity;
 import com.fnr.confiar.models.FilterModel;
@@ -22,7 +23,11 @@ import com.fnr.confiar.repositories.specs.SpecificationFactory;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.util.Assert;
 
 public class BaseService<E extends BaseEntity> {
 
@@ -33,49 +38,123 @@ public class BaseService<E extends BaseEntity> {
   @Autowired
   public EntityManager entityManager;
    
-  public List<E> findByFiltersCriteria(FilterModel filter, Class<E> entityClass) {
-    CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
-    // CriteriaQuery<E> createQuery = criteriaBuilder.createQuery(entityClass);
-    CriteriaQuery<Tuple> createQuery = criteriaBuilder.createTupleQuery();
+  // public List<E> findByFiltersCriteria(FilterModel filter, Class<E> entityClass) {
+  //   CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+  //   // CriteriaQuery<E> createQuery = criteriaBuilder.createQuery(entityClass);
+  //   CriteriaQuery<Tuple> createQuery = criteriaBuilder.createTupleQuery();
 
-    Root<E> root = createQuery.from(entityClass);
+  //   Root<E> root = createQuery.from(entityClass);
 
-    List<Predicate> predicates = new ArrayList<>();
-    for (Map.Entry<String, String> filterItem : filter.getFilters().entrySet()) {
-      String value = String.format(QueryConstants.LIKE, (filterItem.getValue() != null) ? filterItem.getValue().toLowerCase(): "");
-      Predicate predicate = criteriaBuilder.like(criteriaBuilder.lower(root.get(filterItem.getKey())), value);
-      predicates.add(predicate);
-    }
+  //   List<Predicate> predicates = new ArrayList<>();
+  //   for (Map.Entry<String, String> filterItem : filter.getFilters().entrySet()) {
+  //     String value = String.format(QueryConstants.LIKE, (filterItem.getValue() != null) ? filterItem.getValue().toLowerCase(): "");
+  //     Predicate predicate = criteriaBuilder.like(criteriaBuilder.lower(root.get(filterItem.getKey())), value);
+  //     predicates.add(predicate);
+  //   }
   
-    createQuery.where(predicates.toArray(Predicate[]::new));
+  //   createQuery.where(predicates.toArray(Predicate[]::new));
 
-    List<Path<E>> paths = new ArrayList<>();
-    for (String projectionField : filter.getProjectionFields()) {
-      paths.add(root.get(projectionField.split("\\.")[0]));
+  //   List<Path<E>> paths = new ArrayList<>();
+  //   for (String projectionField : filter.getProjectionFields()) {
+  //     paths.add(root.get(projectionField.split("\\.")[0]));
+  //   }
+  //   createQuery.multiselect(paths.toArray(Path[]::new));
+
+  //   // TypedQuery<E> query = entityManager.createQuery(createQuery);
+  //   TypedQuery<Tuple> query = entityManager
+  //     .createQuery(createQuery)
+  //     .setMaxResults(filter.getPageSize())
+  //     .setFirstResult(filter.getPageSize() * filter.getPageFrom());
+
+  //   ModelMapper modelMapper = new ModelMapper();
+  //   List<E> list = query.getResultList().stream().map((Tuple tuple) -> { 
+  //     Map<String, Object> maps = new HashMap<>();
+
+  //     Short tupleIndex = 0;
+  //     for (String projectionField : filter.getProjectionFields()) {
+  //       maps.put(projectionField, tuple.get(tupleIndex++));
+  //     }
+  //     return modelMapper.map(maps, entityClass);
+  //   } ).collect(Collectors.toList());
+
+  //   return list;
+  // }
+
+  private <R> Root<E> applySpecToCriteria(CriteriaQuery<R> query, CriteriaBuilder builder, Specification<E> specs, Class<E> entityClass) {
+    Assert.notNull(query, "CriteriaQuery must not be null!");
+
+    Root<E> root = query.from(entityClass);
+
+    if (specs == null) {
+      return root;
     }
-    createQuery.multiselect(paths.toArray(Path[]::new));
 
-    // TypedQuery<E> query = entityManager.createQuery(createQuery);
-    TypedQuery<Tuple> query = entityManager
-      .createQuery(createQuery)
-      .setMaxResults(filter.getPageSize())
-      .setFirstResult(filter.getPageSize() * filter.getPageFrom());
+    Predicate predicate = specs.toPredicate(root, query, builder);
 
-    ModelMapper modelMapper = new ModelMapper();
-    List<E> list = query.getResultList().stream().map((Tuple tuple) -> { 
-      Map<String, Object> maps = new HashMap<>();
+    if (predicate != null) {
+      query.where(predicate);
+    }
 
-      Short tupleIndex = 0;
-      for (String projectionField : filter.getProjectionFields()) {
-        maps.put(projectionField, tuple.get(tupleIndex++));
-      }
-      return modelMapper.map(maps, entityClass);
-    } ).collect(Collectors.toList());
-
-    return list;
+    return root;
   }
 
-  public Specification<E> findByFiltersSpecification(FilterModel filter) {
+  private List<Selection<?>> getSelections(List<String> fields, Root<E> root) {
+    List<Selection<?>> selections = new ArrayList<>();
+
+    for (String field : fields) {
+      selections.add(root.get(field).alias(field));
+    }
+
+    return selections;
+  }
+
+  private <R> void applySorting(CriteriaBuilder builder, CriteriaQuery<R> query, Root<E> root, Pageable pageable) {
+    Sort sort = pageable.isPaged() ? pageable.getSort() : Sort.unsorted();
+    if (sort.isSorted()) {
+//      query.orderBy(toOrders(sort, root, builder));
+    }
+  }
+
+  private <R> List<R> getPageableResultList(CriteriaQuery<R> query, Pageable pageable) {
+    TypedQuery<R> typedQuery = entityManager.createQuery(query);
+
+    // Apply pagination
+    if (pageable.isPaged()) {
+      typedQuery.setFirstResult((int) pageable.getOffset());
+      typedQuery.setMaxResults(pageable.getPageSize());
+    }
+
+    return typedQuery.getResultList();
+  }
+
+  public List<E> findAllWithPagination(Specification<E> specs, FilterModel filter, Class<E> entityClass) {
+    Pageable pageable = PageRequest.of(filter.getPageFrom(), filter.getPageSize(), Sort.by(filter.getSortDirection(), filter.getSortField()));
+    Assert.notNull(pageable, "Pageable must be not null!");
+    Assert.notEmpty(filter.getProjectionFields(), "Fields must not be empty!");
+
+    // Create query
+    CriteriaBuilder builder = entityManager.getCriteriaBuilder();
+    // CriteriaQuery<E> query = builder.createQuery(entityClass);
+    CriteriaQuery<Tuple> query = builder.createTupleQuery();
+    // Define FROM clause
+    Root<E> root = applySpecToCriteria(query, builder, specs, entityClass);
+    // Define selecting expression
+    List<Selection<?>> selections = getSelections(filter.getProjectionFields(), root);
+    query.multiselect(selections);
+    //Define ORDER BY clause
+    applySorting(builder, query, root, pageable);
+    
+    ModelMapper modelMapper = new ModelMapper();
+    return getPageableResultList(query, pageable).stream().map((Tuple tuple) -> { 
+      Map<String, Object> maps = new HashMap<>();
+      tuple.getElements().forEach(tupleElement -> {
+        maps.put(tupleElement.getAlias(), tuple.get(tupleElement.getAlias()));
+      });
+      return modelMapper.map(maps, entityClass);
+    } ).collect(Collectors.toList());
+  }
+ 
+  public Specification<E> buildSpecificationsByFilters(FilterModel filter) {
     GenericSpecificationsBuilder<E> builder = new GenericSpecificationsBuilder<>();
 
     for (Map.Entry<String, String> filterItem : filter.getFilters().entrySet()) {
@@ -86,4 +165,7 @@ public class BaseService<E extends BaseEntity> {
     return spec;
   }
 
+  public List<E> findByFilters(FilterModel filter, Class<E> entityClass) {
+    return findAllWithPagination(buildSpecificationsByFilters(filter), filter, entityClass);
+  }
 }

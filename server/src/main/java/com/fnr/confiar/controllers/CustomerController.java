@@ -27,8 +27,7 @@ public class CustomerController extends BaseController {
   @PostMapping()
   public ResponseEntity<Response> findCustomers(@RequestBody FilterModel filters) {
     PaginatorModel<CustomerModel> paginator = new PaginatorModel<CustomerModel>();
-    paginator.setRowObjects(convertEntityListToModel(customerService.findCustomers(filters), CustomerModel.class));
-    // paginator.setRowObjects(convertEntityListToModel(customerService.findByFilters(filters, Customer.class), CustomerModel.class));
+    paginator.setRowObjects(convertEntityListToModel(customerService.findByFilters(filters, Customer.class), CustomerModel.class));
     paginator.setLength(customerService.countCustomers());
     return responseOk(paginator);
   }

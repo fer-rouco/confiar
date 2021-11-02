@@ -16,14 +16,6 @@ import lombok.NoArgsConstructor;
 @Entity
 @Table(name = "user")
 public class User extends BaseEntity {
-
-  public User(Long id, String name, String lastName, String userName, String mail, UserProfile profile) {
-  }
-  
-  public User(Long id, String name, String lastName, String userName, String mail) {
-  }
-  
-
   @Column(length = 30)
   private String name;
   @Column(length = 30)

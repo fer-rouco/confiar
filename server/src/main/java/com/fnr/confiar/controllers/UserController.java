@@ -29,7 +29,7 @@ public class UserController extends BaseController {
   @PostMapping()
   public ResponseEntity<Response> findUsers(@RequestBody FilterModel filters) {  
     PaginatorModel<UserModel> paginator = new PaginatorModel<UserModel>();
-    paginator.setRowObjects(convertEntityListToModel(userService.findUsers(filters), UserModel.class));
+    paginator.setRowObjects(convertEntityListToModel(userService.findByFilters(filters, User.class), UserModel.class));
     paginator.setLength(userService.countUsers());
     return responseOk(paginator);
   }

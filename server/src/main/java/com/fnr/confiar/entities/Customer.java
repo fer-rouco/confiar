@@ -23,13 +23,6 @@ import lombok.NoArgsConstructor;
 @Entity
 @Table(name = "customer")
 public class Customer extends BaseEntity {
-
-  public Customer(Long id, String name, String lastName, String mail) {
-    this.setId(id);
-    this.name = name;
-    this.lastName = lastName;
-    this.mail = mail;
-  }
   
   @Column(length = 30)
   private String name;

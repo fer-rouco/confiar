@@ -5,16 +5,10 @@ import java.util.Optional;
 
 import com.fnr.confiar.entities.User;
 import com.fnr.confiar.entities.UserProfile;
-import com.fnr.confiar.models.BaseModel;
-import com.fnr.confiar.models.FilterModel;
 import com.fnr.confiar.repositories.UserProfileRepository;
 import com.fnr.confiar.repositories.UserRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 @Service

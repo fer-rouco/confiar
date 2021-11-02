@@ -1,6 +1,5 @@
 package com.fnr.confiar.repositories.specs;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.criteria.CriteriaBuilder;
@@ -72,12 +71,12 @@ public class GenericSpecification<T> implements Specification<T> {
       return null;
     }
     
-    private <O extends Object> Object castToRequiredType(Class<O> fieldType, List<String> value) {
-      List<Object> lists = new ArrayList<>();
-      for (String s : value) {
-        lists.add(castToRequiredType(fieldType, s));
-      }
-      return lists;
-    }
+   //  private <O extends Object> Object castToRequiredType(Class<O> fieldType, List<String> value) {
+   //    List<Object> lists = new ArrayList<>();
+   //    for (String s : value) {
+   //      lists.add(castToRequiredType(fieldType, s));
+   //    }
+   //    return lists;
+   //  }
 
 }

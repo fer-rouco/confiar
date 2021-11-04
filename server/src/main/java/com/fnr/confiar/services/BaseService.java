@@ -101,7 +101,8 @@ public class BaseService<E extends BaseEntity> {
     List<Selection<?>> selections = new ArrayList<>();
 
     for (String field : fields) {
-      selections.add(root.get(field).alias(field));
+      String rawField = field.split("\\.")[0];
+      selections.add(root.get(rawField).alias(rawField));
     }
 
     return selections;
@@ -157,7 +158,13 @@ public class BaseService<E extends BaseEntity> {
     GenericSpecificationsBuilder<E> builder = new GenericSpecificationsBuilder<>();
 
     for (Map.Entry<String, String> filterItem : filter.getFilters().entrySet()) {
-      builder.with(specificationFactory.isLike(filterItem.getKey(), filterItem.getValue()));
+      // TODO: Fix it checking the filter type or something like that
+      if (filterItem.getKey().startsWith("profile")) {
+        builder.with(specificationFactory.isEqual(filterItem.getKey(), filterItem.getValue()));
+      }
+      else {
+        builder.with(specificationFactory.isLike(filterItem.getKey(), filterItem.getValue()));
+      }
     }
 
     Specification<E> spec = builder.build();

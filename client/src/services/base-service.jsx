@@ -65,7 +65,9 @@ export async function postPaginator(url, pageFrom, pageSize, projectionFieldsPar
     var filters = {}
     
     Object.entries(filtersParam).forEach((filter) => {
-      filters[filter[0]] = filter[1];
+      if (filter[1].length > 0) {
+        filters[filter[0]] = filter[1];
+      }
     });
   
     formdata.filters = filters;

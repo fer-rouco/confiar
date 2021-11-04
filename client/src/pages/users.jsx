@@ -1,6 +1,7 @@
+import { useEffect, useState } from 'react';
 import { useHistory } from 'react-router';
 import { useAlertMessage } from '../contexts/alert-message-context';
-import { deleteUser, findUsers } from '../services/user-service';
+import { deleteUser, findUsers, getAllUserProfiles } from '../services/user-service';
 import Panel from '../components/containers/panel';
 import Table from '../components/table/table';
 import { removeColumnDefinition, textColumnDefinition } from '../components/table/column-definitions/column-definition';
@@ -8,63 +9,90 @@ import { removeColumnDefinition, textColumnDefinition } from '../components/tabl
 export default function Users() {
   const history = useHistory();
   const { addSuccessMessage, addErrorMessage } = useAlertMessage();
+  const [columnDefinitions, setColumnDefinitions] = useState([]);
+  const [filterDefinitions, setFilterDefinitions] = useState([]);
 
-  const createUser = () => {
+  function createUser() {
     history.push('/User');
   };
 
-  const columnDefinitions = [
-    textColumnDefinition({
-      key: 'name',
-      label: 'Nombre',
-      target: '/User'
-    }),
-    textColumnDefinition({
-      key: 'lastName',
-      label: 'Apellido'
-    }),
-    textColumnDefinition({
-      key: 'userName', 
-      label: 'Usuario'
-    }),
-    textColumnDefinition({
-      key: 'mail', 
-      label: 'E-Mail'
-    }),
-    // textColumnDefinition({
-    //   key: 'profile.description', 
-    //   label: 'Perfil'
-    // }),
-    removeColumnDefinition({
-      key: 'remove',
-      icon: 'trash-fill',
-      dialogConfig: {
-        title: 'Eliminar Usuario',
-        message: 'Esta seguro que desea eliminar el usuario <%NAME%>?',
-        onAccept: (model) => {
-          return deleteUser(model.id)
-            .then((user) => {
-              addSuccessMessage(
-                'El usuario ' + model.name + ' fue eliminado exitosamente.',
-              );
-            })
-            .then((errorData) => {
-              if (errorData) {
-                addErrorMessage(errorData.message);
-              }
-            });
+  useEffect(() => {
+    setColumnDefinitions([
+      textColumnDefinition({
+        key: 'name',
+        label: 'Nombre',
+        target: '/User'
+      }),
+      textColumnDefinition({
+        key: 'lastName',
+        label: 'Apellido'
+      }),
+      textColumnDefinition({
+        key: 'userName', 
+        label: 'Usuario'
+      }),
+      textColumnDefinition({
+        key: 'mail', 
+        label: 'E-Mail'
+      }),
+      textColumnDefinition({
+        key: 'profile.description', 
+        label: 'Perfil'
+      }),
+      removeColumnDefinition({
+        key: 'remove',
+        icon: 'trash-fill',
+        dialogConfig: {
+          title: 'Eliminar Usuario',
+          message: 'Esta seguro que desea eliminar el usuario <%NAME%>?',
+          onAccept: (model) => {
+            return deleteUser(model.id)
+              .then((user) => {
+                addSuccessMessage(
+                  'El usuario ' + model.name + ' fue eliminado exitosamente.',
+                );
+              })
+              .then((errorData) => {
+                if (errorData) {
+                  addErrorMessage(errorData.message);
+                }
+              });
+          }
         }
-      }
-    })
-  ];
+      })
+    ]);
 
-  const filters = [
-    columnDefinitions[0].key,
-    columnDefinitions[1].key,
-    columnDefinitions[2].key,
-    columnDefinitions[3].key,
-    // columnDefinitions[4].key
-  ];
+    getAllUserProfiles().then(response => {
+      let profileList = response.map((profile) => { return {value: profile.id, label: profile.description }; });
+      let profileListWithAllOption = [{value: '', label: 'Todos' }, ...profileList];
+      
+      setFilterDefinitions([
+        textColumnDefinition({
+          key: 'name',
+          label: 'Nombre',
+          target: '/User'
+        }),
+        textColumnDefinition({
+          key: 'lastName',
+          label: 'Apellido'
+        }),
+        textColumnDefinition({
+          key: 'userName', 
+          label: 'Usuario'
+        }),
+        textColumnDefinition({
+          key: 'mail', 
+          label: 'E-Mail'
+        }),
+        {
+          key: 'profile.id', 
+          type: 'enum',
+          label: 'Perfil',
+          options: profileListWithAllOption
+        }
+      ]);
+    });  
+  }, []);
 
   return (
     <Panel
@@ -80,7 +108,7 @@ export default function Users() {
         },
       ]}
     >
-      <Table columnDefinitions={columnDefinitions} requestRowObjectsFunction={findUsers} filters={filters} ></Table>
+      <Table columnDefinitions={columnDefinitions} requestRowObjectsFunction={findUsers} filterDefinitions={filterDefinitions} ></Table>
     </Panel>
   );
 }

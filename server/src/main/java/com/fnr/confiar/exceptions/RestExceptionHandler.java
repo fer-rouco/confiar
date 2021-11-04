@@ -38,13 +38,14 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
   // }
 
   @ExceptionHandler(value = Exception.class)
-  public ResponseEntity<Response> defaultErrorHandler(HttpServletRequest req, Exception e) throws Exception {
+  public ResponseEntity<Response> defaultErrorHandler(HttpServletRequest request, Exception exception) throws Exception {
+    exception.printStackTrace();
     ErrorResponse responseBody = new ErrorResponse(HttpStatus.CONFLICT, new BaseModel<BaseEntity>(null), messageService.getMessage("general.error"), null);
     return ResponseEntity.status(responseBody.getStatus()).body(responseBody);
   }
 
   @ExceptionHandler({ ResponseException.class, ConstraintViolationException.class, DataIntegrityViolationException.class })
-  public ResponseEntity<Response> handleBadRequest(Exception ex, WebRequest request) {
+  public ResponseEntity<Response> handleBadRequest(WebRequest request, Exception exception) {
     ErrorResponse responseBody = null;
     Reflections reflections = new Reflections("com.fnr.confiar.models");
     Set<Class<? extends BaseModel>> classes = reflections.getSubTypesOf(BaseModel.class);
@@ -54,9 +55,9 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
       Class<? extends BaseModel> clazz = classIterator.next();
       String entityName = clazz.getSimpleName().replaceAll("Model", "").toUpperCase();
       
-      if (ex.getLocalizedMessage().indexOf(entityName) > -1) {
+      if (exception.getLocalizedMessage().indexOf(entityName) > -1) {
         for (Field f : clazz.getDeclaredFields()) {
-          if (ex.getLocalizedMessage().indexOf("(" + StringUtil.camelCaseToUnderscores(f.getName()).toUpperCase() + ")") > -1) {
+          if (exception.getLocalizedMessage().indexOf("(" + StringUtil.camelCaseToUnderscores(f.getName()).toUpperCase() + ")") > -1) {
             responseBody = new ErrorResponse(HttpStatus.CONFLICT, new BaseModel<BaseEntity>(null), messageService.getMessage("field.error." + f.getName()), f.getName());
             break;
           }

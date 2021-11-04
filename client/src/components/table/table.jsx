@@ -9,6 +9,7 @@ import Icon from '../general/icon';
 import withLoader from '../general/load-indicator';
 import PanelForm from '../containers/panel-form';
 import TextField from '../controls/fields/input/text-field';
+import SelectField from '../controls/fields/select/select-field';
 
 const StyledTable = styled.table`
   margin-bottom: 20px;
@@ -96,18 +97,22 @@ function Table(props) {
 
   useEffect(() => {
     if (props.columnDefinitions) {
-      props.columnDefinitions.map((columnDefinition) => {
-        if (columnDefinition.dialogConfig) {
-          dialog.setConfig(columnDefinition.dialogConfig);
-        }
-      });
+      if (props.columnDefinitions.length > 0) {
+        props.columnDefinitions.map((columnDefinition) => {
+          if (columnDefinition.dialogConfig) {
+            dialog.setConfig(columnDefinition.dialogConfig);
+          }
+        });
+  
+        update();
+      }
     }
     else {
       console.error(
         "El componente de la tabla espera como parametro obligatorio columnDefinitions (definición de las columnas de la tabla)."
       );
     }
-  }, []);
+  }, [props.columnDefinitions]);
 
   useEffect(() => {
     update();
@@ -140,7 +145,7 @@ function Table(props) {
   }
 
   function updateRowObjectsWithPaginator() {
-    if (props.requestRowObjectsFunction) { 
+    if (props.requestRowObjectsFunction && props.columnDefinitions.length > 0) { 
       let projectionFields = props.columnDefinitions.map((columnDefinition) => {
         return (columnDefinition.type != 'icon') ? columnDefinition.key : null
       }).filter((projectionField) => {
@@ -270,7 +275,7 @@ function Table(props) {
       else {
         let currentProperty = rowObject;
         splittedKey.forEach((splittedKeyItem) => {
-          currentProperty = currentProperty[splittedKeyItem];
+          currentProperty = (currentProperty) ? currentProperty[splittedKeyItem] : null;
         });
         rowObjectProperty = currentProperty;
       }
@@ -383,24 +388,28 @@ function Table(props) {
   function buildFilters() {
     let filtersDOM = null;
     
-    if (props.filters) {
+    if (props.filterDefinitions) {
     
       let filtersToBuild = [];
 
-      props.filters.map((filterProp) => {
-        let columnDefinition = props.columnDefinitions.find((columnDefinitionToCompare) => { return columnDefinitionToCompare.key === filterProp; })
-        if (columnDefinition) {
-          let filter = null;
-          switch (columnDefinition.type) {
-            case 'text':
-              filter = (
-                <TextField attr={columnDefinition.key} label={columnDefinition.label} avoidValidations ></TextField>
-              );
-              break;
-          }
-          if (filter) {
-            filtersToBuild.push(filter)
-          }
+      props.filterDefinitions.map((filterDefinition) => {
+        let filter = null;
+        switch (filterDefinition.type) {
+          case 'text':
+            filter = (
+              <TextField attr={filterDefinition.key} label={filterDefinition.label} avoidValidations ></TextField>
+            );
+            break;
+          case 'enum':
+            // filtersState[0][filterDefinition.key] = filterDefinition.options[0];
+            // filtersState[1](filtersState[0]);
+            filter = (
+              <SelectField attr={filterDefinition.key} label={filterDefinition.label} options={filterDefinition.options} ></SelectField>
+            );
+            break;
+        }
+        if (filter) {
+          filtersToBuild.push(filter)
         }
       });
 

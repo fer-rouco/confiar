@@ -152,7 +152,20 @@ function Table(props) {
         return projectionField !== null; 
       });
 
-      props.requestRowObjectsFunction(currentPagePosition, settings.pageSize, projectionFields, filtersState[0]).then((paginator) => {
+      let filters = {};
+      Object.entries(filtersState[0]).forEach((filterEntry) => {
+        const filterValue = filterEntry[1];
+        if (filterValue.length > 0) {
+          const filterKey = filterEntry[0];
+          const filterType = props.filterDefinitions.find((filterDef) => { return filterDef.key === filterKey }).type;
+          filters[filterKey] = {
+            type: filterType,
+            value: filterValue
+          };
+        }
+      });
+      
+      props.requestRowObjectsFunction(currentPagePosition, settings.pageSize, projectionFields, filters).then((paginator) => {
         // Set current rowObjects
         const rowObjectsLength = paginator.length;
         const totalPagesLocal = calculateTotalPages(rowObjectsLength);

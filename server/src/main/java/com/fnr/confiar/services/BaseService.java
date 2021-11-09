@@ -17,6 +17,7 @@ import javax.persistence.criteria.Selection;
 
 import com.fnr.confiar.entities.BaseEntity;
 import com.fnr.confiar.models.FilterModel;
+import com.fnr.confiar.models.FilterModel.FilterType;
 import com.fnr.confiar.repositories.specs.GenericSpecificationsBuilder;
 import com.fnr.confiar.repositories.specs.SpecificationFactory;
 
@@ -157,13 +158,15 @@ public class BaseService<E extends BaseEntity> {
   public Specification<E> buildSpecificationsByFilters(FilterModel filter) {
     GenericSpecificationsBuilder<E> builder = new GenericSpecificationsBuilder<>();
 
-    for (Map.Entry<String, String> filterItem : filter.getFilters().entrySet()) {
-      // TODO: Fix it checking the filter type or something like that
-      if (filterItem.getKey().startsWith("profile")) {
-        builder.with(specificationFactory.isEqual(filterItem.getKey(), filterItem.getValue()));
-      }
-      else {
-        builder.with(specificationFactory.isLike(filterItem.getKey(), filterItem.getValue()));
+    for (Map.Entry<String, FilterModel.Filter> filterItem : filter.getFilters().entrySet()) {
+      switch(filterItem.getValue().getType()) {
+        case TEXT:
+          builder.with(specificationFactory.isLike(filterItem.getKey(), filterItem.getValue().getValue()));
+          break;
+        case NUMBER:
+        case ENUM:
+          builder.with(specificationFactory.isEqual(filterItem.getKey(), filterItem.getValue().getValue()));
+          break;
       }
     }
 

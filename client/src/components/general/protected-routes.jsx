@@ -1,11 +1,11 @@
 import { useEffect } from 'react';
-import { getSessionStorageObject } from '../../services/session-storage-service';
+import { getSession } from '../../services/session-storage-service';
 import configData from './../../config.json';
 
 const withAuth = (WrappedComponent) => {
   return function ProtectedRoutes(props) {
     useEffect(() => {
-      const session = getSessionStorageObject('session');
+      const session = getSession();
       if (!configData.DEVELOP_MODE && !session) {
         props.history.push('/login');
       }

@@ -10,8 +10,8 @@ import {
   logOut as logOutCall,
 } from '../services/session-service';
 import {
-  getSessionStorageObject,
-  setSessionStorageObject,
+  getSession,
+  setSession,
   destroySession,
 } from '../services/session-storage-service';
 
@@ -20,8 +20,8 @@ const SessionContext = React.createContext(() => {});
 export function SessionProvider(props) {
   const { addFieldError, cleanFieldError } = useError();
   const { addSuccessMessage, addErrorMessage } = useAlertMessage();
-  const [session, setSession] = React.useState(
-    getSessionStorageObject('session'),
+  const [sessionState, setSessionState] = React.useState(
+    getSession(),
   );
   const history = useHistory();
 
@@ -31,8 +31,8 @@ export function SessionProvider(props) {
 
       logInCall(user, password)
         .then((session) => {
-          setSessionStorageObject('session', session);
           setSession(session);
+          setSessionState(session);
           addSuccessMessage('Te logueaste exitosamente!');
           history.push('/Customers');
           return session;
@@ -48,7 +48,7 @@ export function SessionProvider(props) {
       logOutCall()
         .then((session) => {
           destroySession();
-          setSession(session);
+          setSessionState(session);
           addSuccessMessage('Te deslogueaste exitosamente!');
           history.push('/Login');
           return session;
@@ -61,12 +61,12 @@ export function SessionProvider(props) {
     };
 
     return {
-      session,
+      session: sessionState,
       logIn,
       logOut,
     };
   }, [
-    session,
+    sessionState,
     addErrorMessage,
     addFieldError,
     addSuccessMessage,

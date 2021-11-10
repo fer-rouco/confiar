@@ -30,7 +30,7 @@ public class UserController extends BaseController {
   public ResponseEntity<Response> findUsers(@RequestBody FilterModel filters) {  
     PaginatorModel<UserModel> paginator = new PaginatorModel<UserModel>();
     paginator.setRowObjects(convertEntityListToModel(userService.findByFilters(filters, User.class), UserModel.class));
-    paginator.setLength(userService.countUsers());
+    paginator.setLength(userService.countByFilters(filters, User.class));
     return responseOk(paginator);
   }
   

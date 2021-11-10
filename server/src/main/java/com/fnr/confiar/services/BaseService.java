@@ -80,7 +80,7 @@ public class BaseService<E extends BaseEntity> {
   //   return list;
   // }
 
-  private <R> Root<E> applySpecToCriteria(CriteriaQuery<R> query, CriteriaBuilder builder, Specification<E> specs, Class<E> entityClass) {
+  private <R> Root<E> applySpecificationsToCriteria(CriteriaQuery<R> query, CriteriaBuilder builder, Specification<E> specs, Class<E> entityClass) {
     Assert.notNull(query, "CriteriaQuery must not be null!");
 
     Root<E> root = query.from(entityClass);
@@ -128,8 +128,8 @@ public class BaseService<E extends BaseEntity> {
     return typedQuery.getResultList();
   }
 
-  public List<E> findAllWithPagination(Specification<E> specs, FilterModel filter, Class<E> entityClass) {
-    Pageable pageable = PageRequest.of(filter.getPageFrom(), filter.getPageSize(), Sort.by(filter.getSortDirection(), filter.getSortField()));
+  public List<E> findByFiltersWithPagination(Specification<E> specs, FilterModel filter, Class<E> entityClass) {
+    Pageable pageable = filter.getPageable();
     Assert.notNull(pageable, "Pageable must be not null!");
     Assert.notEmpty(filter.getProjectionFields(), "Fields must not be empty!");
 
@@ -138,13 +138,13 @@ public class BaseService<E extends BaseEntity> {
     // CriteriaQuery<E> query = builder.createQuery(entityClass);
     CriteriaQuery<Tuple> query = builder.createTupleQuery();
     // Define FROM clause
-    Root<E> root = applySpecToCriteria(query, builder, specs, entityClass);
+    Root<E> root = applySpecificationsToCriteria(query, builder, specs, entityClass);
     // Define selecting expression
     List<Selection<?>> selections = getSelections(filter.getProjectionFields(), root);
     query.multiselect(selections);
     //Define ORDER BY clause
     applySorting(builder, query, root, pageable);
-    
+
     ModelMapper modelMapper = new ModelMapper();
     return getPageableResultList(query, pageable).stream().map((Tuple tuple) -> { 
       Map<String, Object> maps = new HashMap<>();
@@ -153,6 +153,17 @@ public class BaseService<E extends BaseEntity> {
       });
       return modelMapper.map(maps, entityClass);
     } ).collect(Collectors.toList());
+  }
+
+  public long countByFiltersWithPagination(Specification<E> specs, Class<E> entityClass) {
+    // Create query
+    CriteriaBuilder builder = entityManager.getCriteriaBuilder();
+    CriteriaQuery<Long> queryCount = builder.createQuery(Long.class);
+    // Define FROM clause
+    Root<E> rootCount = applySpecificationsToCriteria(queryCount, builder, specs, entityClass);
+
+    queryCount.select(builder.count(rootCount));
+    return entityManager.createQuery(queryCount).getSingleResult();
   }
  
   public Specification<E> buildSpecificationsByFilters(FilterModel filter) {
@@ -175,6 +186,10 @@ public class BaseService<E extends BaseEntity> {
   }
 
   public List<E> findByFilters(FilterModel filter, Class<E> entityClass) {
-    return findAllWithPagination(buildSpecificationsByFilters(filter), filter, entityClass);
+    return findByFiltersWithPagination(buildSpecificationsByFilters(filter), filter, entityClass);
+  }
+  
+  public long countByFilters(FilterModel filter, Class<E> entityClass) {
+    return countByFiltersWithPagination(buildSpecificationsByFilters(filter), entityClass);
   }
 }

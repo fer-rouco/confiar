@@ -6,6 +6,8 @@ import java.util.Map;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 
 // import org.springframework.boot.autoconfigure.data.web.SpringDataWebProperties.Pageable;
@@ -24,6 +26,10 @@ public class FilterModel {
   String sortField = BaseModel.Fields.id;
   Map<String, Filter> filters;
   List<String> projectionFields;
+
+  public Pageable getPageable() {
+    return PageRequest.of(this.getPageFrom(), this.getPageSize(), Sort.by(this.getSortDirection(), this.getSortField()));
+  }
   
   @Data
   @EqualsAndHashCode

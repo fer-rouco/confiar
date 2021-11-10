@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { getSession } from '../../services/session-storage-service';
+import { getSession } from '../../services/storage/session-storage-service';
 import configData from './../../config.json';
 
 const withAuth = (WrappedComponent) => {

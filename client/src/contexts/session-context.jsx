@@ -8,12 +8,12 @@ import { useError } from './error-context';
 import {
   logIn as logInCall,
   logOut as logOutCall,
-} from '../services/session-service';
+} from '../services/server/session-service';
 import {
   getSession,
   setSession,
   destroySession,
-} from '../services/session-storage-service';
+} from '../services/storage/session-storage-service';
 
 const SessionContext = React.createContext(() => {});
 

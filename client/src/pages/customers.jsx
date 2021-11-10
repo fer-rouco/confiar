@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useHistory } from 'react-router';
 import { useAlertMessage } from '../contexts/alert-message-context';
-import { removeCustomer, findCustomers } from '../services/customer-service';
+import { removeCustomer, findCustomers } from '../services/server/customer-service';
 import Panel from '../components/containers/panel';
 import Table from '../components/table/table';
 import { removeColumnDefinition, textColumnDefinition } from '../components/table/column-definitions/column-definition';

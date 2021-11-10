@@ -20,7 +20,7 @@ import PageNotFound from './pages/page-not-found';
 import User from './pages/user';
 import Users from './pages/users';
 import ServerNotReady from './pages/server-not-ready';
-import { getSessionInfo } from './services/session-service';
+import { getSessionInfo } from './services/server/session-service';
 import Customer from './pages/customer';
 import Customers from './pages/customers';
 // import Tooltip from './components/tooltip';

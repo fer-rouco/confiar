@@ -9,7 +9,7 @@ import SelectField from '../components/controls/fields/select/select-field';
 import PanelForm from '../components/containers/panel-form';
 import { useAlertMessage } from '../contexts/alert-message-context';
 import { useError } from '../contexts/error-context';
-import { findUserById, getAllUserProfiles, updateUser } from '../services/user-service';
+import { findUserById, getAllUserProfiles, updateUser } from '../services/server/user-service';
 
 const [NAME, LAST_NAME, USER_NAME, EMAIL, PASSWORD, REPEAT_PASSWORD, PROFILE] =
   [

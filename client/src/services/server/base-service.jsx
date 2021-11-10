@@ -1,5 +1,5 @@
 import Axios from 'axios';
-import configData from './../config.json';
+import configData from '../../config.json';
 
 const SERVER_URL = configData.SERVER_URL;
 

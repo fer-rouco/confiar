@@ -1,4 +1,4 @@
-import configData from './../config.json';
+import configData from './../../config.json';
 
 let storeObject = sessionStorage;
 const storageManagerService = {

@@ -8,7 +8,7 @@ import TextField from '../components/controls/fields/input/text-field';
 import PanelForm from '../components/containers/panel-form';
 import { useAlertMessage } from '../contexts/alert-message-context';
 import { useError } from '../contexts/error-context';
-import { findCustomerById, updateCustomer } from '../services/customer-service';
+import { findCustomerById, updateCustomer } from '../services/server/customer-service';
 import FileUpload from '../components/controls/file-upload';
 
 const [NAME, LAST_NAME, ADDRESS, EMAIL, PHONE, IDENTITY_DOCUMENTS, PAYCHECKS] =

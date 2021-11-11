@@ -91,7 +91,12 @@ export default function Users() {
           options: profileListWithAllOption
         }
       ]);
-    });  
+    });
+    
+    return () => {
+      setColumnDefinitions([]);
+      setFilterDefinitions([]);
+    };
   }, []);
 
   return (

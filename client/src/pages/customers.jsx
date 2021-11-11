@@ -69,6 +69,11 @@ export default function Customers() {
         label: 'E-Mail'
       })
     ]);
+        
+    return () => {
+      setColumnDefinitions([]);
+      setFilterDefinitions([]);
+    };
   }, []);
 
   return (

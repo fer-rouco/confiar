@@ -127,7 +127,7 @@ function Table(props) {
   }, [dialog.getAfterConfirmationFlag()]);
 
   function getId() {
-    return "table." + window.location.pathname.replaceAll('/', '').toLowerCase();
+    return "table." + ((props.id) ? props.id : window.location.pathname.replaceAll('/', '').toLowerCase());
   }
 
   function update() {

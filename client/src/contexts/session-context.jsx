@@ -3,7 +3,7 @@
 
 import React from 'react';
 import { useAlertMessage } from './alert-message-context';
-import { useHistory } from 'react-router';
+import useNavigation from '../hooks/navigation';
 import { useError } from './error-context';
 import {
   logIn as logInCall,
@@ -16,23 +16,21 @@ const SessionContext = React.createContext(() => {});
 
 export function SessionProvider(props) {
   const sessionStorageService = storageManagerService(true);
-  const { addFieldError, cleanFieldError } = useError();
+  const { addFieldError } = useError();
   const { addSuccessMessage, addErrorMessage } = useAlertMessage();
   const [sessionState, setSessionState] = React.useState(
     sessionStorageService.getItem(STORAGE_SESSION_IDENTIFIER)
   );
-  const history = useHistory();
+  const navigation = useNavigation();
 
   const value = React.useMemo(() => {
     const logIn = async function (user, password) {
-      cleanFieldError();
-
       logInCall(user, password)
         .then((session) => {
           sessionStorageService.setItem(STORAGE_SESSION_IDENTIFIER, session);
           setSessionState(session);
           addSuccessMessage('Te logueaste exitosamente!');
-          history.push('/Customers');
+          navigation.navigateTo('/Customers');
           return session;
         })
         .catch((error) => {
@@ -48,7 +46,7 @@ export function SessionProvider(props) {
           sessionStorageService.removeItem(STORAGE_SESSION_IDENTIFIER);
           setSessionState(session);
           addSuccessMessage('Te deslogueaste exitosamente!');
-          history.push('/Login');
+          navigation.navigateTo('/Login');
           return session;
         })
         .catch((error) => {
@@ -68,7 +66,6 @@ export function SessionProvider(props) {
     addErrorMessage,
     addFieldError,
     addSuccessMessage,
-    cleanFieldError,
     history,
   ]);
 

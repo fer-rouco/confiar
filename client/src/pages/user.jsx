@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useLocation } from 'react-router';
-import { useHistory } from 'react-router-dom';
+import useNavigation from '../hooks/navigation';
 import SubmitButton from '../components/controls/buttons/submit-button';
 import MailField from '../components/controls/fields/input/mail-field';
 import PasswordField from '../components/controls/fields/input/password-field';
@@ -23,17 +23,16 @@ const [NAME, LAST_NAME, USER_NAME, EMAIL, PASSWORD, REPEAT_PASSWORD, PROFILE] =
   ];
 
 export default function User() {
-  const history = useHistory();
+  const navigation = useNavigation();
   const [update, setUpdate] = useState(false);
   const modelState = useState(null);
   const [model, setModel] = modelState;
   const [profiles, setProfiles] = useState([]);
   const { addSuccessMessage, addErrorMessage } = useAlertMessage();
-  const { addFieldError, cleanFieldError } = useError();
+  const { addFieldError } = useError();
   const location = useLocation();
 
   const onCreateUser = () => {
-    cleanFieldError();
     let valid = true;
     if (!update && model.password !== model.repeatPassword) {
       valid = false;
@@ -95,10 +94,6 @@ export default function User() {
     let profileList = response.map((profile) => { return {value: profile.id, label: profile.description }; });
     setProfiles(profileList);
   }
-
-  useEffect(() => {
-    cleanFieldError();
-  }, []);
 
   useEffect(() => {
     let allUserProfilesPromise = getAllUserProfiles();

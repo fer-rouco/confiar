@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useHistory } from 'react-router';
+import useNavigation from '../hooks/navigation';
 import { useAlertMessage } from '../contexts/alert-message-context';
 import { removeCustomer, findCustomers } from '../services/server/customer-service';
 import Panel from '../components/containers/panel';
@@ -7,13 +7,13 @@ import Table from '../components/table/table';
 import { removeColumnDefinition, textColumnDefinition } from '../components/table/column-definitions/column-definition';
 
 export default function Customers() {
-  const history = useHistory();
+  const navigation = useNavigation();
   const { addSuccessMessage, addErrorMessage } = useAlertMessage();
   const [columnDefinitions, setColumnDefinitions] = useState([]);
   const [filterDefinitions, setFilterDefinitions] = useState([]);
 
   function create() {
-    history.push('/Customer');
+    navigation.navigateTo('/Customer');
   };
 
   useEffect(() => {

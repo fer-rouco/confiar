@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useLocation } from 'react-router';
-import { useHistory } from 'react-router-dom';
+import useNavigation from '../hooks/navigation';
 import SubmitButton from '../components/controls/buttons/submit-button';
 import MailField from '../components/controls/fields/input/mail-field';
 import PhoneField from '../components/controls/fields/input/phone-field';
@@ -23,23 +23,22 @@ const [NAME, LAST_NAME, ADDRESS, EMAIL, PHONE, IDENTITY_DOCUMENTS, PAYCHECKS] =
   ];
 
 export default function Customer() {
-  const history = useHistory();
+  const navigation = useNavigation();
   const [update, setUpdate] = useState(false);
   const modelState = useState(null);
   const [model, setModel] = modelState;
   const { addSuccessMessage, addErrorMessage } = useAlertMessage();
-  const { addFieldError, cleanFieldError } = useError();
+  const { addFieldError } = useError();
   const location = useLocation();
 
   const onCreateUser = () => {
-    cleanFieldError();
     let valid = true;
     if (valid) {
       let responsePromise = updateCustomer(createTransferObject(model.id));
       responsePromise
         .then((user) => {
           addSuccessMessage('El cliente ' + user.name + ' fue ' + (update ? 'actualizado' : 'creado') + ' exitosamente.');
-          history.push('/Customers');
+          navigation.navigateTo('/Customers');
         })
         .catch((error) => {
           addErrorMessage(error.message);
@@ -78,10 +77,6 @@ export default function Customer() {
   };
 
   useEffect(() => {
-    cleanFieldError();
-  }, []) 
-
-  useEffect(() => {
     if (location.state && location.state.id) {
       setUpdate(true);
       findCustomerById(location.state.id)
@@ -89,7 +84,7 @@ export default function Customer() {
           setModel(customer);
         })
         .catch(() => {
-          history.push('/Customers');
+          navigation.navigateTo('/Customers');
         });
     }
     else {

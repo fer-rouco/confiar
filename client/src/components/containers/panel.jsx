@@ -121,6 +121,10 @@ function Panel(props) {
     }
   }, []);
 
+  function getClasses() {
+    return ('container panel-container ' + ((props.size) ? props.size : '')).trim();
+  }
+
   function buildActions() {
     let actions;
     if (props.actions) {
@@ -175,7 +179,7 @@ function Panel(props) {
   }
 
   return (
-    <StyledContainer className={'container panel-container ' + props.size}>
+    <StyledContainer className={getClasses()}>
       <div className="row justify-content-center">
         <div>
           {buildTitle()}

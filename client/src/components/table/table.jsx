@@ -10,6 +10,7 @@ import withLoader from '../general/load-indicator';
 import PanelForm from '../containers/panel-form';
 import TextField from '../controls/fields/input/text-field';
 import SelectField from '../controls/fields/select/select-field';
+import storageManagerService from "./../../services/storage/storage-manager-service";
 
 const StyledTable = styled.table`
   margin-bottom: 20px;
@@ -88,9 +89,9 @@ function Table(props) {
   const [rowObjects, setRowObjects] = useState(null);
   const [totalPages, setTotalPages] = useState(null);
   const [totalRows, setTotalRows] = useState(null);
-  const [currentPagePosition, setCurrentPagePosition] = useState(0);
-  const [previousPagePosition, setPreviousPagePosition] = useState(-1);
-  const settingsState = useState({ pageSize: (props.pageSize) ? props.pageSize : 10 });
+  const localStorageService = storageManagerService();
+  const [currentPagePosition, setCurrentPagePosition] = useState(localStorageService.getItem(getId()).currentPagePosition);
+  const settingsState = useState({ pageSize: (props.pageSize) ? props.pageSize : 3 });
   const [settings] = settingsState;
   const filtersState = useState({});
   const dialog = useDialog();
@@ -115,6 +116,7 @@ function Table(props) {
   }, [props.columnDefinitions]);
 
   useEffect(() => {
+    localStorageService.setItem(getId(), { currentPagePosition: currentPagePosition });
     update();
   }, [settings, currentPagePosition, props.rowObjects, filtersState[0]]);
      
@@ -123,6 +125,10 @@ function Table(props) {
       updateRowObjectsWithPaginator();
     }
   }, [dialog.getAfterConfirmationFlag()]);
+
+  function getId() {
+    return "table." + window.location.pathname.replaceAll('/', '').toLowerCase();
+  }
 
   function update() {
     if (props.requestRowObjectsFunction) {
@@ -205,23 +211,19 @@ function Table(props) {
 
   function handleNext() {
     let nextPagePosition = currentPagePosition + 1;
-    setPreviousPagePosition(currentPagePosition);
     setCurrentPagePosition((nextPagePosition > totalPages) ? totalPages : nextPagePosition);
   }
   
   function handleLast() {
-    setPreviousPagePosition(currentPagePosition);
     setCurrentPagePosition(totalPages);
   }
 
   function handlePrevious() {
     let previousPagePositionLocal = currentPagePosition - 1;
-    setPreviousPagePosition(currentPagePosition);
     setCurrentPagePosition((previousPagePositionLocal < 0) ? 0 : previousPagePositionLocal);
   }
 
   function handleFirst() {
-    setPreviousPagePosition(currentPagePosition);
     setCurrentPagePosition(0);
   }
   

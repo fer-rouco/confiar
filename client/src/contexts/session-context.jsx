@@ -8,20 +8,18 @@ import { useError } from './error-context';
 import {
   logIn as logInCall,
   logOut as logOutCall,
-} from '../services/server/session-service';
-import {
-  getSession,
-  setSession,
-  destroySession,
-} from '../services/storage/session-storage-service';
+} from './../services/server/session-service';
+import storageManagerService from "./../services/storage/storage-manager-service";
+import { STORAGE_SESSION_IDENTIFIER } from './../services/storage/storage-constants';
 
 const SessionContext = React.createContext(() => {});
 
 export function SessionProvider(props) {
+  const sessionStorageService = storageManagerService(true);
   const { addFieldError, cleanFieldError } = useError();
   const { addSuccessMessage, addErrorMessage } = useAlertMessage();
   const [sessionState, setSessionState] = React.useState(
-    getSession(),
+    sessionStorageService.getItem(STORAGE_SESSION_IDENTIFIER)
   );
   const history = useHistory();
 
@@ -31,7 +29,7 @@ export function SessionProvider(props) {
 
       logInCall(user, password)
         .then((session) => {
-          setSession(session);
+          sessionStorageService.setItem(STORAGE_SESSION_IDENTIFIER, session);
           setSessionState(session);
           addSuccessMessage('Te logueaste exitosamente!');
           history.push('/Customers');
@@ -47,7 +45,7 @@ export function SessionProvider(props) {
     const logOut = () => {
       logOutCall()
         .then((session) => {
-          destroySession();
+          sessionStorageService.removeItem(STORAGE_SESSION_IDENTIFIER);
           setSessionState(session);
           addSuccessMessage('Te deslogueaste exitosamente!');
           history.push('/Login');

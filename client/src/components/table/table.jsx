@@ -90,7 +90,7 @@ function Table(props) {
   const [totalPages, setTotalPages] = useState(null);
   const [totalRows, setTotalRows] = useState(null);
   const localStorageService = storageManagerService();
-  const [currentPagePosition, setCurrentPagePosition] = useState(localStorageService.getItem(getId()).currentPagePosition);
+  const [currentPagePosition, setCurrentPagePosition] = useState((localStorageService.getItem(getId())) ? localStorageService.getItem(getId()).currentPagePosition : 0);
   const settingsState = useState({ pageSize: (props.pageSize) ? props.pageSize : 3 });
   const [settings] = settingsState;
   const filtersState = useState({});

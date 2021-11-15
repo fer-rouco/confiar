@@ -180,8 +180,8 @@ export default function SideBar(props) {
             aria-labelledby="dropdownUser"
           >
             <li>
-              <a className="dropdown-item" href="/#">
-                Settings
+              <a className="dropdown-item" href="/Settings">
+                Configuraciones
               </a>
             </li>
             <li>

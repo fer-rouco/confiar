@@ -1,5 +1,3 @@
-import 'bootstrap-icons/font/bootstrap-icons.css';
-import 'bootstrap/dist/css/bootstrap.css';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import AlertMessage from './components/general/alert-message';
@@ -11,19 +9,19 @@ import { AlertMessageProvider } from './contexts/alert-message-context';
 import { DialogProvider } from './contexts/dialog-context';
 import { ErrorProvider } from './contexts/error-context';
 import { SessionProvider } from './contexts/session-context';
-import './index.css';
 // import reportWebVitals from './reportWebVitals';
 import { getSessionInfo } from './services/server/session-service';
 import App from './App';
 import { BrowserRouter } from 'react-router-dom';
+import { ThemeModeProvider } from './contexts/theme-context';
 // import Tooltip from './components/tooltip';
 
-let routing;
+let routingApp = null;
 getSessionInfo()
   .then((sessionInfo) => {
-    routing = (
-      <React.StrictMode>
-        {/* <Tooltip></Tooltip> */}
+    {/* <Tooltip></Tooltip> */}
+    routingApp = (
+      <ThemeModeProvider>
         <AlertMessageProvider>
           <AlertMessage></AlertMessage>
           <DialogProvider>
@@ -35,25 +33,28 @@ getSessionInfo()
                     <NavBar title="Confiar" />
                     <SideBar icon="cart3"></SideBar>
                   </BarsProvider>
-                    <App></App>
+                  <App></App>
                 </SessionProvider>
               </BrowserRouter>
             </ErrorProvider>
           </DialogProvider>
         </AlertMessageProvider>
-      </React.StrictMode>
+      </ThemeModeProvider>
     );
   })
   .catch((error) => {
-    routing = (
-      <React.StrictMode>
-        <BrowserRouter>
-          <App error={error} ></App>
-        </BrowserRouter>
-      </React.StrictMode>
+    routingApp = (
+      <BrowserRouter>
+        <App error={error} ></App>
+      </BrowserRouter>
     );
   })
   .finally(() => {
+    const routing = (
+      <React.StrictMode>
+        {routingApp}
+      </React.StrictMode>
+    );
     ReactDOM.render(routing, document.getElementById('root'));
   });
 

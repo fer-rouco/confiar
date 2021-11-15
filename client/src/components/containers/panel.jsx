@@ -1,13 +1,13 @@
 import { createRef, useEffect } from 'react';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import Icon from './../general/icon';
 import withLoader from './../general/load-indicator';
 
-const StyledBoxShadow = `
+const StyledBoxShadow = css`
   box-shadow: 7px 7px 3px rgb(0 0 0 / 50%);
 `;
 
-const StyledBorder = `
+const StyledBorder = css`
   border: 1px solid #CCC;
 `;
 
@@ -17,7 +17,8 @@ const StyledContainer = styled.div`
 
   border-radius: 25px;
   padding: 20px 20px 0 20px; // Top - Right - Bottom - Left
-  background-color: #fff;
+  background-color:  ${({ theme }) => theme.components.containers.panel.body.background};
+  color:  ${({ theme }) => theme.components.containers.panel.body.text};
   margin-bottom: 20px;
 
   &.small {
@@ -33,21 +34,21 @@ const StyledContainer = styled.div`
   }
 `;
 
-const StyledHeaderColor = `
-  background-color: #DED;
-  color: lightseagreen; /* Antes: #097890; */
+const StyledHeaderColor = css`
+  background-color:  ${({ theme }) => theme.components.containers.panel.header.background};
+  color:  ${({ theme }) => theme.components.containers.panel.header.text};
 `;
 
-const StyledHeaderBorderRadius = `
+const StyledHeaderBorderRadius = css`
   ${StyledBorder};
   border-radius: 10px;
 `;
 
-const StyledHeaderBoxShadow = `
+const StyledHeaderBoxShadow = css`
   box-shadow: 5px 5px 3px rgb(0 0 0 / 50%);
 `;
 
-const StyledHeaderContainer = `
+const StyledHeaderContainer = css`
   ${StyledHeaderColor};
   ${StyledHeaderBorderRadius};
   ${StyledHeaderBoxShadow};

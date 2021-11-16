@@ -3,10 +3,29 @@ import bootstrap from 'bootstrap/dist/js/bootstrap.js';
 import styled from 'styled-components';
 import Button from '../controls/buttons/button';
 import { useDialog } from '../../contexts/dialog-context';
+import { navigateIntoObjectByPath } from '../../theme';
 
+const getThemeAttribute = (theme, attrribute) => {
+  return navigateIntoObjectByPath(theme, "components.dialog." + attrribute);
+}
 
 const StyledModalContent = styled.div`
   width: fit-content
+  &.modal-content .modal-header .modal-title {
+    color: ${({ theme }) => getThemeAttribute(theme, "header.color")};
+  }
+  &.modal-content .modal-header {
+    background-color: ${({ theme }) => getThemeAttribute(theme, "header.bgColor")};
+    color: ${({ theme }) => getThemeAttribute(theme, "header.color")};
+  }
+  &.modal-content .modal-body {
+    background-color: ${({ theme }) => getThemeAttribute(theme, "body.bgColor")};
+    color: ${({ theme }) => getThemeAttribute(theme, "body.color")};
+  }
+  &.modal-content .modal-footer {
+    background-color: ${({ theme }) => getThemeAttribute(theme, "footer.bgColor")};
+    color: ${({ theme }) => getThemeAttribute(theme, "footer.color")};
+  }
 `;
 
 export default function Dialog() {

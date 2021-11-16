@@ -1,58 +1,31 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import AlertMessage from './components/general/alert-message';
-import { BarsProvider } from './components/bars/bars-context';
-import Dialog from './components/dialog/dialog';
-import NavBar from './components/bars/nav-bar';
-import SideBar from './components/bars/side-bar';
-import { AlertMessageProvider } from './contexts/alert-message-context';
-import { DialogProvider } from './contexts/dialog-context';
-import { ErrorProvider } from './contexts/error-context';
-import { SessionProvider } from './contexts/session-context';
+import { BrowserRouter } from 'react-router-dom';
+import App from './App';
+import { ThemeModeProvider } from './contexts/theme-context';
 // import reportWebVitals from './reportWebVitals';
 import { getSessionInfo } from './services/server/session-service';
-import App from './App';
-import { BrowserRouter } from 'react-router-dom';
-import { ThemeModeProvider } from './contexts/theme-context';
-// import Tooltip from './components/tooltip';
 
 let routingApp = null;
 getSessionInfo()
   .then((sessionInfo) => {
-    {/* <Tooltip></Tooltip> */}
     routingApp = (
-      <ThemeModeProvider>
-        <AlertMessageProvider>
-          <AlertMessage></AlertMessage>
-          <DialogProvider>
-            <Dialog></Dialog>
-            <ErrorProvider>
-              <BrowserRouter>
-                <SessionProvider>
-                  <BarsProvider>
-                    <NavBar title="Confiar" />
-                    <SideBar icon="cart3"></SideBar>
-                  </BarsProvider>
-                  <App></App>
-                </SessionProvider>
-              </BrowserRouter>
-            </ErrorProvider>
-          </DialogProvider>
-        </AlertMessageProvider>
-      </ThemeModeProvider>
+      <App></App>
     );
   })
   .catch((error) => {
     routingApp = (
-      <BrowserRouter>
-        <App error={error} ></App>
-      </BrowserRouter>
+      <App error={error} ></App>
     );
   })
   .finally(() => {
     const routing = (
       <React.StrictMode>
-        {routingApp}
+        <ThemeModeProvider>
+          <BrowserRouter>
+            {routingApp}
+          </BrowserRouter>
+        </ThemeModeProvider>
       </React.StrictMode>
     );
     ReactDOM.render(routing, document.getElementById('root'));

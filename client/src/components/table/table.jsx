@@ -11,21 +11,26 @@ import PanelForm from '../containers/panel-form';
 import TextField from '../controls/fields/input/text-field';
 import SelectField from '../controls/fields/select/select-field';
 import storageManagerService from "./../../services/storage/storage-manager-service";
+import { navigateIntoObjectByPath } from '../../theme';
+
+const getThemeAttribute = (theme, attrribute) => {
+  return navigateIntoObjectByPath(theme, "components.table." + attrribute);
+}
 
 const StyledTable = styled.table`
   margin-bottom: 20px;
 `;
 
 const StyledTR = styled.tr`
-  background-color: #FFFFFF;
+  background-color: ${({ theme }) => getThemeAttribute(theme, "cell.primary.bgColor")};
 
   &.secondary {
-    background-color: #F0F0F0;
+    background-color: ${({ theme }) => getThemeAttribute(theme, "cell.secondary.bgColor")};
   }
   
   &.header {
-    background-color: #DDEEDD;
-    color: #20B2AA;
+    background-color: ${({ theme }) => getThemeAttribute(theme, "header.bgColor")};
+    color: ${({ theme }) => getThemeAttribute(theme, "header.color")};
   }
 `;
 
@@ -35,12 +40,16 @@ const StyledTD = styled.td`
 
   &.icon {
     width: 40px;
+    color: ${({ theme }) => getThemeAttribute(theme, "cell.action.color")};
   }
 `;
 
 const StyledTH = styled.th`
   border: 1px solid #dee2e6;
   vertical-align: middle;
+  & a {
+    color: ${({ theme }) => getThemeAttribute(theme, "cell.head.color")};
+  }
 `;
 
 const StyledCaption = styled.caption`

@@ -6,8 +6,15 @@ import { useSession } from '../../contexts/session-context';
 import useNavigationItems from '../../hooks/navigation-items';
 import Icon from '../general/icon';
 import useReactPath from '../../hooks/path-name';
+import { navigateIntoObjectByPath } from '../../theme';
+
+const getThemeAttribute = (theme, attrribute) => {
+  return navigateIntoObjectByPath(theme, "components.bars.sideBar." + attrribute);
+}
 
 const StyledSideBar = styled.div`
+  background-color: ${({ theme }) => getThemeAttribute(theme, "bgColor")};
+  color: ${({ theme }) => getThemeAttribute(theme, "color")};
   z-index: 1000;
   height: calc(100% - 61px);
   position: absolute;
@@ -47,6 +54,17 @@ const StyledNavAnchor = styled.a`
 
 const StyledNavItem = styled.li`
   margin-bottom: 5px;
+`;
+
+const StyledProfileAnchor = styled.a`
+  color: ${({ theme }) => getThemeAttribute(theme, "profile.icon.color")};
+`;
+
+const StyledProfileMenu = styled.ul`
+  background-color: ${({ theme }) => getThemeAttribute(theme, "bgColor")};
+  & .dropdown-item {
+    color: ${({ theme }) => getThemeAttribute(theme, "color")};
+  }
 `;
 
 export default function SideBar(props) {
@@ -143,7 +161,7 @@ export default function SideBar(props) {
     <div>
       <StyledSideBar
         className={
-          'd-flex flex-column flex-shrink-0 p-3 bg-light sidebar ' +
+          'd-flex flex-column flex-shrink-0 p-3 sidebar ' +
           (sidebarOpen ? 'large' : 'small')
         }
       >
@@ -162,7 +180,7 @@ export default function SideBar(props) {
         <ul className="nav nav-pills flex-column mb-auto">{itemList.items}</ul>
         <hr />
         <div className="dropdown">
-          <a
+          <StyledProfileAnchor
             href="/#"
             className="d-flex align-items-center link-dark text-decoration-none"
             id="dropdownUser"
@@ -174,8 +192,8 @@ export default function SideBar(props) {
               size={sidebarOpen ? 'medium' : 'large'}
             ></Icon>
             {sidebarOpen ? <strong>{getUserName()}</strong> : null}
-          </a>
-          <ul
+          </StyledProfileAnchor>
+          <StyledProfileMenu
             className="dropdown-menu text-small shadow"
             aria-labelledby="dropdownUser"
           >
@@ -197,7 +215,7 @@ export default function SideBar(props) {
                 Sign out
               </a>
             </li>
-          </ul>
+          </StyledProfileMenu>
         </div>
       </StyledSideBar>
     </div>

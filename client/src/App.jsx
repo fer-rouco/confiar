@@ -1,18 +1,27 @@
-import { useState } from 'react';
+import React from 'react';
 import { Route, Switch, withRouter } from 'react-router-dom';
 import { ThemeProvider } from 'styled-components';
-import { ThemeModeProvider } from './contexts/theme-context';
+import { BarsProvider } from './components/bars/bars-context';
+import NavBar from './components/bars/nav-bar';
+import SideBar from './components/bars/side-bar';
+import Dialog from './components/dialog/dialog';
+import AlertMessage from './components/general/alert-message';
 import withAuth from './components/general/protected-routes';
-import Settings from './pages/settings';
+import { AlertMessageProvider } from './contexts/alert-message-context';
+import { DialogProvider } from './contexts/dialog-context';
+import { ErrorProvider } from './contexts/error-context';
+import { SessionProvider } from './contexts/session-context';
+import { useTheme } from './contexts/theme-context';
 import Customer from './pages/customer';
 import Customers from './pages/customers';
 import Login from './pages/login';
 import PageNotFound from './pages/page-not-found';
 import ServerNotReady from './pages/server-not-ready';
+import Settings from './pages/settings';
 import User from './pages/user';
 import Users from './pages/users';
 import { GlobalStyles } from './theme';
-import { useTheme } from './contexts/theme-context';
+// import Tooltip from './components/tooltip';
 
 const SettingsWithAuth = withRouter(withAuth(Settings));
 const UsersWithAuth = withRouter(withAuth(Users));
@@ -26,45 +35,60 @@ function App({error}) {
   return (
     <ThemeProvider theme={theme.getCurrent()}>
       <GlobalStyles />
-      <div className="container mt-3">
-        <div className="row justify-content-center">
-          <div className="col">
-              { (!error) ?
-                (
-                  <Switch>
-                    <Route exact path="/" component={UsersWithAuth} />
-                    <Route exact path="/Login">
-                      <Login />
-                    </Route>
-                    <Route exact path="/Settings">
-                      <SettingsWithAuth />
-                    </Route>
-                    <Route exact path="/Users">
-                      <UsersWithAuth />
-                    </Route>
-                    <Route exact path="/User">
-                      <UserWithAuth />
-                    </Route>
-                    <Route exact path="/Customers">
-                      <CustomersWithAuth />
-                    </Route>
-                    <Route exact path="/Customer">
-                      <CustomerWithAuth />
-                    </Route>
-                    <Route component={PageNotFound} />
-                    <Route component={ServerNotReady} />
-                  </Switch>
-                )
-              :
-                (
-                  <Switch>
-                    <Route component={ServerNotReady} />
-                  </Switch>
-                )
-              }
-          </div>
-        </div>
-      </div>
+      {/* <Tooltip></Tooltip> */}
+      <AlertMessageProvider>
+        <AlertMessage></AlertMessage>
+        <DialogProvider>
+          <Dialog></Dialog>
+          <ErrorProvider>
+            <SessionProvider>
+              <BarsProvider>
+                <NavBar title="Confiar" />
+                <SideBar icon="cart3"></SideBar>
+              </BarsProvider>
+              <div className="container mt-3">
+                <div className="row justify-content-center">
+                  <div className="col">
+                      { (!error) ?
+                        (
+                          <Switch>
+                            <Route exact path="/" component={UsersWithAuth} />
+                            <Route exact path="/Login">
+                              <Login />
+                            </Route>
+                            <Route exact path="/Settings">
+                              <SettingsWithAuth />
+                            </Route>
+                            <Route exact path="/Users">
+                              <UsersWithAuth />
+                            </Route>
+                            <Route exact path="/User">
+                              <UserWithAuth />
+                            </Route>
+                            <Route exact path="/Customers">
+                              <CustomersWithAuth />
+                            </Route>
+                            <Route exact path="/Customer">
+                              <CustomerWithAuth />
+                            </Route>
+                            <Route component={PageNotFound} />
+                            <Route component={ServerNotReady} />
+                          </Switch>
+                        )
+                      :
+                        (
+                          <Switch>
+                            <Route component={ServerNotReady} />
+                          </Switch>
+                        )
+                      }
+                  </div>
+                </div>
+              </div>
+            </SessionProvider>
+          </ErrorProvider>
+        </DialogProvider>
+      </AlertMessageProvider>
     </ThemeProvider>
   );
 }

@@ -1,9 +1,17 @@
 import { createRef, useEffect } from 'react';
 import { useFormContext } from 'react-hook-form';
 import styled from 'styled-components';
+import { navigateIntoObjectByPath } from '../../../../theme';
 import { useModel } from '../model-context';
 
+const getThemeAttribute = (theme, attrribute) => {
+  return navigateIntoObjectByPath(theme, "components.controls.fields.select." + attrribute);
+}
+
 const StyledFormSelect = styled.select`
+  background-color: ${({ theme }) => getThemeAttribute(theme, "bgColor")};
+  color: ${({ theme }) => getThemeAttribute(theme, "color")};
+
   &.form-select {
     height: 40px;
     padding-top: 14px !important;
@@ -18,6 +26,7 @@ const StyledFormSelect = styled.select`
   }
 
   &.form-select ~ label {
+    color: ${({ theme }) => getThemeAttribute(theme, "color")};
     padding-top: 8px;
   }
   

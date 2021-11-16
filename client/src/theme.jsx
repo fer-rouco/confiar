@@ -3,8 +3,8 @@ import { createGlobalStyle } from 'styled-components';
 
 export const GlobalStyles = createGlobalStyle`
   body {
-    background-color: ${({ theme }) => theme.body};
-    color: ${({ theme }) => theme.text};
+    background-color: ${({ theme }) => theme.bgColor};
+    color: ${({ theme }) => theme.color};
     transition: background 0.2s ease-in, color 0.2s ease-in;
     margin: 0;
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
@@ -35,34 +35,48 @@ export const GlobalStyles = createGlobalStyle`
   }
 
   body {
-    background: ${({ theme }) => theme.body};
-    color: ${({ theme }) => theme.text};
+    background: ${({ theme }) => theme.bgColor};
+    color: ${({ theme }) => theme.color};
     transition: background 0.2s ease-in, color 0.2s ease-in;
   }
 `;
 
-const backgroundLight = '#C8C8C8';
-const textLight = '#121620';
+const bgColorLight = '#C8C8C8';
+const colorLight = '#121620';
+const headerBgColorLight = '#B8B0AD';
+const headerColorLight = '#00956A';
+const bodyBgColorLight = '#ebecec';
+const bodyColorLight = colorLight;
+const fieldBgColorLight = '#009468';
+const fieldColorLight = '#ffffff';
 export const lightTheme = {
-  background: backgroundLight,
-  text: textLight,
+  bgColor: bgColorLight,
+  color: colorLight,
   components: {
     bars: {
       navBar: {},
-      sideBar: {}
+      sideBar: {
+        bgColor: headerBgColorLight,
+        color: headerColorLight,
+        profile: {
+          icon: {
+            color: '#009468'
+          }
+        }
+      }
     },
     containers: {
       panel: {
         header: {
           firstStep: {
-            background: '#cccccc'  
+            bgColor: '#cccccc'  
           },
-          background: '#B8B0AD',
-          text: '#00956A',
+          bgColor: headerBgColorLight,
+          color: headerColorLight,
         },
         body: {
-          background: '#eeeeee',
-          text: textLight,
+          bgColor: bodyBgColorLight,
+          color: bodyColorLight,
         }
       }
     },
@@ -71,36 +85,103 @@ export const lightTheme = {
         button: {}
       },
       fields: {
-        input: {},
-        select: {}
+        input: {
+          bgColor: fieldBgColorLight,
+          color: fieldColorLight
+        },
+        select: {
+          bgColor: fieldBgColorLight,
+          color: fieldColorLight
+        }
       },
-      fileUpload: {}
+      fileUpload: {
+        item: {
+          bgColor: '#009468',
+          closeButton: {
+            bgColor: 'lightgreen',
+            color: 'black'
+          },
+          imageButton: {
+            bgColor: 'lightgreen',
+            color: 'black'
+          }
+        }
+      }
+    },
+    dialog: {
+      header: {
+        bgColor: headerBgColorLight,
+        color: headerColorLight,
+      },
+      body: {
+        bgColor: bodyBgColorLight,
+        color: bodyColorLight,
+      },
+      footer: {
+        bgColor: bodyBgColorLight,
+        color: bodyColorLight,
+      }
+    },
+    general: {},
+    table: {
+      header: {
+        bgColor: headerBgColorLight,
+        color: headerColorLight,
+      },
+      cell: {
+        head: {
+          color: 'cadetblue'
+        },
+        primary: {
+          bgColor: '#FFFFFF',
+        },
+        secondary: {
+          bgColor: '#F0F0F0',
+        },
+        action: {
+          color: '#dc3545'
+        },
+      }
     }
   }
 };
 
-const backgroundDark = '#555555';
-const textDark = '#f1f1f1';
+const bgColorDark = '#222222';
+const colorDark = '#f1f1f1';
+const headerBgColorDark = '#555555';
+const headerColorDark = '#00956A';
+const bodyBgColorDark = '#333333';
+const bodyColorDark = '#f1f1f1';
+const fieldBgColorDark = '#009468';
+const fieldColorDark = '#ffffff';
 export const darkTheme = {
-  background: backgroundDark,
-  text: textDark,
+  bgColor: bgColorDark,
+  color: colorDark,
   components: {
     bars: {
       navBar: {},
-      sideBar: {}
+      sideBar: {
+        bgColor: headerBgColorDark,
+        color: headerColorDark,
+        profile: {
+          icon: {
+            color: '#009468'
+          }
+        }
+      }
     },
     containers: {
       panel: {
         header: {
           firstStep: {
-            background: '#cccccc'  
+            bgColor: '#555555'  
           },
-          background: '#555555',
-          text: '#f1f1f1',        
+          bgColor: headerBgColorDark,
+          color: headerColorDark,
         },
         body: {
-          background: '#555555',
-          text: '#f1f1f1',        
+          bgColor: bodyBgColorDark,
+          color: bodyColorDark,        
         }
       }
     },
@@ -109,15 +190,68 @@ export const darkTheme = {
         button: {}
       },
       fields: {
-        input: {},
-        select: {}
+        input: {
+          bgColor: fieldBgColorDark,
+          color: fieldColorDark
+        },
+        select: {
+          bgColor: fieldBgColorDark,
+          color: fieldColorDark
+        }
       },
-      fileUpload: {}
+      fileUpload: {
+        item: {
+          bgColor: '#009468',
+          closeButton: {
+            bgColor: 'lightgreen',
+            color: 'black'
+          },
+          imageButton: {
+            bgColor: 'lightgreen',
+            color: 'black'
+          }
+        }
+      }
+    },
+    dialog: {
+      header: {
+        bgColor: headerBgColorDark,
+        color: headerColorDark,
+      },
+      body: {
+        bgColor: bodyBgColorDark,
+        color: bodyColorDark   
+      },
+      footer: {
+        bgColor: bodyBgColorDark,
+        color: bodyColorDark   
+      }
+    },
+    general: {},
+    table: {
+      header: {
+        bgColor: headerBgColorDark,
+        color: headerColorDark,
+      },
+      cell: {
+        head: {
+          color: '#0d6efd'
+        },
+        primary: {
+          bgColor: '#888888',
+        },
+        secondary: {
+          bgColor: '#999999',
+        },
+        action: {
+          color: '#dc3545'
+        },
+      }
     }
   }
 };
 
 export const navigateIntoObjectByPath = (theme, path) => {
   const navigateIntoObject = (object, path) => path.split('.').reduce((pathPartA, pathPartB) => pathPartA && pathPartA[pathPartB], object);
-  return navigateIntoObject(theme, "components.containers.panel." + path);
+  return navigateIntoObject(theme, path);
 }

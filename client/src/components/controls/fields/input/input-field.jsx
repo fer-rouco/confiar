@@ -4,6 +4,11 @@ import { useError } from '../../../../contexts/error-context';
 import { toCamelCase } from '../../../../utils/string-utils';
 import styled from 'styled-components';
 import { useModel } from '../model-context';
+import { navigateIntoObjectByPath } from '../../../../theme';
+
+const getThemeAttribute = (theme, attrribute) => {
+  return navigateIntoObjectByPath(theme, "components.controls.fields.input." + attrribute);
+}
 
 const StyledErrorMessage = styled.div`
   color: red;
@@ -14,6 +19,8 @@ const StyledErrorMessage = styled.div`
 `;
 
 const StyledFormControl = styled.input`
+  background-color: ${({ theme }) => getThemeAttribute(theme, "bgColor")};
+  color: ${({ theme }) => getThemeAttribute(theme, "color")};
 
   &.floating-mode {
     height: 40px;
@@ -26,6 +33,8 @@ const StyledFormControl = styled.input`
   }
 
   &.form-control:focus, &.form-control:not(:placeholder-shown) {
+    background-color: ${({ theme }) => getThemeAttribute(theme, "bgColor")};
+    color: ${({ theme }) => getThemeAttribute(theme, "color")};
     padding-top: 1.25rem;
   }
   
@@ -41,7 +50,10 @@ const StyledFormControl = styled.input`
     opacity: 0.50;
     transform: scale(0.70) translateY(-0.5rem) translateX(0.30rem);
   }
+`;
 
+const StyledLabel = styled.label`
+  color: ${({ theme }) => getThemeAttribute(theme, "color")};
 `;
 
 // props: register, type, attr, label, required, validationObject
@@ -202,7 +214,7 @@ export default function InputField(props) {
       <StyledErrorMessage>
         {errors && errors[props.attr] ? errors[props.attr].message : ((fieldError.field === props.attr) ? fieldError.message : '')}
       </StyledErrorMessage>
-      {(!props.small && props.label) ? <label htmlFor="floatingInput">{props.label}</label> : <></>}
+      {(!props.small && props.label) ? <StyledLabel htmlFor="floatingInput">{props.label}</StyledLabel> : <></>}
     </div>
   );
 }

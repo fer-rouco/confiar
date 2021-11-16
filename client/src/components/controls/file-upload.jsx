@@ -1,10 +1,15 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import styled from 'styled-components';
 import { useDialog } from '../../contexts/dialog-context';
+import { navigateIntoObjectByPath } from '../../theme';
 import { contentDialogConfig } from '../dialog/dialog-config';
 import Button from './buttons/button';
 import { useModel } from './fields/model-context';
 
+
+const getThemeAttribute = (theme, attrribute) => {
+  return navigateIntoObjectByPath(theme, "components.controls.fileUpload." + attrribute);
+}
 
 const StyledContainer = styled.div`
   border: 1px solid #ddd;
@@ -21,7 +26,7 @@ const StyledContainer = styled.div`
 `;
 
 const StyledFileContainer = styled.div`
-  background-color: #ddd;
+  background-color: ${({ theme }) => getThemeAttribute(theme, "item.bgColor")};
   border-radius: 5px;
   padding-right: 10px;
   padding-left: 10px;
@@ -51,7 +56,8 @@ const StyledSpan = styled.span`
 `;
 
 const StyledCloseButton = styled(Button)`
-  background-color: #fff;
+  background-color: ${({ theme }) => getThemeAttribute(theme, "item.closeButton.bgColor")};
+  color: ${({ theme }) => getThemeAttribute(theme, "item.closeButton.color")};
   border-radius: 20px;
   padding: 10px;
   margin-right: 10px;
@@ -61,7 +67,8 @@ const StyledCloseButton = styled(Button)`
 `;
 
 const StyledImageButton = styled.div`
-  background-color: #fff;
+  background-color: ${({ theme }) => getThemeAttribute(theme, "item.imageButton.bgColor")};
+  color: ${({ theme }) => getThemeAttribute(theme, "item.imageButton.color")};
   border-radius: 20px;
   padding: 10px;
   width: 35px;

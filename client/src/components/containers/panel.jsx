@@ -4,6 +4,10 @@ import { navigateIntoObjectByPath } from '../../theme';
 import Icon from './../general/icon';
 import withLoader from './../general/load-indicator';
 
+const getThemeAttribute = (theme, attrribute) => {
+  return navigateIntoObjectByPath(theme, "components.containers.panel." + attrribute);
+}
+
 const StyledBoxShadow = css`
   box-shadow: 7px 7px 3px rgb(0 0 0 / 50%);
 `;
@@ -18,8 +22,8 @@ const StyledContainer = styled.div`
 
   border-radius: 25px;
   padding: 20px 20px 0 20px; // Top - Right - Bottom - Left
-  background-color: ${({ theme }) => navigateIntoObjectByPath(theme, "body.background")};
-  color: ${({ theme }) => navigateIntoObjectByPath(theme, "body.text")};
+  background-color: ${({ theme }) => getThemeAttribute(theme, "body.bgColor")};
+  color: ${({ theme }) => getThemeAttribute(theme, "body.color")};
   margin-bottom: 20px;
 
   &.small {
@@ -36,8 +40,8 @@ const StyledContainer = styled.div`
 `;
 
 const StyledHeaderColor = css`
-  background-color:  ${({ theme }) => navigateIntoObjectByPath(theme, "header.background")};
-  color:  ${({ theme }) => navigateIntoObjectByPath(theme, "header.text")};
+  background-color:  ${({ theme }) => getThemeAttribute(theme, "header.bgColor")};
+  color:  ${({ theme }) => getThemeAttribute(theme, "header.color")};
 `;
 
 const StyledHeaderBorderRadius = css`
@@ -60,7 +64,7 @@ const StyledHeaderContainer = css`
 
 const StyledHeader = styled.div`
   ${StyledHeaderContainer};
-  background-color:  ${({ theme }) => navigateIntoObjectByPath(theme, "header.firstStep.background")};
+  background-color:  ${({ theme }) => getThemeAttribute(theme, "header.firstStep.bgColor")};
   position: relative;
   margin-bottom: 20px;
   height: 68px;

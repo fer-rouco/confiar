@@ -1,5 +1,6 @@
 import { createRef, useEffect } from 'react';
 import styled, { css } from 'styled-components';
+import { navigateIntoObjectByPath } from '../../theme';
 import Icon from './../general/icon';
 import withLoader from './../general/load-indicator';
 
@@ -17,8 +18,8 @@ const StyledContainer = styled.div`
 
   border-radius: 25px;
   padding: 20px 20px 0 20px; // Top - Right - Bottom - Left
-  background-color:  ${({ theme }) => theme.components.containers.panel.body.background};
-  color:  ${({ theme }) => theme.components.containers.panel.body.text};
+  background-color: ${({ theme }) => navigateIntoObjectByPath(theme, "body.background")};
+  color: ${({ theme }) => navigateIntoObjectByPath(theme, "body.text")};
   margin-bottom: 20px;
 
   &.small {
@@ -35,8 +36,8 @@ const StyledContainer = styled.div`
 `;
 
 const StyledHeaderColor = css`
-  background-color:  ${({ theme }) => theme.components.containers.panel.header.background};
-  color:  ${({ theme }) => theme.components.containers.panel.header.text};
+  background-color:  ${({ theme }) => navigateIntoObjectByPath(theme, "header.background")};
+  color:  ${({ theme }) => navigateIntoObjectByPath(theme, "header.text")};
 `;
 
 const StyledHeaderBorderRadius = css`
@@ -59,6 +60,7 @@ const StyledHeaderContainer = css`
 
 const StyledHeader = styled.div`
   ${StyledHeaderContainer};
+  background-color:  ${({ theme }) => navigateIntoObjectByPath(theme, "header.firstStep.background")};
   position: relative;
   margin-bottom: 20px;
   height: 68px;

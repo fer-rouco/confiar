@@ -41,40 +41,83 @@ export const GlobalStyles = createGlobalStyle`
   }
 `;
 
+const backgroundLight = '#C8C8C8';
+const textLight = '#121620';
 export const lightTheme = {
-  body: '#C8C8C8',
-  text: '#121620',
+  background: backgroundLight,
+  text: textLight,
   components: {
+    bars: {
+      navBar: {},
+      sideBar: {}
+    },
     containers: {
       panel: {
         header: {
-          background: '#f1f1f1',
-          text: '#121620',
+          firstStep: {
+            background: '#cccccc'  
+          },
+          background: '#B8B0AD',
+          text: '#00956A',
         },
         body: {
-          background: '#f1f1f1',
-          text: '#121620',
+          background: '#eeeeee',
+          text: textLight,
         }
       }
+    },
+    controls: {
+      buttons: {
+        button: {}
+      },
+      fields: {
+        input: {},
+        select: {}
+      },
+      fileUpload: {}
     }
   }
 };
 
+const backgroundDark = '#555555';
+const textDark = '#f1f1f1';
 export const darkTheme = {
-  body: '#121620',
-  text: '#f1f1f1',
+  background: backgroundDark,
+  text: textDark,
   components: {
+    bars: {
+      navBar: {},
+      sideBar: {}
+    },
     containers: {
       panel: {
         header: {
-          background: '#121620',
+          firstStep: {
+            background: '#cccccc'  
+          },
+          background: '#555555',
           text: '#f1f1f1',        
         },
         body: {
-          background: '#121620',
+          background: '#555555',
           text: '#f1f1f1',        
         }
       }
+    },
+    controls: {
+      buttons: {
+        button: {}
+      },
+      fields: {
+        input: {},
+        select: {}
+      },
+      fileUpload: {}
     }
   }
 };
+
+export const navigateIntoObjectByPath = (theme, path) => {
+  const navigateIntoObject = (object, path) => path.split('.').reduce((pathPartA, pathPartB) => pathPartA && pathPartA[pathPartB], object);
+  return navigateIntoObject(theme, "components.containers.panel." + path);
+}

@@ -3,8 +3,8 @@ import { createGlobalStyle } from 'styled-components';
 
 export const GlobalStyles = createGlobalStyle`
   body {
-    background-color: ${({ theme }) => theme.bgColor};
-    color: ${({ theme }) => theme.color};
+    background-color: ${({ theme }) => theme.global.bgColor};
+    color: ${({ theme }) => theme.global.color};
     transition: background 0.2s ease-in, color 0.2s ease-in;
     margin: 0;
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
@@ -33,12 +33,28 @@ export const GlobalStyles = createGlobalStyle`
   .developed-by {
     padding-top: 8px;
   }
-
-  body {
-    background: ${({ theme }) => theme.bgColor};
-    color: ${({ theme }) => theme.color};
-    transition: background 0.2s ease-in, color 0.2s ease-in;
+  
+  // Scrollbar
+  ::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+    background-color: ${({ theme }) => theme.global.scrollbar.bgColor};
+    border-radius: 10px;
   }
+  
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+    background-color: ${({ theme }) => theme.global.scrollbar.bgColor};
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    background-color: ${({ theme }) => theme.global.scrollbar.thumb.bgColor};
+    background-image: -webkit-gradient(linear, 0 0, 0 100%, color-stop(.5, rgba(255, 255, 255, .2)), color-stop(.5, transparent), to(transparent));
+  }
+  
+
+
 `;
 
 const bgColorLight = '#C8C8C8';
@@ -50,8 +66,16 @@ const bodyColorLight = colorLight;
 const fieldBgColorLight = '#009468';
 const fieldColorLight = '#ffffff';
 export const lightTheme = {
-  bgColor: bgColorLight,
-  color: colorLight,
+  global: {
+    bgColor: bgColorLight,
+    color: colorLight,
+    scrollbar: {
+      bgColor: '#CCCCCC',
+      thumb: {
+        bgColor: '#009468'
+      }
+    }
+  },
   components: {
     bars: {
       navBar: {},
@@ -155,8 +179,16 @@ const bodyColorDark = '#f1f1f1';
 const fieldBgColorDark = '#009468';
 const fieldColorDark = '#ffffff';
 export const darkTheme = {
-  bgColor: bgColorDark,
-  color: colorDark,
+  global: {
+    bgColor: bgColorDark,
+    color: colorDark,
+    scrollbar: {
+      bgColor: '#555555',
+      thumb: {
+        bgColor: '#009468'
+      }
+    }
+  },
   components: {
     bars: {
       navBar: {},

@@ -8,6 +8,10 @@ const getThemeAttribute = (theme, attrribute) => {
   return navigateIntoObjectByPath(theme, "components.controls.fields.checkbox." + attrribute);
 }
 
+const StyledContainer = styled.div`
+  margin-top: 8px;
+`;
+
 const StyledFormControl = styled.input`
   background-color: ${({ theme }) => getThemeAttribute(theme, "bgColor")};
   color: ${({ theme }) => getThemeAttribute(theme, "color")};
@@ -58,7 +62,7 @@ export default function CheckboxField(props) {
   }, [setValue, props.attr, model]);
 
   return (
-    <div ref={fieldRef} className={"form-check " + ((props.switch) ? "form-switch" : "")} >
+    <StyledContainer ref={fieldRef} className={"form-check " + ((props.switch) ? "form-switch" : "")} >
       <StyledFormControl 
         {...register ? {...register(props.attr)} : (null)}
         type={(props.type) ? props.type : 'checkbox'}
@@ -69,6 +73,6 @@ export default function CheckboxField(props) {
       <label className="form-check-label" htmlFor={getId()} >
         {props.label}
       </label>
-    </div>
+    </StyledContainer>
   );
 }

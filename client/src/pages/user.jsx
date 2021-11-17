@@ -52,7 +52,7 @@ export default function User() {
               (update ? 'actualizado' : 'creado') +
               ' exitosamente.',
           );
-          history.push('/Users');
+          navigation.navigateTo('/Users');
         })
         .catch((error) => {
           addFieldError(error.field, error.message);
@@ -109,7 +109,7 @@ export default function User() {
         });
       } catch (err) {
         addErrorMessage('Se produzco un error al buscar el cliente ' + location.state.userName);
-        history.push('/Users');
+        navigation.navigateTo('/Users');
       }
     }
     else {

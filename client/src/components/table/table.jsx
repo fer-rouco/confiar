@@ -99,8 +99,9 @@ function Table(props) {
   const [totalPages, setTotalPages] = useState(null);
   const [totalRows, setTotalRows] = useState(null);
   const localStorageService = storageManagerService();
-  const [currentPagePosition, setCurrentPagePosition] = useState((localStorageService.getItem(getId())) ? localStorageService.getItem(getId()).currentPagePosition : 0);
-  const settingsState = useState({ pageSize: (props.pageSize) ? props.pageSize : 10 });
+  const localStorageObject = localStorageService.getItem(getId());
+  const [currentPagePosition, setCurrentPagePosition] = useState((localStorageObject && localStorageObject.currentPagePosition) ? localStorageObject.currentPagePosition : 0);
+  const settingsState = useState({ pageSize: (props.pageSize) ? props.pageSize : ((localStorageObject && localStorageObject.pageSize) ? localStorageObject.pageSize : 10) });
   const [settings] = settingsState;
   const filtersState = useState({});
   const dialog = useDialog();
@@ -125,7 +126,7 @@ function Table(props) {
   }, [props.columnDefinitions]);
 
   useEffect(() => {
-    localStorageService.setItem(getId(), { currentPagePosition: currentPagePosition });
+    localStorageService.setItem(getId(), { currentPagePosition: currentPagePosition, pageSize: settingsState[0].pageSize });
     update();
   }, [settings, currentPagePosition, props.rowObjects, filtersState[0]]);
      

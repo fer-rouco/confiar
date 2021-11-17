@@ -57,18 +57,16 @@ export const GlobalStyles = createGlobalStyle`
 
 `;
 
-const bgColorLight = '#C8C8C8';
-const colorLight = '#121620';
 const headerBgColorLight = '#B8B0AD';
 const headerColorLight = '#00956A';
 const bodyBgColorLight = '#ebecec';
-const bodyColorLight = colorLight;
-const fieldBgColorLight = '#009468';
-const fieldColorLight = '#ffffff';
+const bodyColorLight = '#121620';
+const fieldBgColorLight = '#99bbbb';
+const fieldColorLight = '#000000';
 export const lightTheme = {
   global: {
-    bgColor: bgColorLight,
-    color: colorLight,
+    bgColor: '#C8C8C8',
+    color: '#121620',
     scrollbar: {
       bgColor: '#CCCCCC',
       thumb: {
@@ -170,18 +168,17 @@ export const lightTheme = {
   }
 };
 
-const bgColorDark = '#222222';
-const colorDark = '#f1f1f1';
+
 const headerBgColorDark = '#555555';
 const headerColorDark = '#00956A';
 const bodyBgColorDark = '#333333';
 const bodyColorDark = '#f1f1f1';
-const fieldBgColorDark = '#009468';
-const fieldColorDark = '#ffffff';
+const fieldBgColorDark = '#99bbbb';
+const fieldColorDark = '#000000';
 export const darkTheme = {
   global: {
-    bgColor: bgColorDark,
-    color: colorDark,
+    bgColor: '#222222',
+    color: '#f1f1f1',
     scrollbar: {
       bgColor: '#555555',
       thumb: {

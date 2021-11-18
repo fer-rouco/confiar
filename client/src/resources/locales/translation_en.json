@@ -1,5 +1,36 @@
 {
+  "navigation": {
+    "paths": {
+      "users": "/Users",
+      "customers": "/Customers",
+      "logIn": "/Login"
+    },
+    "texts": {
+      "users": "Users",
+      "customers": "Customers",
+      "logIn": "Sign In"
+    },
+    "icons": {
+      "users": "people",
+      "customers": "person-plus",
+      "logIn": "people"
+    },
+    "conditions": {
+      "users": "logged-in",
+      "customers": "logged-in",
+      "logIn": "not logged-in"
+    }
+  },
   "components": {
+    "bars": {
+      "sideBar": {
+        "profileMenu": {
+          "settings": "Settings",
+          "profile": "Profile",
+          "logOut": "Sign Out"
+        }
+      }
+    },
     "table": {
       "filters": {
         "title": "Filters"

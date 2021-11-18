@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
+import { useTranslation } from "react-i18next";
 import { useBars } from './bars-context';
 import { useSession } from '../../contexts/session-context';
 import useNavigationItems from '../../hooks/navigation-items';
@@ -70,6 +71,7 @@ const StyledProfileMenu = styled.ul`
 export default function SideBar(props) {
   const { session, logOut } = useSession();
   const [navigationItems] = useNavigationItems();
+  const { t } = useTranslation('components', { keyPrefix: 'bars.sideBar' });
   const [itemList, setItemList] = useState({ items: <></> });
   const { sidebarOpen } = useBars();
   const pathname = useReactPath();
@@ -199,12 +201,12 @@ export default function SideBar(props) {
           >
             <li>
               <a className="dropdown-item" href="/Settings">
-                Configuraciones
+                 {t('profileMenu.settings')}
               </a>
             </li>
             <li>
               <a className="dropdown-item" href="/#">
-                Profile
+                {t('profileMenu.profile')}
               </a>
             </li>
             <li>
@@ -212,7 +214,7 @@ export default function SideBar(props) {
             </li>
             <li>
               <a className="dropdown-item" href="/#" onClick={logOut}>
-                Sign out
+                {t('profileMenu.logOut')}
               </a>
             </li>
           </StyledProfileMenu>

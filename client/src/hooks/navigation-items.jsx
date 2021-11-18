@@ -1,16 +1,7 @@
 import { useEffect, useState } from 'react';
+import { useTranslation } from "react-i18next";
 import { useSession } from '../contexts/session-context';
 import useReactPath from './path-name';
-
-const itemList = [
-  { id: 'Users', path: '/Users', text: 'Usuarios', icon: 'people', condition: 'logged-in' },
-  { id: 'Customers', path: '/Customers', text: 'Clientes', icon: 'person-plus', condition: 'logged-in' },
-  { id: 'Login', path: '/Login', text: 'Login', icon: 'people', condition: 'not logged-in' },
-];
-
-const loginItem = itemList.find((item) => {
-  return item.id === 'Login';
-});
 
 export const findActiveItem = (itemList) => {
   return itemList.find((item) => {
@@ -38,10 +29,29 @@ export const updateActiveItem = (itemList, defaultValue) => {
 };
 
 export default function useNavigationItems(defaultValue) {
+  const { t } = useTranslation('navigation');
   const { session } = useSession();
   const pathname = useReactPath();
+    
+  let navigationItemList = [];
   
-  itemList.forEach((itemInLoop) => {
+  // fill navigationItemList
+  let navigationPaths = t("paths", {returnObjects: true});
+  Object.entries(navigationPaths).forEach((navigationPath) => {
+    let key = navigationPath[0];
+    let value = navigationPath[1];
+    let item = {
+      id: key,
+      path: value,
+      text: t("texts." + key),
+      icon: t("icons." + key),
+      condition: t("conditions." + key),
+    }
+    navigationItemList.push(item);
+  });
+
+  // set conditionFunction to each item of navigationItemList
+  navigationItemList.forEach((itemInLoop) => {
     if (itemInLoop.condition.indexOf('logged-in') > -1) {
       const not = itemInLoop.condition.indexOf('not') > -1;
       itemInLoop.conditionFunction = () => {
@@ -53,9 +63,9 @@ export default function useNavigationItems(defaultValue) {
   const [navigationItems, setNavigationItems] = useState(null);
 
   if (!navigationItems) {
-    setNavigationItems(itemList);
-    const currentItem = findActiveItem(itemList);
-    updateActiveItem(itemList, currentItem);
+    setNavigationItems(navigationItemList);
+    const currentItem = findActiveItem(navigationItemList);
+    updateActiveItem(navigationItemList, currentItem);
   }
 
   useEffect(() => {

@@ -10,17 +10,7 @@ import PanelForm from '../components/containers/panel-form';
 import { useAlertMessage } from '../contexts/alert-message-context';
 import { useError } from '../contexts/error-context';
 import { findUserById, getAllUserProfiles, updateUser } from '../services/server/user-service';
-
-const [NAME, LAST_NAME, USER_NAME, EMAIL, PASSWORD, REPEAT_PASSWORD, PROFILE] =
-  [
-    { id: 'name', label: 'Nombre' },
-    { id: 'lastName', label: 'Apellido' },
-    { id: 'userName', label: 'Usuario' },
-    { id: 'mail', label: 'E-Mail' },
-    { id: 'password', label: 'Contraseña' },
-    { id: 'repeatPassword', label: 'Repetir Contraseña' },
-    { id: 'profile', label: 'Perfil' },
-  ];
+import { useTranslation } from "react-i18next";
 
 export default function User() {
   const navigation = useNavigation();
@@ -31,13 +21,15 @@ export default function User() {
   const { addSuccessMessage, addErrorMessage } = useAlertMessage();
   const { addFieldError } = useError();
   const location = useLocation();
-
+  const { t } = useTranslation('pages', { keyPrefix: 'user' });
+  const REPEAT_PASSWORD = 'repeatPassword';
+  
   const onCreateUser = () => {
     let valid = true;
     if (!update && model.password !== model.repeatPassword) {
       valid = false;
       addFieldError(
-        REPEAT_PASSWORD.id,
+        REPEAT_PASSWORD,
         'Esta contraseña debe ser igual a la del campo password.',
       );
     }
@@ -80,14 +72,12 @@ export default function User() {
   }
 
   const getActionLabel = () => {
-    return update ? 'Actualizar' : 'Crear';
+    return t('form.submitButton.' + ((update) ? 'update' : 'create'));
   };
 
   const getTitle = () => {
     let name = (location.state) ? location.state.name : "";
-    return (
-      getActionLabel() + ' usuario ' + (update ? name : 'nuevo') + '.'
-    );
+    return t('form.title.' + ((update) ? 'update' : 'new'), { "name": name})
   };
 
   function updateProfileList(response) {
@@ -121,56 +111,31 @@ export default function User() {
   }, [location.state]);
 
   return (
-    <PanelForm title={getTitle()} size="medium" model={modelState} onSubmit={onCreateUser} >
+    <PanelForm title={getTitle()} size="medium" model={modelState} onSubmit={onCreateUser} id="user" >
       <div className="container">
         <div className="row">
           <div className="col-md-6">
-            <TextField
-              attr={NAME.id}
-              label={NAME.label}
-              minLength="2"
-              required
-            ></TextField>
+            <TextField attr='name' minLength="2" required ></TextField>
           </div>
           <div className="col-md-6">
-            <TextField
-              attr={LAST_NAME.id}
-              label={LAST_NAME.label}
-              minLength="2"
-              required
-            ></TextField>
+            <TextField attr='lastName' minLength="2" required ></TextField>
           </div>
         </div>
         <div className="row">
           <div className="col-md-6">
-            <TextField
-              attr={USER_NAME.id}
-              label={USER_NAME.label}
-              minLength="2"
-              required
-            ></TextField>
+            <TextField attr='userName' minLength="2" required ></TextField>
           </div>
           <div className="col-md-6">
-            <MailField attr={EMAIL.id} label={EMAIL.label} required></MailField>
+            <MailField attr='mail' required></MailField>
           </div>
         </div>
         {!update ? (
           <div className="row">
             <div className="col-md-6">
-              <PasswordField
-                attr={PASSWORD.id}
-                label={PASSWORD.label}
-                minLength="8"
-                required
-              ></PasswordField>
+              <PasswordField attr='password' minLength="8" required ></PasswordField>
             </div>
             <div className="col-md-6">
-              <PasswordField
-                attr={REPEAT_PASSWORD.id}
-                label={REPEAT_PASSWORD.label}
-                minLength="8"
-                required
-              ></PasswordField>
+              <PasswordField attr={REPEAT_PASSWORD} minLength="8" required ></PasswordField>
             </div>
           </div>
         ) : (
@@ -178,12 +143,7 @@ export default function User() {
         )}
         <div className="row">
           <div className="col-md-6">
-            <SelectField
-              attr={PROFILE.id}
-              label={PROFILE.label}
-              options={profiles}
-              required
-            ></SelectField>
+            <SelectField attr='profile' options={profiles} required ></SelectField>
           </div>
         </div>
       </div>

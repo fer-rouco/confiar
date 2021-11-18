@@ -1,10 +1,11 @@
-import { createRef, useCallback, useEffect } from 'react';
+import { createRef, useCallback, useEffect, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { useError } from '../../../../contexts/error-context';
 import { toCamelCase } from '../../../../utils/string-utils';
 import styled from 'styled-components';
 import { useModel } from '../model-context';
 import { navigateIntoObjectByPath } from '../../../../theme';
+import { useTranslation } from "react-i18next";
 
 const getThemeAttribute = (theme, attrribute) => {
   return navigateIntoObjectByPath(theme, "components.controls.fields.input." + attrribute);
@@ -58,23 +59,33 @@ const StyledLabel = styled.label`
 
 // props: register, type, attr, label, required, validationObject
 export default function InputField(props) {
+  const [label, setLabel] = useState("");
   const { register, setValue, formState: { errors } } = useFormContext();
   const [model, setModel] = useModel();
   const fieldRef = createRef();
   const { fieldError } = useError();
+  const { t } = useTranslation('pages');
 
   const getId = () => {
     return 'input-' + props.attr;
   };
 
   const getField = useCallback(() => {
-    return fieldRef.current.getElementsByClassName('field')[0];
+    return fieldRef.current?.getElementsByClassName('field')[0];
   }, [fieldRef]);
 
   const getValue = useCallback(() => {
     let field = getField();
     return field ? field.value : null;
   }, [getField]);
+
+  const getParentId = useCallback(() => {
+    return getField()?.closest("form").id;
+  }, [getField]);
+
+  const getLabel = () => {
+    return (props.hasOwnProperty('label')) ? props.label : t(getParentId() + ".form." + props.attr);
+  }
 
   const updateField = () => {
     let rawValue = getValue();
@@ -138,6 +149,11 @@ export default function InputField(props) {
   }, [getValue, cleanErrorClasses, updateErrorClasses, errors, props.attr]);
 
   useEffect(() => {
+    setLabel(getLabel());
+  }, [props.attr]);
+
+  useEffect(() => {
+    setLabel(getLabel());
     if (setValue && model) {
       setValue(props.attr, model[props.attr]);
     }
@@ -197,7 +213,7 @@ export default function InputField(props) {
 
   return (
     <div className={(!props.small) ? "form-floating" : "input-group mb-3" } ref={fieldRef} style={{ width: props.width }}>
-      {(props.small && props.label) ? <span className="input-group-text">{props.label}</span> : <></>}
+      {(props.small && label) ? <span className="input-group-text">{label}</span> : <></>}
       <StyledFormControl
         {...register ? {...register(props.attr, validationObject)} : (null)}
         type={props.type}
@@ -205,7 +221,7 @@ export default function InputField(props) {
         style={{ width: props.width }}
         id={getId()}
         // placeholder={toCamelCase(props.attr)}
-        placeholder={(props.placeholder) ? props.placeholder : ((props.small) ? "" : props.label)}
+        placeholder={(props.placeholder && label) ? props.placeholder : ((props.small) ? "" : label)}
         onChange={updateField}
         min={props.min}
         max={props.max}
@@ -214,7 +230,7 @@ export default function InputField(props) {
       <StyledErrorMessage>
         {errors && errors[props.attr] ? errors[props.attr].message : ((fieldError.field === props.attr) ? fieldError.message : '')}
       </StyledErrorMessage>
-      {(!props.small && props.label) ? <StyledLabel htmlFor="floatingInput">{props.label}</StyledLabel> : <></>}
+      {(!props.small && label) ? <StyledLabel htmlFor="floatingInput">{label}</StyledLabel> : <></>}
     </div>
   );
 }

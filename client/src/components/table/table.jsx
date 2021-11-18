@@ -463,10 +463,8 @@ function Table(props) {
       }
 
       filtersDOM = (
-        <PanelForm subTitle="Filtros" model={filtersState} >
-          {
-            rows.map((row) => (row))
-          }
+        <PanelForm subTitle="Filtros" model={filtersState} id={"filters." + getId()} >
+          { rows.map((row) => (row)) }
         </PanelForm>
       )  
     }
@@ -478,9 +476,9 @@ function Table(props) {
 
   function buildPageSizeChooser() {
     return (
-      <StyledForm onSubmit={updateRowObjectsWithPaginator} model={settingsState} >
+      <StyledForm onSubmit={updateRowObjectsWithPaginator} model={settingsState} id={"page-size." + getId()} >
         <StyledHeaderParagraph>Mostrar</StyledHeaderParagraph>
-        <StyledNumericField attr="pageSize" small width="55px" avoidValidations min='10' max='100' step='10' ></StyledNumericField>
+        <StyledNumericField attr="pageSize" small width="55px" avoidValidations min='10' max='100' step='10' label="" ></StyledNumericField>
         <StyledHeaderParagraph className="separation" >filas</StyledHeaderParagraph>
       </StyledForm>
     );

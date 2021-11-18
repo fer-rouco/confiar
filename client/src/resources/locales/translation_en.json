@@ -1,0 +1,27 @@
+{
+  "pages": {
+    "login": {
+    },
+    "user": {
+      "form": {
+        "title": {
+          "new": "New user",
+          "update": "Update user {{name}}"
+        },
+        "name": "Name",
+        "lastName": "Last name",
+        "userName": "User",
+        "mail": "E-Mail",
+        "password": "Password",
+        "repeatPassword": "Repeat password",
+        "profile": "Profile",
+        "submitButton": {
+          "create": "Create",
+          "update": "Update"
+        }
+      }
+    },
+    "users": {
+    }
+  }
+}

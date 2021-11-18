@@ -1,4 +1,4 @@
-import { createRef, useEffect, useState } from 'react';
+import { cloneElement, createRef, useEffect, useState } from 'react';
 import { useForm, FormProvider } from 'react-hook-form';
 import { ModelProvider } from './../controls/fields/model-context';
 
@@ -26,10 +26,16 @@ export default function Form(props) {
     event.preventDefault();
   };
 
+  useEffect(() => {
+    if(!props.id) {
+      console.error("The Form should have an id. ", formRef.current);
+    }
+  }, []);
+
   return (
     <ModelProvider model={props.model}>
       <FormProvider {...methods}>
-        <form onSubmit={onSubmit} ref={formRef} className={props.className} >
+        <form onSubmit={onSubmit} ref={formRef} className={props.className} id={props.id} >
           {props.children}
         </form>
       </FormProvider>

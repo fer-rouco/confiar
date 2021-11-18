@@ -1,0 +1,27 @@
+{
+  "pages": {
+    "login": {
+    },
+    "user": {
+      "form": {
+        "title": {
+          "new": "Usuario nuevo",
+          "update": "Actualizar usuario {{name}}"
+        },
+        "name": "Nombre",
+        "lastName": "Apellido",
+        "userName": "Usuario",
+        "mail": "E-Mail",
+        "password": "Contraseña",
+        "repeatPassword": "Repetir Contraseña",
+        "profile": "Perfil",
+        "submitButton": {
+          "create": "Crear",
+          "update": "Actualizar"
+        }
+      },
+      "users": {
+      }
+    }
+  }
+}

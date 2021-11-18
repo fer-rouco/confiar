@@ -1,8 +1,9 @@
-import { createRef, useEffect } from 'react';
+import { createRef, useEffect, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 import styled from 'styled-components';
 import { navigateIntoObjectByPath } from '../../../../theme';
 import { useModel } from '../model-context';
+import { useTranslation } from "react-i18next";
 
 const getThemeAttribute = (theme, attrribute) => {
   return navigateIntoObjectByPath(theme, "components.controls.fields.select." + attrribute);
@@ -38,9 +39,11 @@ const StyledFormSelect = styled.select`
 
 // props: register, attr, label, options
 export default function SelectField(props) {
+  const [label, setLabel] = useState("");
   const { register, setValue } = useFormContext();
   const [model, setModel] = useModel();
   const fieldRef = createRef();
+  const { t } = useTranslation('pages');
 
   const getId = () => {
     return 'select-' + props.attr;
@@ -54,6 +57,14 @@ export default function SelectField(props) {
     let field = getField();
     return field ? field.value : null;
   };
+
+  const getParentId = () => {
+    return getField()?.closest("form").id;
+  };
+
+  const getLabel = () => {
+    return (props.hasOwnProperty('label')) ? props.label : t(getParentId() + ".form." + props.attr);
+  }
 
   const getOptions = () => {
     return props.options.map((option) => (
@@ -81,6 +92,10 @@ export default function SelectField(props) {
   };
 
   useEffect(() => {
+    setLabel(getLabel());
+  }, [props.attr]);
+
+  useEffect(() => {
     if (setValue && model) {
       setValue(props.attr, model[props.attr]);
     }
@@ -95,10 +110,9 @@ export default function SelectField(props) {
         required={props.required}
         onChange={onChange}
       >
-        {/* <option>{props.label}</option> */}
         {getOptions()}
       </StyledFormSelect>
-      <label htmlFor="floatingInput">{props.label}</label>
+      <label htmlFor="floatingInput">{label}</label>
     </div>
   );
 }

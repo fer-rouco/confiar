@@ -59,7 +59,7 @@ export default function SelectField(props) {
   };
 
   const getParentId = () => {
-    return getField()?.closest("form").id;
+    return getField()?.form.id;
   };
 
   const getLabel = () => {
@@ -93,7 +93,7 @@ export default function SelectField(props) {
 
   useEffect(() => {
     setLabel(getLabel());
-  }, [props.attr]);
+  }, [props.attr, t]);
 
   useEffect(() => {
     if (setValue && model) {

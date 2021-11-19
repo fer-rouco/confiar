@@ -80,7 +80,7 @@ export default function InputField(props) {
   }, [getField]);
 
   const getParentId = useCallback(() => {
-    return getField()?.closest("form").id;
+    return getField()?.form.id;
   }, [getField]);
 
   const getLabel = () => {
@@ -150,7 +150,7 @@ export default function InputField(props) {
 
   useEffect(() => {
     setLabel(getLabel());
-  }, [props.attr]);
+  }, [props.attr, t]);
 
   useEffect(() => {
     setLabel(getLabel());

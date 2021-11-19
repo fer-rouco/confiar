@@ -53,6 +53,12 @@
   "pages": {
     "login": {
     },
+    "settings": {
+      "title": "Configs",
+      "form": {
+        "language": "Language"
+      }
+    },
     "user": {
       "form": {
         "title": {

@@ -73,6 +73,25 @@
       }
     },
     "users": {
+      "table": {
+        "filters": {
+          "form": {
+            "name": "Nombre",
+            "lastName": "Apellido",
+            "userName": "Usuario",
+            "mail": "E-Mail",
+            "profile.id": "Perfil"
+          }
+        },
+        "header": {
+          "name": "Nombre",
+          "lastName": "Apellido",
+          "userName": "Usuario",
+          "mail": "E-Mail",  
+          "profile.description": "Perfil",
+          "remove": ""
+        }
+      }
     }
   }
 }

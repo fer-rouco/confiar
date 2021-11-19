@@ -63,7 +63,7 @@ export default function SelectField(props) {
   };
 
   const getLabel = () => {
-    return (props.hasOwnProperty('label')) ? props.label : t(getParentId() + ".form." + props.attr);
+    return (props.hasOwnProperty('label') && props.label !== undefined) ? props.label : t(getParentId() + ".form." + props.attr);
   }
 
   const getOptions = () => {

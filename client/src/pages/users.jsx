@@ -18,27 +18,11 @@ export default function Users() {
 
   useEffect(() => {
     setColumnDefinitions([
-      textColumnDefinition({
-        key: 'name',
-        label: 'Nombre',
-        target: '/User'
-      }),
-      textColumnDefinition({
-        key: 'lastName',
-        label: 'Apellido'
-      }),
-      textColumnDefinition({
-        key: 'userName', 
-        label: 'Usuario'
-      }),
-      textColumnDefinition({
-        key: 'mail', 
-        label: 'E-Mail'
-      }),
-      textColumnDefinition({
-        key: 'profile.description', 
-        label: 'Perfil'
-      }),
+      textColumnDefinition({ key: 'name', target: '/User' }),
+      textColumnDefinition({ key: 'lastName' }),
+      textColumnDefinition({ key: 'userName' }),
+      textColumnDefinition({ key: 'mail' }),
+      textColumnDefinition({ key: 'profile.description' }),
       removeColumnDefinition({
         key: 'remove',
         icon: 'trash-fill',
@@ -67,27 +51,13 @@ export default function Users() {
       let profileListWithAllOption = [{value: '', label: 'Todos' }, ...profileList];
       
       setFilterDefinitions([
-        textColumnDefinition({
-          key: 'name',
-          label: 'Nombre',
-          target: '/User'
-        }),
-        textColumnDefinition({
-          key: 'lastName',
-          label: 'Apellido'
-        }),
-        textColumnDefinition({
-          key: 'userName', 
-          label: 'Usuario'
-        }),
-        textColumnDefinition({
-          key: 'mail', 
-          label: 'E-Mail'
-        }),
+        textColumnDefinition({ key: 'name', target: '/User' }),
+        textColumnDefinition({ key: 'lastName' }),
+        textColumnDefinition({ key: 'userName' }),
+        textColumnDefinition({ key: 'mail' }),
         {
           key: 'profile.id', 
           type: 'enum',
-          label: 'Perfil',
           options: profileListWithAllOption
         }
       ]);

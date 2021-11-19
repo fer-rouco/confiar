@@ -5,12 +5,12 @@ import App from './App';
 import { ThemeModeProvider } from './contexts/theme-context';
 // import reportWebVitals from './reportWebVitals';
 import { getSessionInfo } from './services/server/session-service';
-import i18n from "i18next";
+import i18next from "i18next";
 import { initReactI18next } from "react-i18next";
 import translation_en from './resources/locales/translation_en.json'
 import translation_es from './resources/locales/translation_es.json'
 
-i18n
+i18next
   .use(initReactI18next) // passes i18n down to react-i18next
   .init({
     // the translations

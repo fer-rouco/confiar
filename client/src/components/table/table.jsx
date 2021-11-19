@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-import { useTranslation } from "react-i18next";
+import i18next from "i18next";
 import { useDialog } from '../../contexts/dialog-context';
 import Button from '../controls/buttons/button';
 import NumericField from '../controls/fields/input/numeric-field';
@@ -96,7 +96,8 @@ const StyledNumericField = styled(NumericField)`
 `;
 
 function Table(props) {
-  const { t } = useTranslation('components', { keyPrefix: 'table' });
+  const tableTranslation = i18next.getFixedT(null, 'components', 'table');
+  const definitionTranslation = i18next.getFixedT(null, 'pages');
   const [rowObjects, setRowObjects] = useState(null);
   const [totalPages, setTotalPages] = useState(null);
   const [totalRows, setTotalRows] = useState(null);
@@ -139,7 +140,7 @@ function Table(props) {
   }, [dialog.getAfterConfirmationFlag()]);
 
   function getId() {
-    return "table." + ((props.id) ? props.id : window.location.pathname.replaceAll('/', '').toLowerCase());
+    return ((props.id) ? props.id : window.location.pathname.replaceAll('/', '').toLowerCase()) + ".table";
   }
 
   function update() {
@@ -275,7 +276,7 @@ function Table(props) {
           <StyledTR className="header" >
             {props.columnDefinitions.map((column) => (
               <StyledTH scope="col" key={column.key}>
-                {column.label}
+                {(column.hasOwnProperty('label') && column.label !== undefined) ? column.label : definitionTranslation(getId() + ".header." + column.key)}
               </StyledTH>
             ))}
           </StyledTR>
@@ -382,7 +383,7 @@ function Table(props) {
     let showingFrom = (lastIndex - settings.pageSize) + 1;
 
     return (
-      <StyledFooterData key="footer-data" >{t("footer.showingTotalRows", {showingFrom, showingTo, totalRows})}</StyledFooterData>
+      <StyledFooterData key="footer-data" >{tableTranslation("footer.showingTotalRows", {showingFrom, showingTo, totalRows})}</StyledFooterData>
     );
   }
 
@@ -391,10 +392,10 @@ function Table(props) {
       <StyledNavigatorContainer key="navigator" >
         <ul className="pagination justify-content-end">
           <li className={paginatorButtonClass(isFirstEnable)} onClick={handleFirst} >
-            <Button className="page-link" label={t("footer.buttons.first")} left={<Icon fontName="chevron-double-left" small disabled={!isFirstEnable()} ></Icon>} disabled={!isFirstEnable()} ></Button>
+            <Button className="page-link" label={tableTranslation("footer.buttons.first")} left={<Icon fontName="chevron-double-left" small disabled={!isFirstEnable()} ></Icon>} disabled={!isFirstEnable()} ></Button>
           </li>
           <li className={paginatorButtonClass(isPreviousEnable)} onClick={handlePrevious} >
-            <Button className="page-link" label={t("footer.buttons.previous")} left={<Icon fontName="chevron-left" small disabled={!isPreviousEnable()} ></Icon>} disabled={!isPreviousEnable()} ></Button>
+            <Button className="page-link" label={tableTranslation("footer.buttons.previous")} left={<Icon fontName="chevron-left" small disabled={!isPreviousEnable()} ></Icon>} disabled={!isPreviousEnable()} ></Button>
           </li>
           {/*
           <li className="page-item"><a className="page-link" href="#">1</a></li>
@@ -402,10 +403,10 @@ function Table(props) {
           <li className="page-item"><a className="page-link" href="#">3</a></li> 
           */}
           <li className={paginatorButtonClass(isNextEnable)} onClick={handleNext} >
-            <Button className="page-link" label={t("footer.buttons.next")} right={<Icon fontName="chevron-right" small disabled={!isNextEnable()} ></Icon>} disabled={!isNextEnable()} ></Button>
+            <Button className="page-link" label={tableTranslation("footer.buttons.next")} right={<Icon fontName="chevron-right" small disabled={!isNextEnable()} ></Icon>} disabled={!isNextEnable()} ></Button>
           </li>
           <li className={paginatorButtonClass(isLastEnable)} onClick={handleLast} >
-            <Button className="page-link" label={t("footer.buttons.last")} right={<Icon fontName="chevron-double-right" small disabled={!isLastEnable()} ></Icon>} disabled={!isLastEnable()} ></Button>
+            <Button className="page-link" label={tableTranslation("footer.buttons.last")} right={<Icon fontName="chevron-double-right" small disabled={!isLastEnable()} ></Icon>} disabled={!isLastEnable()} ></Button>
           </li>
         </ul>
       </StyledNavigatorContainer>
@@ -465,7 +466,7 @@ function Table(props) {
       }
 
       filtersDOM = (
-        <PanelForm subTitle={t("filters.title")} model={filtersState} id={"filters." + getId()} >
+        <PanelForm subTitle={tableTranslation("filters.title")} model={filtersState} id={getId() + ".filters"} >
           { rows.map((row) => (row)) }
         </PanelForm>
       )  
@@ -478,10 +479,10 @@ function Table(props) {
 
   function buildPageSizeChooser() {
     return (
-      <StyledForm onSubmit={updateRowObjectsWithPaginator} model={settingsState} id={"page-size." + getId()} >
-        <StyledHeaderParagraph>{t("header.show")}</StyledHeaderParagraph>
+      <StyledForm onSubmit={updateRowObjectsWithPaginator} model={settingsState} id={getId() + ".page-size"} >
+        <StyledHeaderParagraph>{tableTranslation("header.show")}</StyledHeaderParagraph>
         <StyledNumericField attr="pageSize" small width="55px" avoidValidations min='10' max='100' step='10' label="" ></StyledNumericField>
-        <StyledHeaderParagraph className="separation" >{t("header.rows")}</StyledHeaderParagraph>
+        <StyledHeaderParagraph className="separation" >{tableTranslation("header.rows")}</StyledHeaderParagraph>
       </StyledForm>
     );
   }

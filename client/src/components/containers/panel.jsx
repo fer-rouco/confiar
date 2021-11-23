@@ -1,8 +1,9 @@
-import { createRef, useEffect } from 'react';
+import { createRef, useEffect, useState } from 'react';
 import styled, { css } from 'styled-components';
 import { navigateIntoObjectByPath } from '../../theme';
 import Icon from './../general/icon';
 import withLoader from './../general/load-indicator';
+import { usePage } from '../../contexts/page-context';
 
 const getThemeAttribute = (theme, attrribute) => {
   return navigateIntoObjectByPath(theme, "components.containers.panel." + attrribute);
@@ -119,17 +120,41 @@ const StyledAcctionContainer = styled.div`
 
 // prop.size: "small", "medium", "large"
 function Panel(props) {
+  const panelRef = createRef();
   const titleRef = createRef();
+  const [title, setTitle] = useState("");
+  const { translation } = usePage();
 
-  useEffect(() => {
-    if (props.actions) {
-      titleRef.current.classList.remove('full-width');
-      titleRef.current.classList.add('with-action-width');
+  function getId() {
+    let sufix = props.id;
+    if (!props.id) {
+      sufix = "main";
+    } else {
+      let parent = panelRef.current?.parentElement.closest(".panel");
+      if (parent) {
+        sufix = "child" + Math.floor(Math.random() * 100);
+      }
     }
-  }, []);
+    return sufix + ".panel";
+  }
+
+  function getTitle() {
+    let title = null;
+    if (props.hasOwnProperty('title') && props.title !== undefined) {
+      title = props.title
+    }
+    else {
+      let id = getId() + ".title";
+      let resolvedTitle = (translation) ? translation(id) : "";
+      if (resolvedTitle !== id) {
+        title = resolvedTitle;
+      }
+    }
+    return title;
+  }
 
   function getClasses() {
-    return ('container panel-container ' + ((props.size) ? props.size : '')).trim();
+    return ('panel container ' + ((props.size) ? props.size : '')).trim();
   }
 
   function buildActions() {
@@ -138,18 +163,8 @@ function Panel(props) {
       actions = (
         <StyledAcctionsContainer>
           {props.actions.map((action, index) => (
-            <StyledAcctionContainer
-              className="btn-secondary"
-              key={action.key}
-              data-toggle="tooltip"
-              title={action.tooltip}
-            >
-              <Icon
-                fontName={action.icon}
-                onClick={() => action.action()}
-                medium
-                noPadding
-              ></Icon>
+            <StyledAcctionContainer className="btn-secondary" key={action.key} data-toggle="tooltip" title={action.tooltip} >
+              <Icon fontName={action.icon} onClick={() => action.action()} medium noPadding ></Icon>
             </StyledAcctionContainer>
           ))}
         </StyledAcctionsContainer>
@@ -159,34 +174,50 @@ function Panel(props) {
   }
 
   function buildTitle() {
-    let title;
-    if (props.title) {
-      title = (
+    let titleDOM;
+    if (!props.subTitle) {
+      titleDOM = (
         <StyledHeader>
           <StyledTitle ref={titleRef} className="full-width">
-            {props.title}
+            {title}
           </StyledTitle>
           {buildActions()}
         </StyledHeader>
       );
     }
-    return title;
+    return titleDOM;
   }
 
   function buildSubTitle() {
-    let subTitle;
+    let subTitleDOM;
     if (props.subTitle) {
-      subTitle = (
+      subTitleDOM = (
         <StyledSubTitle className="full-width">
-          {props.subTitle}
+          {(props.subTitle.length > 0) ? props.subTitle :  title}
         </StyledSubTitle>
       );
     }
-    return subTitle;
+    return subTitleDOM;
   }
 
+  useEffect(() => {
+    // if(!props.id) {
+    //   console.warn("The Panel sets a default id %s", getI18NextKey(), panelRef.current);
+    // }
+
+    if (titleRef.current && props.actions) {
+      titleRef.current.classList.remove('full-width');
+      titleRef.current.classList.add('with-action-width');
+    }
+  }, []);
+
+  
+  useEffect(() => {
+    setTitle(getTitle());
+  }, [props.title, translation]);
+
   return (
-    <StyledContainer className={getClasses()}>
+    <StyledContainer ref={panelRef} className={getClasses()} id={getId()}>
       <div className="row justify-content-center">
         <div>
           {buildTitle()}

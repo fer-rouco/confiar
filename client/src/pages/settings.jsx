@@ -1,4 +1,5 @@
 import { useState } from "react";
+import Page from "../components/containers/page";
 import Panel from "../components/containers/panel";
 import PanelForm from "../components/containers/panel-form";
 import { useTheme } from "../contexts/theme-context";
@@ -6,7 +7,7 @@ import SwitchField from "../components/controls/fields/check/switch-field";
 import SelectField from "../components/controls/fields/select/select-field";
 import { useTranslation } from "react-i18next";
 
-export default function Settings() {
+export default function Settings(props) {
   const theme = useTheme();
   const modelState = useState({ dark: theme.isDark() });
   const [model, setModel] = modelState;
@@ -21,21 +22,23 @@ export default function Settings() {
   }
 
   return (
-    <PanelForm title={t('title')} size="medium" model={modelState} id="settings" >
-      <Panel subTitle="General" model={{}}  >
-        <div className="row">
-          <div className="col-md-6">
-            <SelectField attr="language" options={languages} onChange={() => { handleLanguageChange() }} ></SelectField>
+    <Page id="settings" >
+      <PanelForm size="medium" model={modelState} >
+        <Panel id="general" subTitle model={{}}>
+          <div className="row">
+            <div className="col-md-6">
+              <SelectField attr="language" options={languages} onChange={() => { handleLanguageChange() }} ></SelectField>
+            </div>
           </div>
-        </div>
-      </Panel>
-      <Panel subTitle="Tema" model={{}}  >
-        <div className="row">
-          <div className="col-md-6">
-            <SwitchField attr="dark" label="Modo Claro/Oscuro" onChange={() => theme.toggle()} ></SwitchField>
+        </Panel>
+        <Panel id="theme" subTitle model={{}} >
+          <div className="row">
+            <div className="col-md-6">
+              <SwitchField attr="dark" onChange={() => theme.toggle()} ></SwitchField>
+            </div>
           </div>
-        </div>
-      </Panel>
-   </PanelForm>
+        </Panel>
+      </PanelForm>
+    </Page>
   );
 }

@@ -5,7 +5,7 @@ import { toCamelCase } from '../../../../utils/string-utils';
 import styled from 'styled-components';
 import { useModel } from '../model-context';
 import { navigateIntoObjectByPath } from '../../../../theme';
-import { useTranslation } from "react-i18next";
+import { usePage } from '../../../../contexts/page-context';
 
 const getThemeAttribute = (theme, attrribute) => {
   return navigateIntoObjectByPath(theme, "components.controls.fields.input." + attrribute);
@@ -64,7 +64,7 @@ export default function InputField(props) {
   const [model, setModel] = useModel();
   const fieldRef = createRef();
   const { fieldError } = useError();
-  const { t } = useTranslation('pages');
+  const { translation } = usePage();
 
   const getId = () => {
     return 'input-' + props.attr;
@@ -80,11 +80,12 @@ export default function InputField(props) {
   }, [getField]);
 
   const getParentId = useCallback(() => {
-    return getField()?.form.id;
+    const field = getField();
+    return field.closest(".panel").id;
   }, [getField]);
 
   const getLabel = () => {
-    return (props.hasOwnProperty('label') && props.label !== undefined) ? props.label : t(getParentId() + ".form." + props.attr);
+    return (props.hasOwnProperty('label') && props.label !== undefined) ? props.label : translation(getParentId() + "." + props.attr);
   }
 
   const updateField = () => {
@@ -150,10 +151,9 @@ export default function InputField(props) {
 
   useEffect(() => {
     setLabel(getLabel());
-  }, [props.attr, t]);
+  }, [props.attr, translation]);
 
   useEffect(() => {
-    setLabel(getLabel());
     if (setValue && model) {
       setValue(props.attr, model[props.attr]);
     }

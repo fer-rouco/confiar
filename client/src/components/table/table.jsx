@@ -1,8 +1,9 @@
-import { useEffect, useState } from 'react';
+import { createRef, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import i18next from "i18next";
 import { useDialog } from '../../contexts/dialog-context';
+import { usePage } from '../../contexts/page-context';
 import Button from '../controls/buttons/button';
 import NumericField from '../controls/fields/input/numeric-field';
 import Form from '../containers/form';
@@ -97,18 +98,19 @@ const StyledNumericField = styled(NumericField)`
 
 function Table(props) {
   const tableTranslation = i18next.getFixedT(null, 'components', 'table');
-  const definitionTranslation = i18next.getFixedT(null, 'pages');
+  const page = usePage();
+  const pageTranslation = page.translation;
   const [rowObjects, setRowObjects] = useState(null);
   const [totalPages, setTotalPages] = useState(null);
   const [totalRows, setTotalRows] = useState(null);
   const localStorageService = storageManagerService();
-  const localStorageObject = localStorageService.getItem(getId());
+  const localStorageObject = localStorageService.getItem(page.id);
   const [currentPagePosition, setCurrentPagePosition] = useState((localStorageObject && localStorageObject.currentPagePosition) ? localStorageObject.currentPagePosition : 0);
   const settingsState = useState({ pageSize: (props.pageSize) ? props.pageSize : ((localStorageObject && localStorageObject.pageSize) ? localStorageObject.pageSize : 10) });
   const [settings] = settingsState;
   const filtersState = useState({});
   const dialog = useDialog();
-
+  
   useEffect(() => {
     if (props.columnDefinitions) {
       if (props.columnDefinitions.length > 0) {
@@ -129,7 +131,7 @@ function Table(props) {
   }, [props.columnDefinitions]);
 
   useEffect(() => {
-    localStorageService.setItem(getId(), { currentPagePosition: currentPagePosition, pageSize: settingsState[0].pageSize });
+    localStorageService.setItem(page.id, { currentPagePosition: currentPagePosition, pageSize: settingsState[0].pageSize });
     update();
   }, [settings, currentPagePosition, props.rowObjects, filtersState[0]]);
      
@@ -138,9 +140,9 @@ function Table(props) {
       updateRowObjectsWithPaginator();
     }
   }, [dialog.getAfterConfirmationFlag()]);
-
+  
   function getId() {
-    return ((props.id) ? props.id : window.location.pathname.replaceAll('/', '').toLowerCase()) + ".table";
+    return ((props.id) ? props.id : "") + "";
   }
 
   function update() {
@@ -276,7 +278,7 @@ function Table(props) {
           <StyledTR className="header" >
             {props.columnDefinitions.map((column) => (
               <StyledTH scope="col" key={column.key}>
-                {(column.hasOwnProperty('label') && column.label !== undefined) ? column.label : definitionTranslation(getId() + ".header." + column.key)}
+                {(column.hasOwnProperty('label') && column.label !== undefined) ? column.label : (pageTranslation) ? pageTranslation(getId() + ".header." + column.key) : ""}
               </StyledTH>
             ))}
           </StyledTR>

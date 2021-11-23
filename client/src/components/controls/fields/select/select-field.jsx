@@ -3,7 +3,7 @@ import { useFormContext } from 'react-hook-form';
 import styled from 'styled-components';
 import { navigateIntoObjectByPath } from '../../../../theme';
 import { useModel } from '../model-context';
-import { useTranslation } from "react-i18next";
+import { usePage } from '../../../../contexts/page-context';
 
 const getThemeAttribute = (theme, attrribute) => {
   return navigateIntoObjectByPath(theme, "components.controls.fields.select." + attrribute);
@@ -43,7 +43,7 @@ export default function SelectField(props) {
   const { register, setValue } = useFormContext();
   const [model, setModel] = useModel();
   const fieldRef = createRef();
-  const { t } = useTranslation('pages');
+  const { translation } = usePage();
 
   const getId = () => {
     return 'select-' + props.attr;
@@ -59,11 +59,12 @@ export default function SelectField(props) {
   };
 
   const getParentId = () => {
-    return getField()?.form.id;
+    const field = getField();
+    return field.closest(".panel").id;
   };
 
   const getLabel = () => {
-    return (props.hasOwnProperty('label') && props.label !== undefined) ? props.label : t(getParentId() + ".form." + props.attr);
+    return (props.hasOwnProperty('label') && props.label !== undefined) ? props.label : translation(getParentId() + "." + props.attr);
   }
 
   const getOptions = () => {
@@ -93,7 +94,7 @@ export default function SelectField(props) {
 
   useEffect(() => {
     setLabel(getLabel());
-  }, [props.attr, t]);
+  }, [props.attr, translation]);
 
   useEffect(() => {
     if (setValue && model) {

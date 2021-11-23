@@ -54,13 +54,20 @@
     "login": {
     },
     "settings": {
-      "title": "Configuraciones",
-      "form": {
+      "main.panel": {
+        "title": "Configuraciones"
+      },
+      "general.panel": {
+        "title": "General",
         "language": "Lenguaje"
+      },
+      "theme.panel": {
+        "title": "Tema",
+        "dark": "Modo Claro/Oscuro"
       }
     },
     "user": {
-      "form": {
+      "main.panel": {
         "title": {
           "new": "Usuario nuevo",
           "update": "Actualizar usuario {{name}}"
@@ -79,23 +86,42 @@
       }
     },
     "users": {
-      "table": {
-        "filters": {
-          "form": {
+      "main.panel": {
+        "title": "Usuarios......",
+        "main.table": {
+          "filters.panel": {
             "name": "Nombre",
             "lastName": "Apellido",
             "userName": "Usuario",
             "mail": "E-Mail",
             "profile.id": "Perfil"
+          },
+          "header": {
+            "name": "Nombre",
+            "lastName": "Apellido",
+            "userName": "Usuario",
+            "mail": "E-Mail",  
+            "profile.description": "Perfil",
+            "remove": ""
           }
-        },
-        "header": {
-          "name": "Nombre",
-          "lastName": "Apellido",
-          "userName": "Usuario",
-          "mail": "E-Mail",  
-          "profile.description": "Perfil",
-          "remove": ""
+        }  
+      }
+    },
+    "customers": {
+      "main.panel": {
+        "title": "Clientes.",
+        "main.table": {
+          "filters.panel": {
+            "name": "Nombre",
+            "lastName": "Apellido",
+            "mail": "Mail"
+          },
+          "header": {
+            "name": "Nombre",
+            "lastName": "Apellido",
+            "mail": "Mail",
+            "remove": ""
+          }
         }
       }
     }

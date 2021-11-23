@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useAlertMessage } from '../contexts/alert-message-context';
 import useNavigation from '../hooks/navigation';
 import { deleteUser, findUsers, getAllUserProfiles } from '../services/server/user-service';
+import Page from "../components/containers/page";
 import Panel from '../components/containers/panel';
 import Table from '../components/table/table';
 import { removeColumnDefinition, textColumnDefinition } from '../components/table/column-definitions/column-definition';
@@ -70,20 +71,21 @@ export default function Users() {
   }, []);
 
   return (
-    <Panel
-      title='Usuarios.'
-      size="large"
-      model={{}}
-      actions={[
-        {
-          key: 'add',
-          icon: 'plus',
-          action: createUser,
-          tooltip: 'Crear un usuario nuevo.',
-        },
-      ]}
-    >
-      <Table columnDefinitions={columnDefinitions} requestRowObjectsFunction={findUsers} filterDefinitions={filterDefinitions} ></Table>
-    </Panel>
+    <Page id="users" >
+      <Panel
+        size="large"
+        model={{}}
+        actions={[
+          {
+            key: 'add',
+            icon: 'plus',
+            action: createUser,
+            tooltip: 'Crear un usuario nuevo.',
+          },
+        ]}
+      >
+        <Table id="main.panel.main.table" requestRowObjectsFunction={findUsers} columnDefinitions={columnDefinitions} filterDefinitions={filterDefinitions} ></Table>
+      </Panel>
+    </Page>
   );
 }

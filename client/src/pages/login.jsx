@@ -1,12 +1,11 @@
 import React, { useState } from 'react';
 
 import { useSession } from '../contexts/session-context';
+import Page from '../components/containers/page';
 import PanelForm from '../components/containers/panel-form';
 import TextField from '../components/controls/fields/input/text-field';
 import PasswordField from '../components/controls/fields/input/password-field';
 import SubmitButton from '../components/controls/buttons/submit-button';
-
-const [USER, PASSWORD] = ['user', 'password'];
 
 export default function Login() {
   const { logIn } = useSession();
@@ -20,36 +19,27 @@ export default function Login() {
   };
 
   return (
-    <PanelForm title="Login" size="small" onSubmit={doLogin} model={modelState} >
-      <div className="container">
-        <div className="row justify-content-center">
-          <div className="col-md-6">
-            <TextField
-              attr={USER}
-              label="User or Email address"
-              required
-            ></TextField>
+    <Page id="login">
+      <PanelForm size="small" onSubmit={doLogin} model={modelState} >
+        <div className="container">
+          <div className="row justify-content-center">
+            <div className="col-md-6">
+              <TextField attr="user" required
+              ></TextField>
+            </div>
+          </div>
+          <div className="row justify-content-center">
+            <div className="col-md-6">
+              <PasswordField attr="password" required ></PasswordField>
+            </div>
+          </div>
+          <div className="row justify-content-center">
+            <div className="col-md-4">
+              <SubmitButton className="w-100" large ></SubmitButton>
+            </div>
           </div>
         </div>
-        <div className="row justify-content-center">
-          <div className="col-md-6">
-            <PasswordField
-              attr={PASSWORD}
-              label="Password"
-              required
-            ></PasswordField>
-          </div>
-        </div>
-        <div className="row justify-content-center">
-          <div className="col-md-4">
-            <SubmitButton
-              label="Sign in"
-              className="w-100"
-              large
-            ></SubmitButton>
-          </div>
-        </div>
-      </div>
-    </PanelForm>
+      </PanelForm>
+    </Page>
   );
 }

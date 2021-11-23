@@ -1,4 +1,6 @@
+import { createRef, useEffect, useState } from "react";
 import styled from "styled-components";
+import { usePage } from "../../../contexts/page-context";
 
 const StyledButton = styled.button((props) => {
   return `
@@ -11,6 +13,10 @@ const StyledButton = styled.button((props) => {
 });
 
 export default function Button(props) {
+  const [label, setLabel] = useState("");
+  const buttonRef = createRef();
+  const { translation } = usePage();
+
   const getType = () => {
     return props.type ? props.type : 'button';
   };
@@ -52,10 +58,27 @@ export default function Button(props) {
     return classes.trim();
   };
 
+  const getButton = () => {
+    return buttonRef.current;
+  };
+
+  const getParentId = () => {
+    const button = getButton();
+    return button.closest(".panel")?.id;
+  };
+
+  const getLabel = () => {
+    return (props.hasOwnProperty('label') && props.label !== undefined) ? props.label : (translation) ? translation(getParentId() + "." + props.attr) : "";
+  }
+  
+  useEffect(() => {
+    setLabel(getLabel());
+  }, [translation]);
+
   return (
-    <StyledButton type={getType()} className={getClasses()} disabled={props.disabled} onClick={props.onClick} onKeyPress={props.onKeyPress} >
+    <StyledButton type={getType()} className={getClasses()} disabled={props.disabled} ref={buttonRef} onClick={props.onClick} onKeyPress={props.onKeyPress} >
       {props.left}
-      {props.label}
+      {label}
       {props.right}
     </StyledButton>
   );

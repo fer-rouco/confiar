@@ -82,7 +82,7 @@ export function useTheme() {
   const context = React.useContext(ThemeContext);
 
   if (!context) {
-    throw new Theme('useTheme should be inside the provider ThemeContext');
+    throw new Error('useTheme should be inside the provider ThemeContext');
   }
 
   return context;

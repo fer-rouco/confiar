@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useLocation } from 'react-router';
+import { useTranslation } from "react-i18next";
 import useNavigation from '../hooks/navigation';
 import SubmitButton from '../components/controls/buttons/submit-button';
 import MailField from '../components/controls/fields/input/mail-field';
@@ -10,7 +11,7 @@ import PanelForm from '../components/containers/panel-form';
 import { useAlertMessage } from '../contexts/alert-message-context';
 import { useError } from '../contexts/error-context';
 import { findUserById, getAllUserProfiles, updateUser } from '../services/server/user-service';
-import { useTranslation } from "react-i18next";
+import Page from '../components/containers/page';
 
 export default function User() {
   const navigation = useNavigation();
@@ -28,22 +29,13 @@ export default function User() {
     let valid = true;
     if (!update && model.password !== model.repeatPassword) {
       valid = false;
-      addFieldError(
-        REPEAT_PASSWORD,
-        'Esta contraseña debe ser igual a la del campo password.',
-      );
+      addFieldError(REPEAT_PASSWORD, 'Esta contraseña debe ser igual a la del campo password.');
     }
     if (valid) {
       let responsePromise = updateUser(createTransferObject(model.id));
       responsePromise
         .then((user) => {
-          addSuccessMessage(
-            'El usuario ' +
-              user.name +
-              ' fue ' +
-              (update ? 'actualizado' : 'creado') +
-              ' exitosamente.',
-          );
+          addSuccessMessage('El usuario ' + user.name + ' fue ' + (update ? 'actualizado' : 'creado') + ' exitosamente.');
           navigation.navigateTo('/Users');
         })
         .catch((error) => {
@@ -72,12 +64,12 @@ export default function User() {
   }
 
   const getActionLabel = () => {
-    return t('form.submitButton.' + ((update) ? 'update' : 'create'));
+    return t('main.panel.submitButton.' + ((update) ? 'update' : 'create'));
   };
 
   const getTitle = () => {
     let name = (location.state) ? location.state.name : "";
-    return t('form.title.' + ((update) ? 'update' : 'new'), { "name": name})
+    return t('main.panel.title.' + ((update) ? 'update' : 'new'), { "name": name})
   };
 
   function updateProfileList(response) {
@@ -111,47 +103,49 @@ export default function User() {
   }, [location.state]);
 
   return (
-    <PanelForm title={getTitle()} size="medium" model={modelState} onSubmit={onCreateUser} id="user" >
-      <div className="container">
-        <div className="row">
-          <div className="col-md-6">
-            <TextField attr='name' minLength="2" required ></TextField>
-          </div>
-          <div className="col-md-6">
-            <TextField attr='lastName' minLength="2" required ></TextField>
-          </div>
-        </div>
-        <div className="row">
-          <div className="col-md-6">
-            <TextField attr='userName' minLength="2" required ></TextField>
-          </div>
-          <div className="col-md-6">
-            <MailField attr='mail' required></MailField>
-          </div>
-        </div>
-        {!update ? (
+    <Page id="user">
+      <PanelForm title={getTitle()} size="medium" model={modelState} onSubmit={onCreateUser} >
+        <div className="container">
           <div className="row">
             <div className="col-md-6">
-              <PasswordField attr='password' minLength="8" required ></PasswordField>
+              <TextField attr='name' minLength="2" required ></TextField>
             </div>
             <div className="col-md-6">
-              <PasswordField attr={REPEAT_PASSWORD} minLength="8" required ></PasswordField>
+              <TextField attr='lastName' minLength="2" required ></TextField>
             </div>
           </div>
-        ) : (
-          <></>
-        )}
-        <div className="row">
-          <div className="col-md-6">
-            <SelectField attr='profile' options={profiles} required ></SelectField>
+          <div className="row">
+            <div className="col-md-6">
+              <TextField attr='userName' minLength="2" required ></TextField>
+            </div>
+            <div className="col-md-6">
+              <MailField attr='mail' required></MailField>
+            </div>
+          </div>
+          {!update ? (
+            <div className="row">
+              <div className="col-md-6">
+                <PasswordField attr='password' minLength="8" required ></PasswordField>
+              </div>
+              <div className="col-md-6">
+                <PasswordField attr={REPEAT_PASSWORD} minLength="8" required ></PasswordField>
+              </div>
+            </div>
+          ) : (
+            <></>
+          )}
+          <div className="row">
+            <div className="col-md-6">
+              <SelectField attr='profile' options={profiles} required ></SelectField>
+            </div>
           </div>
         </div>
-      </div>
-      <div className="row justify-content-center">
-        <div className="col-md-2" align="center">
-          <SubmitButton label={getActionLabel()}></SubmitButton>
+        <div className="row justify-content-center">
+          <div className="col-md-2" align="center">
+            <SubmitButton label={getActionLabel()}></SubmitButton>
+          </div>
         </div>
-      </div>
-    </PanelForm>
+      </PanelForm>
+    </Page>
   );
 }

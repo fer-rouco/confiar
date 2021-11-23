@@ -5,6 +5,7 @@ import { removeCustomer, findCustomers } from '../services/server/customer-servi
 import Panel from '../components/containers/panel';
 import Table from '../components/table/table';
 import { removeColumnDefinition, textColumnDefinition } from '../components/table/column-definitions/column-definition';
+import Page from '../components/containers/page';
 
 export default function Customers() {
   const navigation = useNavigation();
@@ -77,19 +78,20 @@ export default function Customers() {
   }, []);
 
   return (
-    <Panel
-      title="Clientes"
-      model={{}}
-      actions={[
-        {
-          key: 'add',
-          icon: 'plus',
-          action: create,
-          tooltip: 'Crear un cliente nuevo.',
-        },
-      ]}
-    >
-      <Table columnDefinitions={columnDefinitions} requestRowObjectsFunction={findCustomers} filterDefinitions={filterDefinitions} ></Table>
-    </Panel>
+    <Page id="customers" >
+      <Panel
+        model={{}}
+        actions={[
+          {
+            key: 'add',
+            icon: 'plus',
+            action: create,
+            tooltip: 'Crear un cliente nuevo.',
+          },
+        ]}
+      >
+        <Table id="main.panel.main.table" columnDefinitions={columnDefinitions} requestRowObjectsFunction={findCustomers} filterDefinitions={filterDefinitions} ></Table>
+      </Panel>
+    </Page>
   );
 }

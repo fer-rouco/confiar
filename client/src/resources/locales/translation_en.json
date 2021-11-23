@@ -52,15 +52,28 @@
   },
   "pages": {
     "login": {
+      "main.panel": {
+        "title": "Login",
+        "user": "User or Email address",
+        "password": "Password",
+        "submitButton": "Sign in"
+      }
     },
     "settings": {
-      "title": "Configs",
-      "form": {
+      "main.panel": {
+        "title": "Configurations"
+      },
+      "general.panel": {
+        "title": "General",
         "language": "Language"
+      },
+      "theme.panel": {
+        "title": "Theme",
+        "dark": "Switch Light/Dark"
       }
     },
     "user": {
-      "form": {
+      "main.panel": {
         "title": {
           "new": "New user",
           "update": "Update user {{name}}"
@@ -79,23 +92,61 @@
       }
     },
     "users": {
-      "table": {
-        "filters": {
-          "form": {
+      "main.panel": {
+        "title": "Users.",
+        "main.table": {
+          "filters.panel": {
             "name": "Name",
             "lastName": "Last name",
             "userName": "User",
             "mail": "E-Mail",
             "profile.id": "Profile"
+          },
+          "header": {
+            "name": "Name",
+            "lastName": "Last name",
+            "userName": "User",
+            "mail": "E-Mail",
+            "profile.description": "Profile",
+            "remove": ""
           }
+        }
+      }
+    },
+    "customers": {
+      "main.panel": {
+        "title": "Customers.",
+        "main.table": {
+          "filters.panel": {
+            "name": "Name",
+            "lastName": "Last name",
+            "mail": "E-Mail"
+          },
+          "header": {
+            "name": "Name",
+            "lastName": "Last name",
+            "mail": "E-Mail",
+            "remove": ""
+          }
+        }
+      }
+    },
+    "customer": {
+      "main.panel": {
+        "title": {
+          "new": "New customer",
+          "update": "Update customer {{name}}"
         },
-        "header": {
-          "name": "Name",
-          "lastName": "Last name",
-          "userName": "User",
-          "mail": "E-Mail",
-          "profile.description": "Profile",
-          "remove": ""
+        "name": "Name",
+        "lastName": "Last name",
+        "address": "Address",
+        "mail": "E-Mail",
+        "phone": "Phone",
+        "identityDocuments": "DNI (Frente y Dorso)",
+        "paychecks": "Recibos de sueldo",
+        "submitButton": {
+          "create": "Create",
+          "update": "Update"
         }
       }
     }

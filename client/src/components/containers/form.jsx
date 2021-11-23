@@ -26,16 +26,10 @@ export default function Form(props) {
     event.preventDefault();
   };
 
-  useEffect(() => {
-    if(!props.id) {
-      console.error("The Form should have an id. ", formRef.current);
-    }
-  }, []);
-
   return (
     <ModelProvider model={props.model}>
       <FormProvider {...methods}>
-        <form onSubmit={onSubmit} ref={formRef} className={props.className} id={props.id} >
+        <form onSubmit={onSubmit} ref={formRef} className={props.className} >
           {props.children}
         </form>
       </FormProvider>

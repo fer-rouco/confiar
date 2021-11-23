@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useLocation } from 'react-router';
+import { useTranslation } from "react-i18next";
 import useNavigation from '../hooks/navigation';
 import SubmitButton from '../components/controls/buttons/submit-button';
 import MailField from '../components/controls/fields/input/mail-field';
@@ -10,17 +11,7 @@ import { useAlertMessage } from '../contexts/alert-message-context';
 import { useError } from '../contexts/error-context';
 import { findCustomerById, updateCustomer } from '../services/server/customer-service';
 import FileUpload from '../components/controls/file-upload';
-
-const [NAME, LAST_NAME, ADDRESS, EMAIL, PHONE, IDENTITY_DOCUMENTS, PAYCHECKS] =
-  [
-    { id: 'name', label: 'Nombre' },
-    { id: 'lastName', label: 'Apellido' },
-    { id: 'address', label: 'Dirección' },
-    { id: 'mail', label: 'E-Mail' },
-    { id: 'phone', label: 'Telefono' },
-    { id: 'identityDocuments', label: 'DNI (Frente y Dorso)' },
-    { id: 'paychecks', label: 'Recibos de sueldo' },
-  ];
+import Page from '../components/containers/page';
 
 export default function Customer() {
   const navigation = useNavigation();
@@ -30,6 +21,7 @@ export default function Customer() {
   const { addSuccessMessage, addErrorMessage } = useAlertMessage();
   const { addFieldError } = useError();
   const location = useLocation();
+  const { t } = useTranslation('pages', { keyPrefix: 'customer' });
 
   const onCreateUser = () => {
     let valid = true;
@@ -64,16 +56,14 @@ export default function Customer() {
 
     return object;
   }
-
+  
   const getActionLabel = () => {
-    return update ? 'Actualizar' : 'Crear';
+    return t('main.panel.submitButton.' + ((update) ? 'update' : 'create'));
   };
 
   const getTitle = () => {
     let name = (location.state) ? location.state.name : "";
-    return (
-      getActionLabel() + ' cliente ' + (update ? name : 'nuevo') + '.'
-    );
+    return t('main.panel.title.' + ((update) ? 'update' : 'new'), { "name": name})
   };
 
   useEffect(() => {
@@ -93,43 +83,45 @@ export default function Customer() {
   }, [location.state]);
 
   return (
-    <PanelForm title={getTitle()} size="medium" model={modelState} onSubmit={onCreateUser} >
-      <div className="container">
-        <div className="row">
-          <div className="col-md-6">
-            <TextField attr={NAME.id} label={NAME.label} minLength="2" required></TextField>
+    <Page id="customer">
+      <PanelForm title={getTitle()} size="medium" model={modelState} onSubmit={onCreateUser} >
+        <div className="container">
+          <div className="row">
+            <div className="col-md-6">
+              <TextField attr="name" minLength="2" required></TextField>
+            </div>
+            <div className="col-md-6">
+              <TextField attr="lastName" minLength="2" required></TextField>
+            </div>
           </div>
-          <div className="col-md-6">
-            <TextField attr={LAST_NAME.id} label={LAST_NAME.label} minLength="2" required></TextField>
+          <div className="row">
+            <div className="col-md-6">
+              <MailField attr="mail" required></MailField>
+            </div>
+            <div className="col-md-6">
+              <PhoneField attr="phone" required></PhoneField>
+            </div>
+          </div>
+          <div className="row">
+            <div className="col-md-6">
+              <TextField attr="address" minLength="2" required></TextField>
+            </div>
+          </div>
+          <div className="row">
+            <div className="col-md-6">
+              <FileUpload attr="identityDocuments" required></FileUpload>
+            </div>
+            <div className="col-md-6">
+              <FileUpload attr="paychecks" required></FileUpload>
+            </div>
           </div>
         </div>
-        <div className="row">
-          <div className="col-md-6">
-            <MailField attr={EMAIL.id} label={EMAIL.label} required></MailField>
-          </div>
-          <div className="col-md-6">
-            <PhoneField attr={PHONE.id} label={PHONE.label} required></PhoneField>
+        <div className="row justify-content-center">
+          <div className="col-md-2" align="center">
+            <SubmitButton label={getActionLabel()}></SubmitButton>
           </div>
         </div>
-        <div className="row">
-          <div className="col-md-6">
-            <TextField attr={ADDRESS.id} label={ADDRESS.label} minLength="2" required></TextField>
-          </div>
-        </div>
-        <div className="row">
-          <div className="col-md-6">
-            <FileUpload attr={IDENTITY_DOCUMENTS.id} label={IDENTITY_DOCUMENTS.label} required></FileUpload>
-          </div>
-          <div className="col-md-6">
-            <FileUpload attr={PAYCHECKS.id} label={PAYCHECKS.label} required></FileUpload>
-          </div>
-        </div>
-      </div>
-      <div className="row justify-content-center">
-        <div className="col-md-2" align="center">
-          <SubmitButton label={getActionLabel()}></SubmitButton>
-        </div>
-      </div>
-    </PanelForm>
+      </PanelForm>
+    </Page>
   );
 }

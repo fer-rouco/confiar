@@ -1,6 +1,7 @@
-import { createRef, useEffect } from "react";
+import { createRef, useEffect, useState } from "react";
 import { useFormContext } from "react-hook-form";
 import styled from "styled-components";
+import { usePage } from "../../../../contexts/page-context";
 import { navigateIntoObjectByPath } from "../../../../theme";
 import { useModel } from '../model-context';
 
@@ -19,9 +20,19 @@ const StyledFormControl = styled.input`
 `;
 
 export default function CheckboxField(props) {
+  const [label, setLabel] = useState("");
   const { register, setValue } = useFormContext();
   const [model, setModel] = useModel();
   const fieldRef = createRef();
+  const { translation } = usePage();
+
+  const getId = () => {
+    let prefix = (props.type) ? props.type : 'checkbox';
+    if (props.switch) {
+      prefix = "switch";
+    }
+    return prefix + '-' + props.attr;
+  };
 
   const getField = () => {
     return fieldRef.current.getElementsByClassName('checkbox')[0];
@@ -32,13 +43,14 @@ export default function CheckboxField(props) {
     return field ? field.checked : null;
   };
 
-  const getId = () => {
-    let prefix = (props.type) ? props.type : 'checkbox';
-    if (props.switch) {
-      prefix = "switch";
-    }
-    return prefix + '-' + props.attr;
+  const getParentId = () => {
+    const field = getField();
+    return field.closest(".panel").id;
   };
+
+  const getLabel = () => {
+    return (props.hasOwnProperty('label') && props.label !== undefined) ? props.label : translation(getParentId() + "." + props.attr);
+  }
 
   const onChange = () => {
     let value = getValue();
@@ -56,6 +68,10 @@ export default function CheckboxField(props) {
   };
 
   useEffect(() => {
+    setLabel(getLabel());
+  }, [props.attr, translation]);
+
+  useEffect(() => {
     if (setValue && model) {
       setValue(props.attr, model[props.attr]);
     }
@@ -71,7 +87,7 @@ export default function CheckboxField(props) {
         onChange={onChange}
       />
       <label className="form-check-label" htmlFor={getId()} >
-        {props.label}
+        {label}
       </label>
     </StyledContainer>
   );

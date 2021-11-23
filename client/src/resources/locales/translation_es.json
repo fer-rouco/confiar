@@ -93,7 +93,7 @@
     },
     "users": {
       "main.panel": {
-        "title": "Usuarios......",
+        "title": "Usuarios",
         "main.table": {
           "filters.panel": {
             "name": "Nombre",

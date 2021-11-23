@@ -1,6 +1,7 @@
-import { useState } from 'react';
+import { createRef, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { useDialog } from '../../contexts/dialog-context';
+import { usePage } from '../../contexts/page-context';
 import { navigateIntoObjectByPath } from '../../theme';
 import { contentDialogConfig } from '../dialog/dialog-config';
 import Button from './buttons/button';
@@ -107,9 +108,25 @@ const StyledLabelContainer = styled.div`
 
 
 export default function FileUpload(props) {
+  const [label, setLabel] = useState("");
   const [isDragOver, setIsDragOver] = useState(false);
   const [model, setModel] = useModel();
   const dialogContext = useDialog();
+  const reference = createRef();
+  const { translation } = usePage();
+
+  const getFileUpload = () => {
+    return reference.current;
+  };
+
+  const getParentId = () => {
+    const fileUpload = getFileUpload();
+    return fileUpload.closest(".panel").id;
+  };
+
+  const getLabel = () => {
+    return (props.hasOwnProperty('label') && props.label !== undefined) ? props.label : translation(getParentId() + "." + props.attr);
+  }
 
   function getFilesFromModel() {
     return (model && model[props.attr]) ? model[props.attr] : [];
@@ -280,10 +297,14 @@ export default function FileUpload(props) {
     return content.split(',')[1];
   }
 
+  useEffect(() => {
+    setLabel(getLabel());
+  }, [props.attr, translation]);
+  
   return (
-    <div>
+    <div ref={reference} >
       <StyledContainer className={(isDragOver) ? 'onDragOver' : ''} onClick={browseFiles} onDrop={event => handleDrop(event)} onDragOver={event => handleDragOver(event)} onDragLeave={event => handleDragLeave(event)} >
-        <StyledLabel>{props.label}</StyledLabel>
+        <StyledLabel>{label}</StyledLabel>
         {
           (getFilesFromModel().length === 0) ? 
             (

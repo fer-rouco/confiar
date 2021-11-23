@@ -52,6 +52,12 @@
   },
   "pages": {
     "login": {
+      "main.panel": {
+        "title": "Login",
+        "user": "Usuario o Mail",
+        "password": "Password",
+        "submitButton": "Loguearse"
+      }
     },
     "settings": {
       "main.panel": {
@@ -122,6 +128,25 @@
             "mail": "Mail",
             "remove": ""
           }
+        }
+      }
+    },
+    "customer": {
+      "main.panel": {
+        "title": {
+          "new": "Cliente nuevo",
+          "update": "Actualizar cliente {{name}}"
+        },
+        "name": "Nombre",
+        "lastName": "Apellido",
+        "address": "Direccion",
+        "mail": "Mail",
+        "phone": "Telefono",
+        "identityDocuments": "DNI (Frente y Dorso)",
+        "paychecks": "Recibos de sueldo",
+        "submitButton": {
+          "create": "Creaar",
+          "update": "Actualizar"
         }
       }
     }

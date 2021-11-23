@@ -142,8 +142,8 @@
         "address": "Address",
         "mail": "E-Mail",
         "phone": "Phone",
-        "identityDocuments": "DNI (Frente y Dorso)",
-        "paychecks": "Recibos de sueldo",
+        "identityDocuments": "DNI (Front and Back)",
+        "paychecks": "Payslips",
         "submitButton": {
           "create": "Create",
           "update": "Update"

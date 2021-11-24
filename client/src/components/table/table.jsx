@@ -116,6 +116,7 @@ function Table(props) {
       if (props.columnDefinitions.length > 0) {
         props.columnDefinitions.map((columnDefinition) => {
           if (columnDefinition.dialogConfig) {
+            dialog.setTranslationPrefixKey(getId());
             dialog.setConfig(columnDefinition.dialogConfig);
           }
         });

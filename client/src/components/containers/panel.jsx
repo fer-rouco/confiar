@@ -126,9 +126,9 @@ function Panel(props) {
   const { translation } = usePage();
 
   function getId() {
-    let sufix = props.id;
-    if (!props.id) {
-      sufix = "main";
+    let sufix = "main";
+    if (props.id) {
+      sufix = props.id;
     } else {
       let parent = panelRef.current?.parentElement.closest(".panel");
       if (parent) {
@@ -144,11 +144,7 @@ function Panel(props) {
       title = props.title
     }
     else {
-      let id = getId() + ".title";
-      let resolvedTitle = (translation) ? translation(id) : "";
-      if (resolvedTitle !== id) {
-        title = resolvedTitle;
-      }
+      title = translation(getId() + ".title");
     }
     return title;
   }

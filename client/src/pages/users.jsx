@@ -28,8 +28,8 @@ export default function Users() {
         key: 'remove',
         icon: 'trash-fill',
         dialogConfig: {
-          title: 'Eliminar Usuario',
-          message: 'Esta seguro que desea eliminar el usuario <%NAME%>?',
+          key: 'remove',
+          message: { key: "message", placeholders: ["name"] },
           onAccept: (model) => {
             return deleteUser(model.id)
               .then((user) => {

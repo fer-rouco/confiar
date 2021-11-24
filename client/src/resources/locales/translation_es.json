@@ -109,8 +109,13 @@
             "mail": "E-Mail",  
             "profile.description": "Perfil",
             "remove": ""
+          },
+          "remove.dialog": {
+            "title": "Eliminar usuario",
+            "message": "Esta seguro que quiere eliminar el usuario {{name}}?",
+            "successMessage": "El usuario {{name}} fue eliminado exitosamente."
           }
-        }  
+        }
       }
     },
     "customers": {
@@ -127,6 +132,11 @@
             "lastName": "Apellido",
             "mail": "Mail",
             "remove": ""
+          },
+          "remove.dialog": {
+            "title": "Eliminar Cliente",
+            "message": "Esta seguro que desea eliminar el cliente {{name}}?",
+            "successMessage": "El cliente {{name}} fue eliminado exitosamente."
           }
         }
       }

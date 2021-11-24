@@ -7,6 +7,7 @@ export function DialogProvider(props) {
   const [afterConfirmation, setAfterConfirmation] = useState(false);
   const [dialogConfig, setDialogConfig] = useState({});
   const [modelState, setModelState] = useState({});
+  const [translationPrefixKey, setTranslationPrefixKey] = useState('');
 
   const showDialog = (localModel) => {
     if (localModel) {
@@ -46,6 +47,10 @@ export function DialogProvider(props) {
   const setAfterConfirmationFlag = (afterConfirmationFlag) => {
     setAfterConfirmation(afterConfirmationFlag);
   }
+
+  const getTranslationPrefixKey = () => {
+    return translationPrefixKey;
+  }
     
   const value = useMemo(() => {
     return {
@@ -57,9 +62,11 @@ export function DialogProvider(props) {
       setModel,
       getModel,
       setAfterConfirmationFlag,
-      getAfterConfirmationFlag
+      getAfterConfirmationFlag,
+      getTranslationPrefixKey,
+      setTranslationPrefixKey
     };
-  }, [showDialogState, dialogConfig, modelState, afterConfirmation]);
+  }, [showDialogState, dialogConfig, modelState, afterConfirmation, translationPrefixKey]);
 
   return <DialogContext.Provider value={value} {...props} />;
 }

@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useTranslation } from "react-i18next";
 import useNavigation from '../hooks/navigation';
 import { useAlertMessage } from '../contexts/alert-message-context';
 import { removeCustomer, findCustomers } from '../services/server/customer-service';
@@ -12,6 +13,7 @@ export default function Customers() {
   const { addSuccessMessage, addErrorMessage } = useAlertMessage();
   const [columnDefinitions, setColumnDefinitions] = useState([]);
   const [filterDefinitions, setFilterDefinitions] = useState([]);
+  const { t } = useTranslation('pages', { keyPrefix: 'customers' });
 
   function create() {
     navigation.navigateTo('/Customer');
@@ -36,14 +38,12 @@ export default function Customers() {
         key: 'remove',
         icon: 'trash-fill',
         dialogConfig: {
-          title: 'Eliminar Cliente',
-          message: 'Esta seguro que desea eliminar el cliente <%NAME%>?',
+          key: 'remove',
+          message: { key: "message", placeholders: ["name"] },
           onAccept: (model) => {
             return removeCustomer(model.id)
               .then(() => {
-                addSuccessMessage(
-                  'El cliente ' + model.name + ' fue eliminado exitosamente.',
-                );
+                addSuccessMessage(t("remove.successMessage", { name: model.name }));
               })
               .then((errorData) => {
                 if (errorData) {

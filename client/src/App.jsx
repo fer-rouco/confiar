@@ -4,11 +4,9 @@ import { ThemeProvider } from 'styled-components';
 import { BarsProvider } from './components/bars/bars-context';
 import NavBar from './components/bars/nav-bar';
 import SideBar from './components/bars/side-bar';
-import Dialog from './components/dialog/dialog';
 import AlertMessage from './components/general/alert-message';
 import withAuth from './components/general/protected-routes';
 import { AlertMessageProvider } from './contexts/alert-message-context';
-import { DialogProvider } from './contexts/dialog-context';
 import { ErrorProvider } from './contexts/error-context';
 import { SessionProvider } from './contexts/session-context';
 import { useTheme } from './contexts/theme-context';
@@ -38,8 +36,6 @@ function App({error}) {
       {/* <Tooltip></Tooltip> */}
       <AlertMessageProvider>
         <AlertMessage></AlertMessage>
-        <DialogProvider>
-          <Dialog></Dialog>
           <ErrorProvider>
             <SessionProvider>
               <BarsProvider>
@@ -87,7 +83,6 @@ function App({error}) {
               </div>
             </SessionProvider>
           </ErrorProvider>
-        </DialogProvider>
       </AlertMessageProvider>
     </ThemeProvider>
   );

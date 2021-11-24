@@ -4,6 +4,8 @@ import styled from 'styled-components';
 import Button from '../controls/buttons/button';
 import { useDialog } from '../../contexts/dialog-context';
 import { navigateIntoObjectByPath } from '../../theme';
+import { usePage } from '../../contexts/page-context';
+
 
 const getThemeAttribute = (theme, attrribute) => {
   return navigateIntoObjectByPath(theme, "components.dialog." + attrribute);
@@ -30,27 +32,21 @@ const StyledModalContent = styled.div`
 
 export default function Dialog() {
   const dialogContext = useDialog();
-  const modalRef = createRef();
   const config = dialogContext.getConfig();
+  const modalRef = createRef();
+  const { resolveTranslation } = usePage();
+  const [title, setTitle] = useState("");
+  const [message, setMessage] = useState("");
 
-  function getMessage() {
-    let message = config.message;
-    Object.entries(dialogContext.getModel()).forEach((entry) => {
-      let attr = entry[0].toUpperCase();
-      let value = entry[1];
-      message = message.replaceAll('<%' + attr + '%>', value);
-    })
-    return message
-  }
 
   const handleClose = () => {
     dialogContext.hideDialog();
   };
 
-  const handleAction = (action) => {
-    if (action.action) {
-      action.action(dialogContext.getModel()).then(() => {
-        dialogContext.setAfterConfirmationFlag(action.key === 'accept');
+  const handleAction = (actionConfig) => {
+    if (actionConfig.action) {
+      actionConfig.action(dialogContext.getModel()).then(() => {
+        dialogContext.setAfterConfirmationFlag(actionConfig.key === 'accept');
       });
     }
     dialogContext.hideDialog();
@@ -60,8 +56,8 @@ export default function Dialog() {
     <div className="modal-footer">
       {
         (config.actions) ?
-          config.actions.map(action => (
-            <Button key={action.key} label={action.label} onClick={() => handleAction(action)} color={action.color} ></Button>
+          config.actions.map(actionConfig => (
+            <Button key={actionConfig.key} label={actionConfig.label} onClick={() => handleAction(actionConfig)} color={actionConfig.color} ></Button>
           ))
           : (<></>)
       }
@@ -72,6 +68,11 @@ export default function Dialog() {
     const modal = bootstrap.Modal.getOrCreateInstance(modalRef.current)
 
     if (dialogContext.getDialogVisibility()) {
+      const prefix = dialogContext.getTranslationPrefixKey() + '.' + config.key + '.dialog.';
+      const titleToResolve = (config.title) ? config.title : { key: "title" };
+      const messageToResolve = (config.message) ? config.message : { key: "message" };
+      setTitle(resolveTranslation(titleToResolve, prefix, dialogContext.getModel()));
+      setMessage(resolveTranslation(messageToResolve, prefix, dialogContext.getModel()));
       dialogContext.setAfterConfirmationFlag(false);
       modal.show();
     }
@@ -97,11 +98,11 @@ export default function Dialog() {
           <StyledModalContent className="modal-content">
             <div className="modal-header">
               <h5 className="modal-title" id="modalLabel">
-                {config.title}
+                {title}
               </h5>
               <Button onClick={handleClose} close ></Button>
             </div>
-            {(config.content) ? (config.content) : (<div className="modal-body">{getMessage()}</div>)}
+            {(config.content) ? (config.content) : (<div className="modal-body">{message}</div>)}
             {(!config.actions) ? (<></>) : (getFooter()) }
           </StyledModalContent>
         </div>

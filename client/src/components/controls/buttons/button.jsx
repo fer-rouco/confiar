@@ -73,7 +73,7 @@ export default function Button(props) {
   
   useEffect(() => {
     setLabel(getLabel());
-  }, [translation]);
+  }, [props.label, translation]);
 
   return (
     <StyledButton type={getType()} className={getClasses()} disabled={props.disabled} ref={buttonRef} onClick={props.onClick} onKeyPress={props.onKeyPress} >

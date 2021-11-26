@@ -11,9 +11,9 @@ import PanelForm from '../components/containers/panel-form';
 import { useAlertMessage } from '../contexts/alert-message-context';
 import { useError } from '../contexts/error-context';
 import { findUserById, getAllUserProfiles, updateUser } from '../services/server/user-service';
-import Page from '../components/containers/page';
+import withPage from '../components/containers/page';
 
-export default function User() {
+function User() {
   const navigation = useNavigation();
   const [update, setUpdate] = useState(false);
   const modelState = useState(null);
@@ -103,49 +103,49 @@ export default function User() {
   }, [location.state]);
 
   return (
-    <Page id="user">
-      <PanelForm title={getTitle()} size="medium" model={modelState} onSubmit={onCreateUser} >
-        <div className="container">
-          <div className="row">
-            <div className="col-md-6">
-              <TextField attr='name' minLength="2" required ></TextField>
-            </div>
-            <div className="col-md-6">
-              <TextField attr='lastName' minLength="2" required ></TextField>
-            </div>
+    <PanelForm title={getTitle()} size="medium" model={modelState} onSubmit={onCreateUser} >
+      <div className="container">
+        <div className="row">
+          <div className="col-md-6">
+            <TextField attr='name' minLength="2" required ></TextField>
           </div>
-          <div className="row">
-            <div className="col-md-6">
-              <TextField attr='userName' minLength="2" required ></TextField>
-            </div>
-            <div className="col-md-6">
-              <MailField attr='mail' required></MailField>
-            </div>
-          </div>
-          {!update ? (
-            <div className="row">
-              <div className="col-md-6">
-                <PasswordField attr='password' minLength="8" required ></PasswordField>
-              </div>
-              <div className="col-md-6">
-                <PasswordField attr={REPEAT_PASSWORD} minLength="8" required ></PasswordField>
-              </div>
-            </div>
-          ) : (
-            <></>
-          )}
-          <div className="row">
-            <div className="col-md-6">
-              <SelectField attr='profile' options={profiles} required ></SelectField>
-            </div>
+          <div className="col-md-6">
+            <TextField attr='lastName' minLength="2" required ></TextField>
           </div>
         </div>
-        <div className="row justify-content-center">
-          <div className="col-md-2" align="center">
-            <SubmitButton label={getActionLabel()}></SubmitButton>
+        <div className="row">
+          <div className="col-md-6">
+            <TextField attr='userName' minLength="2" required ></TextField>
+          </div>
+          <div className="col-md-6">
+            <MailField attr='mail' required></MailField>
           </div>
         </div>
-      </PanelForm>
-    </Page>
+        {!update ? (
+          <div className="row">
+            <div className="col-md-6">
+              <PasswordField attr='password' minLength="8" required ></PasswordField>
+            </div>
+            <div className="col-md-6">
+              <PasswordField attr={REPEAT_PASSWORD} minLength="8" required ></PasswordField>
+            </div>
+          </div>
+        ) : (
+          <></>
+        )}
+        <div className="row">
+          <div className="col-md-6">
+            <SelectField attr='profile' options={profiles} required ></SelectField>
+          </div>
+        </div>
+      </div>
+      <div className="row justify-content-center">
+        <div className="col-md-2" align="center">
+          <SubmitButton label={getActionLabel()}></SubmitButton>
+        </div>
+      </div>
+    </PanelForm>
   );
 }
+
+export default withPage("user")(User);

@@ -11,9 +11,9 @@ import { useAlertMessage } from '../contexts/alert-message-context';
 import { useError } from '../contexts/error-context';
 import { findCustomerById, updateCustomer } from '../services/server/customer-service';
 import FileUpload from '../components/controls/file-upload';
-import Page from '../components/containers/page';
+import withPage from '../components/containers/page';
 
-export default function Customer() {
+function Customer() {
   const navigation = useNavigation();
   const [update, setUpdate] = useState(false);
   const modelState = useState(null);
@@ -83,45 +83,45 @@ export default function Customer() {
   }, [location.state]);
 
   return (
-    <Page id="customer">
-      <PanelForm title={getTitle()} size="medium" model={modelState} onSubmit={onCreateUser} >
-        <div className="container">
-          <div className="row">
-            <div className="col-md-6">
-              <TextField attr="name" minLength="2" required></TextField>
-            </div>
-            <div className="col-md-6">
-              <TextField attr="lastName" minLength="2" required></TextField>
-            </div>
+    <PanelForm title={getTitle()} size="medium" model={modelState} onSubmit={onCreateUser} >
+      <div className="container">
+        <div className="row">
+          <div className="col-md-6">
+            <TextField attr="name" minLength="2" required></TextField>
           </div>
-          <div className="row">
-            <div className="col-md-6">
-              <MailField attr="mail" required></MailField>
-            </div>
-            <div className="col-md-6">
-              <PhoneField attr="phone" required></PhoneField>
-            </div>
-          </div>
-          <div className="row">
-            <div className="col-md-6">
-              <TextField attr="address" minLength="2" required></TextField>
-            </div>
-          </div>
-          <div className="row">
-            <div className="col-md-6">
-              <FileUpload attr="identityDocuments" required></FileUpload>
-            </div>
-            <div className="col-md-6">
-              <FileUpload attr="paychecks" required></FileUpload>
-            </div>
+          <div className="col-md-6">
+            <TextField attr="lastName" minLength="2" required></TextField>
           </div>
         </div>
-        <div className="row justify-content-center">
-          <div className="col-md-2" align="center">
-            <SubmitButton label={getActionLabel()}></SubmitButton>
+        <div className="row">
+          <div className="col-md-6">
+            <MailField attr="mail" required></MailField>
+          </div>
+          <div className="col-md-6">
+            <PhoneField attr="phone" required></PhoneField>
           </div>
         </div>
-      </PanelForm>
-    </Page>
+        <div className="row">
+          <div className="col-md-6">
+            <TextField attr="address" minLength="2" required></TextField>
+          </div>
+        </div>
+        <div className="row">
+          <div className="col-md-6">
+            <FileUpload attr="identityDocuments" required></FileUpload>
+          </div>
+          <div className="col-md-6">
+            <FileUpload attr="paychecks" required></FileUpload>
+          </div>
+        </div>
+      </div>
+      <div className="row justify-content-center">
+        <div className="col-md-2" align="center">
+          <SubmitButton label={getActionLabel()}></SubmitButton>
+        </div>
+      </div>
+    </PanelForm>
   );
 }
+
+export default withPage("customer")(Customer);

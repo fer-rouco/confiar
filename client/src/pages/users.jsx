@@ -83,7 +83,7 @@ function Users() {
         },
       ]}
     >
-      <Table id="main.panel.main.table" requestRowObjectsFunction={findUsers} columnDefinitions={columnDefinitions} filterDefinitions={filterDefinitions} ></Table>
+      <Table requestRowObjectsFunction={findUsers} columnDefinitions={columnDefinitions} filterDefinitions={filterDefinitions} ></Table>
     </Panel>
   );
 }

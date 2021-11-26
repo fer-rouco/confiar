@@ -79,13 +79,8 @@ export default function InputField(props) {
     return field ? field.value : null;
   }, [getField]);
 
-  const getParentId = useCallback(() => {
-    const field = getField();
-    return field.closest(".panel").id;
-  }, [getField]);
-
   const getLabel = () => {
-    return (props.hasOwnProperty('label') && props.label !== undefined) ? props.label : translation(getParentId() + "." + props.attr);
+    return (props.hasOwnProperty('label') && props.label !== undefined) ? props.label : translation(props.parent + "." + props.attr);
   }
 
   const updateField = () => {

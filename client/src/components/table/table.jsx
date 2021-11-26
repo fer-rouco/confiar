@@ -143,7 +143,7 @@ function Table(props) {
   }, [dialog.getAfterConfirmationFlag()]);
   
   function getId() {
-    return ((props.id) ? props.id : "") + "";
+    return props.parent + "." + ((props.id) ? props.id : "main") + ".table";
   }
 
   function update() {

@@ -89,7 +89,7 @@ function Customers() {
         },
       ]}
     >
-      <Table id="main.panel.main.table" columnDefinitions={columnDefinitions} requestRowObjectsFunction={findCustomers} filterDefinitions={filterDefinitions} ></Table>
+      <Table columnDefinitions={columnDefinitions} requestRowObjectsFunction={findCustomers} filterDefinitions={filterDefinitions} ></Table>
     </Panel>
   );
 }

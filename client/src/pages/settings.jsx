@@ -22,22 +22,22 @@ function Settings(props) {
   }
 
   return (
-    <PanelForm size="medium" model={modelState} >
-      <Panel id="general" subTitle model={{}}>
+    <Panel size="medium" model={{}} >
+      <PanelForm id="general" subTitle model={modelState}>
         <div className="row">
           <div className="col-md-6">
             <SelectField attr="language" options={languages} onChange={() => { handleLanguageChange() }} ></SelectField>
           </div>
         </div>
-      </Panel>
-      <Panel id="theme" subTitle model={{}} >
+      </PanelForm>
+      <PanelForm id="theme" subTitle model={modelState} >
         <div className="row">
           <div className="col-md-6">
             <SwitchField attr="dark" onChange={() => theme.toggle()} ></SwitchField>
           </div>
         </div>
-      </Panel>
-    </PanelForm>
+      </PanelForm>
+    </Panel>
   );
 }
 

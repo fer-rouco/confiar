@@ -58,13 +58,8 @@ export default function SelectField(props) {
     return field ? field.value : null;
   };
 
-  const getParentId = () => {
-    const field = getField();
-    return field.closest(".panel").id;
-  };
-
   const getLabel = () => {
-    return (props.hasOwnProperty('label') && props.label !== undefined) ? props.label : translation(getParentId() + "." + props.attr);
+    return (props.hasOwnProperty('label') && props.label !== undefined) ? props.label : translation(props.parent + "." + props.attr);
   }
 
   const getOptions = () => {

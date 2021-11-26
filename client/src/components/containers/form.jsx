@@ -1,4 +1,4 @@
-import { cloneElement, createRef, useEffect, useState } from 'react';
+import { Children, cloneElement, createElement, createRef, isValidElement, useEffect, useState } from 'react';
 import { useForm, FormProvider } from 'react-hook-form';
 import { ModelProvider } from './../controls/fields/model-context';
 
@@ -26,11 +26,26 @@ export default function Form(props) {
     event.preventDefault();
   };
 
+  function recursiveCloneChildren(children) {
+    return Children.map(children, child => {
+      let childToReturn = child;
+      if (typeof child === 'object') {
+        var childProps = {};
+        if (isValidElement(child)) {
+            childProps = { parent: props.parent };
+        }
+        childProps.children = recursiveCloneChildren(child.props.children);
+        childToReturn = cloneElement(child, childProps);
+      }
+      return childToReturn;
+    })
+  }
+
   return (
     <ModelProvider model={props.model}>
       <FormProvider {...methods}>
         <form onSubmit={onSubmit} ref={formRef} className={props.className} >
-          {props.children}
+          {recursiveCloneChildren(props.children)}
         </form>
       </FormProvider>
     </ModelProvider>

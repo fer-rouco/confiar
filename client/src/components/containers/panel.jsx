@@ -1,4 +1,4 @@
-import { createRef, useEffect, useState } from 'react';
+import { Children, cloneElement, createRef, isValidElement, useEffect, useState } from 'react';
 import styled, { css } from 'styled-components';
 import { navigateIntoObjectByPath } from '../../theme';
 import Icon from './../general/icon';
@@ -196,6 +196,17 @@ function Panel(props) {
     return subTitleDOM;
   }
 
+  function childrenWithProps() {
+    return Children.map(props.children, child => {
+      // Checking isValidElement is the safe way and avoids a typescript
+      // error too.
+      if (isValidElement(child)) {
+        return cloneElement(child, { parent: getId() });
+      }
+      return child;
+    });
+  }
+
   useEffect(() => {
     // if(!props.id) {
     //   console.warn("The Panel sets a default id %s", getI18NextKey(), panelRef.current);
@@ -211,14 +222,14 @@ function Panel(props) {
   useEffect(() => {
     setTitle(getTitle());
   }, [props.title, translation]);
-
+ 
   return (
     <StyledContainer ref={panelRef} className={getClasses()} id={getId()}>
       <div className="row justify-content-center">
         <div>
           {buildTitle()}
           {buildSubTitle()}
-          {props.children}
+          {childrenWithProps()}
         </div>
       </div>
     </StyledContainer>

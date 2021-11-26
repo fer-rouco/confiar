@@ -1,5 +1,6 @@
 import React from 'react';
 import { useTranslation as useTranslationI18Next } from 'react-i18next';
+import configData from './../config.json';
 
 const PageContext = React.createContext(() => {});
 
@@ -11,6 +12,9 @@ export function PageProvider(props) {
     let translationResult = (t) ? t(key, placeholders) : "";
     if (!translationResult.endsWith(key)) {
       translation = translationResult;
+    }
+    else if (configData.DEVELOP_MODE) {
+      translation = "@" + translationResult;
     }
     return translation;
   }

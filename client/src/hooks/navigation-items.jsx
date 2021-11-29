@@ -61,7 +61,7 @@ export default function useNavigationItems(defaultValue) {
   });
 
   const [navigationItems, setNavigationItems] = useState(null);
-
+  
   if (!navigationItems) {
     setNavigationItems(navigationItemList);
     const currentItem = findActiveItem(navigationItemList);
@@ -72,6 +72,10 @@ export default function useNavigationItems(defaultValue) {
     const currentItem = findActiveItem(navigationItems);
     updateActiveItem(navigationItems, currentItem);
   }, [pathname, navigationItems]);
+
+  useEffect(() => {
+    setNavigationItems(navigationItemList);
+  }, [t]);
 
   return [navigationItems, setNavigationItems];
 }

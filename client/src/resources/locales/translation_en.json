@@ -94,6 +94,11 @@
     "users": {
       "main.panel": {
         "title": "Users.",
+        "actions": {
+          "tooltip": {
+            "add": "Create new user."
+          }
+        },
         "main.table": {
           "filters.panel": {
             "name": "Name",
@@ -121,6 +126,11 @@
     "customers": {
       "main.panel": {
         "title": "Customers.",
+        "actions": {
+          "tooltip": {
+            "add": "Create new customer."
+          }
+        },
         "main.table": {
           "filters.panel": {
             "name": "Name",

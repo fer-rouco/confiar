@@ -78,8 +78,7 @@ function Users() {
         {
           key: 'add',
           icon: 'plus',
-          action: createUser,
-          tooltip: 'Crear un usuario nuevo.',
+          action: createUser
         },
       ]}
     >

@@ -21,19 +21,9 @@ function Customers() {
 
   useEffect(() => {
     setColumnDefinitions([
-      textColumnDefinition({
-        key: 'name',
-        label: 'Nombre',
-        target: '/Customer'
-      }),
-      textColumnDefinition({
-        key: 'lastName',
-        label: 'Apellido'
-      }),
-      textColumnDefinition({
-        key: 'mail', 
-        label: 'E-Mail'
-      }),
+      textColumnDefinition({ key: 'name', target: '/Customer' }),
+      textColumnDefinition({ key: 'lastName' }),
+      textColumnDefinition({ key: 'mail' }),
       removeColumnDefinition({
         key: 'remove',
         icon: 'trash-fill',
@@ -43,7 +33,7 @@ function Customers() {
           onAccept: (model) => {
             return removeCustomer(model.id)
               .then(() => {
-                addSuccessMessage(t("remove.successMessage", { name: model.name }));
+                addSuccessMessage(translation("remove.successMessage", { name: model.name }));
               })
               .then((errorData) => {
                 if (errorData) {
@@ -56,19 +46,9 @@ function Customers() {
     ]);
 
     setFilterDefinitions([
-      textColumnDefinition({
-        key: 'name',
-        label: 'Nombre',
-        target: '/User'
-      }),
-      textColumnDefinition({
-        key: 'lastName',
-        label: 'Apellido'
-      }),
-      textColumnDefinition({
-        key: 'mail', 
-        label: 'E-Mail'
-      })
+      textColumnDefinition({ key: 'name', target: '/User' }),
+      textColumnDefinition({ key: 'lastName' }),
+      textColumnDefinition({ key: 'mail' })
     ]);
         
     return () => {
@@ -84,8 +64,7 @@ function Customers() {
         {
           key: 'add',
           icon: 'plus',
-          action: create,
-          tooltip: 'Crear un cliente nuevo.',
+          action: create
         },
       ]}
     >

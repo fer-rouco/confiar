@@ -159,7 +159,7 @@ function Panel(props) {
       actions = (
         <StyledAcctionsContainer>
           {props.actions.map((action, index) => (
-            <StyledAcctionContainer className="btn-secondary" key={action.key} data-toggle="tooltip" title={action.tooltip} >
+            <StyledAcctionContainer className="btn-secondary" key={action.key} data-toggle="tooltip" title={translation(getId() + ".actions.tooltip." + action.key)} >
               <Icon fontName={action.icon} onClick={() => action.action()} medium noPadding ></Icon>
             </StyledAcctionContainer>
           ))}

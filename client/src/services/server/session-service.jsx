@@ -13,7 +13,7 @@ export async function logIn(user, password) {
   const hashedPassword = shaObj.getHash('HEX');
 
   return get(BASE_URL + '/login', {
-    params: { user, password: hashedPassword },
+    params: { userName: user, password: hashedPassword },
   });
 }
 

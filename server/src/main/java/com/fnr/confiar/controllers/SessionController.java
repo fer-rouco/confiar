@@ -33,7 +33,7 @@ public class SessionController extends BaseController {
   }
 
   @GetMapping(path = "/login")
-  public ResponseEntity<Response> login(@RequestParam("user") String userOrMail, @RequestParam("password") String password) {
+  public ResponseEntity<Response> login(@RequestParam(User.Fields.userName) String userOrMail, @RequestParam(User.Fields.password) String password) {
     ResponseEntity<Response> response = null;
     SessionInfoModel sessionInfo = null;
 

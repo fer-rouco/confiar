@@ -17,13 +17,11 @@ import javax.persistence.criteria.Selection;
 
 import com.fnr.confiar.entities.BaseEntity;
 import com.fnr.confiar.models.FilterModel;
-import com.fnr.confiar.models.FilterModel.FilterType;
 import com.fnr.confiar.repositories.specs.GenericSpecificationsBuilder;
 import com.fnr.confiar.repositories.specs.SpecificationFactory;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;

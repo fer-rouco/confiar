@@ -8,6 +8,9 @@ import com.fnr.confiar.models.BaseModel;
 
 import org.springframework.http.HttpStatus;
 
+import lombok.experimental.FieldNameConstants;
+
+@FieldNameConstants
 public class Response {
   private HttpStatus status;
   private Collection<? extends BaseModel<? extends BaseEntity>> model;

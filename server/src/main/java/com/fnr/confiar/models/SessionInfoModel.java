@@ -5,10 +5,12 @@ import com.fnr.confiar.entities.BaseEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.experimental.FieldNameConstants;
 
 @Data
 @EqualsAndHashCode(callSuper=false)
 @NoArgsConstructor
+@FieldNameConstants
 public class SessionInfoModel extends BaseModel<BaseEntity> {
   private static SessionInfoModel     instance;
   private UserInfoData                user;
@@ -22,6 +24,7 @@ public class SessionInfoModel extends BaseModel<BaseEntity> {
 
   @Data
   @NoArgsConstructor
+  @FieldNameConstants
   public static class UserInfoData {
     public String                   id         = "";
     public int                      language   = 1; //Locale.LANGUAGE_DE;

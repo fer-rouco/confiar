@@ -2,6 +2,7 @@ package com.fnr.confiar.controllers;
 
 import com.fnr.confiar.Response;
 import com.fnr.confiar.entities.User;
+import com.fnr.confiar.models.BaseModel;
 import com.fnr.confiar.models.UserProfileModel;
 import com.fnr.confiar.models.FilterModel;
 import com.fnr.confiar.models.PaginatorModel;
@@ -41,10 +42,6 @@ public class UserController extends BaseController {
 
   @PostMapping("/update")
   public ResponseEntity<Response> update(@RequestBody UserModel userModel) {
-    return createOrUpdateUser(userModel);
-  }
-
-  private ResponseEntity<Response> createOrUpdateUser(UserModel userModel) {
     User user = (User) userModel.toEntity();
 
     ResponseEntity<Response> response = responseOk(userService.saveUser(user), UserModel.class);
@@ -53,17 +50,17 @@ public class UserController extends BaseController {
   }
 
   @GetMapping(path = "/{id}")
-  public ResponseEntity<Response> getUserById(@PathVariable("id") Long id) {
+  public ResponseEntity<Response> getUserById(@PathVariable(BaseModel.Fields.id) Long id) {
     return responseOk(userService.findById(id), UserModel.class);
   }
 
   @GetMapping("/byProfile")
-  public ResponseEntity<Response> getUsersByProfile(@RequestParam("profile") Long profile) {
+  public ResponseEntity<Response> getUsersByProfile(@RequestParam(UserModel.Fields.profile) Long profile) {
     return responseEntityList(userService.findByProfile(userService.findByProfileById(profile).get()), UserModel.class);
   }
 
   @DeleteMapping(path = "/{id}")
-  public ResponseEntity<Response> delete(@PathVariable("id") Long id) {
+  public ResponseEntity<Response> delete(@PathVariable(BaseModel.Fields.id) Long id) {
     return (userService.deleteUser(id)) ? responseOk() : responseConflictError("No se pudo eliminar el usuario.", UserModel.class);
   }
   

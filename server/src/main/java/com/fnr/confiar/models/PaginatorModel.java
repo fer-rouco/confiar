@@ -7,10 +7,12 @@ import com.fnr.confiar.entities.BaseEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.experimental.FieldNameConstants;
 
 @Data
 @EqualsAndHashCode(callSuper=false)
 @NoArgsConstructor
+@FieldNameConstants
 public class PaginatorModel<T extends BaseModel<?>> extends BaseModel<BaseEntity> {
   
   List<T> rowObjects;

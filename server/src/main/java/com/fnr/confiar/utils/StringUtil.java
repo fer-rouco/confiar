@@ -1,5 +1,9 @@
 package com.fnr.confiar.utils;
 
+import java.nio.charset.StandardCharsets;
+
+import com.google.common.hash.Hashing;
+
 public class StringUtil {
   
   public static String camelCaseToUnderscores(String camel) {
@@ -10,6 +14,10 @@ public class StringUtil {
                    : "_" + String.valueOf(Character.toLowerCase(camel.charAt(i)));
     }
     return underscore;
+  }
+
+  public static String toSha256(String stringToHash) {
+    return Hashing.sha256().hashString(stringToHash, StandardCharsets.UTF_8).toString();
   }
 
 }

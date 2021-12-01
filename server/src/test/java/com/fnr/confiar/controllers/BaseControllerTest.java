@@ -2,6 +2,10 @@ package com.fnr.confiar.controllers;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectWriter;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import com.google.common.collect.ObjectArrays;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -35,6 +39,14 @@ public abstract class BaseControllerTest {
 
   public String buildJsonPath(String... jsonPathParts) {
     return String.join(".", jsonPathParts);
+  }
+
+  public String objectToContent(Object object) throws JsonProcessingException {
+    // for @RequestBody
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
+    ObjectWriter objectWriter = mapper.writer().withDefaultPrettyPrinter();
+    return objectWriter.writeValueAsString(object);
   }
 
 }

@@ -1,12 +1,11 @@
 package com.fnr.confiar;
 
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
 import com.fnr.confiar.entities.User;
 import com.fnr.confiar.entities.UserProfile;
-import com.google.common.hash.Hashing;
+import com.fnr.confiar.utils.StringUtil;
 
 public class MockDataProvider {
   
@@ -36,10 +35,32 @@ public class MockDataProvider {
     return userProfiles;
   }
 
-  public static User getUserData() {
-    String perezHashedPass = Hashing.sha256().hashString("PPerez99", StandardCharsets.UTF_8).toString();
-    User user = new User("Pablo", "Perez", "perez", "perez@gmail.com", perezHashedPass, getProfileAdministrator());
+  public static User getUserAdministrator() {
+    String hashedPass = StringUtil.toSha256("PPerez99");
+    User user = new User("Pablo", "Perez", "perez", "perez@gmail.com", hashedPass, getProfileAdministrator());
     user.setId(1L);
     return user;
+  }
+  
+  public static User getUserSeller() {
+    String hashedPass = StringUtil.toSha256("MSuarez");
+    User user = new User("Maria", "Suarez", "msuarez", "msuarez@gmail.com", hashedPass, getProfileSeller());
+    user.setId(1L);
+    return user;
+  }
+    
+  public static User getUserEmployee() {
+    String hashedPass = StringUtil.toSha256("FlorM");
+    User user = new User("Flor", "Martinez", "florm", "florm@gmail.com", hashedPass, getProfileEmployee());
+    user.setId(1L);
+    return user;
+  }
+
+  public static List<User> getUsers() {
+    List<User> users = new ArrayList<>();
+    users.add(getUserAdministrator());
+    users.add(getUserSeller());
+    users.add(getUserEmployee());
+    return users;
   }
 }

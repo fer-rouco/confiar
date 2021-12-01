@@ -2,7 +2,7 @@ package com.fnr.confiar.models;
 
 import com.fnr.confiar.entities.User;
 
-
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -11,6 +11,7 @@ import lombok.experimental.FieldNameConstants;
 @Data
 @EqualsAndHashCode(callSuper=false)
 @NoArgsConstructor
+@AllArgsConstructor
 @FieldNameConstants
 public class UserModel extends BaseModel<User> {
 

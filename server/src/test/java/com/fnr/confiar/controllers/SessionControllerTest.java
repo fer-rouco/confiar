@@ -40,7 +40,7 @@ public class SessionControllerTest extends BaseControllerTest {
 
   @BeforeEach
   void init() {
-    user = MockDataProvider.getUserData();
+    user = MockDataProvider.getUserAdministrator();
   }
 
   void doLogin() throws Exception {
@@ -56,16 +56,14 @@ public class SessionControllerTest extends BaseControllerTest {
       .andExpect(jsonPath(jsonPathSessionInfoUser, is(notNullValue())))
       .andExpect(jsonPath(buildJsonPath(jsonPathSessionInfoUser, UserInfoData.Fields.id), is(user.getUserName())))
       .andExpect(jsonPath(buildJsonPath(jsonPathSessionInfoUser, UserInfoData.Fields.language), is(1)))
-      .andExpect(jsonPath(buildJsonPath(jsonPathSessionInfoUser, UserInfoData.Fields.country), is(54)))
-      .andReturn();
+      .andExpect(jsonPath(buildJsonPath(jsonPathSessionInfoUser, UserInfoData.Fields.country), is(54)));
   }
 
   void doLogout() throws Exception {
     String jsonPathSessionInfoUser = buildJsonPath(Response.Fields.model.concat("[0]"), SessionInfoModel.Fields.user);
     this.mockMvc.perform(get(buildMapping("logout")))
       .andExpect(status().isOk())
-      .andExpect(jsonPath(jsonPathSessionInfoUser, is(nullValue())))
-      .andReturn();
+      .andExpect(jsonPath(jsonPathSessionInfoUser, is(nullValue())));
   }
 
   @Test

@@ -21,6 +21,7 @@ const StyledContainer = styled.div`
   ${StyledBoxShadow};
   ${StyledBorder};
 
+  overflow: hidden;
   border-radius: 25px;
   padding: 20px 20px 0 20px; // Top - Right - Bottom - Left
   background-color: ${({ theme }) => getThemeAttribute(theme, "body.bgColor")};

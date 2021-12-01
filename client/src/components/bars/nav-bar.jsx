@@ -51,6 +51,11 @@ const StyledNavSection = styled.div`
   z-index: 1;
 `;
 
+const StyledNavCol = styled.div`
+  min-width: 180px;
+`;
+
+
 export default function NavBar(props) {
   // const { logOut } = useSession();
   const [navigationItems] = useNavigationItems();
@@ -101,29 +106,27 @@ export default function NavBar(props) {
   updateItems();
 
   return (
-    <div>
-      <nav className="navbar navbar-expand-xxl navbar-dark bg-primary">
-        <div className="container-fluid">
-          <StyledNavSection>
-            <div className="row">
-              <div className="col-2 align-self-start">
-                <StyledNavToggler
-                  type="button"
-                  className="btn btn-secondary"
-                  onClick={onSidebarButtonClick}
-                >
-                  <span className="navbar-toggler-icon"></span>
-                </StyledNavToggler>
-                <StyledNavText className="navbar-brand d-inline-block" href="#">
-                  {props.title}
-                </StyledNavText>
-              </div>
+    <nav className="navbar navbar-expand-sm navbar-dark bg-primary">
+      <div className="container-fluid">
+        <StyledNavSection>
+          <div className="row">
+            <StyledNavCol className="col-2 align-self-start">
+              <StyledNavToggler
+                type="button"
+                className="btn btn-secondary"
+                onClick={onSidebarButtonClick}
+              >
+                <span className="navbar-toggler-icon"></span>
+              </StyledNavToggler>
+              <StyledNavText className="navbar-brand d-inline-block" href="#">
+                {props.title}
+              </StyledNavText>
+            </StyledNavCol>
 
-              <div className="col-8">{itemsDom}</div>
-            </div>
-          </StyledNavSection>
-        </div>
-      </nav>
-    </div>
+            <div className="col-8">{itemsDom}</div>
+          </div>
+        </StyledNavSection>
+      </div>
+    </nav>
   );
 }

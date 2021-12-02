@@ -27,7 +27,7 @@ function Users() {
       removeColumnDefinition({
         key: 'remove',
         icon: 'trash-fill',
-        dialogConfig: {
+        dialogDefinition: {
           key: 'remove',
           message: { key: "message", placeholders: ["name"] },
           onAccept: (model) => {

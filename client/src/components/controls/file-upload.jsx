@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { useDialog } from '../../contexts/dialog-context';
 import { usePage } from '../../contexts/page-context';
 import { navigateIntoObjectByPath } from '../../theme';
-import { contentDialogConfig } from '../dialog/dialog-config';
+import { contentDialogDefinition } from '../dialog/dialog-definition';
 import Button from './buttons/button';
 import { useModel } from './fields/model-context';
 
@@ -219,7 +219,7 @@ export default function FileUpload(props) {
   function showItem(event, fileToShow) {
     event.stopPropagation();
 
-    dialogContext.setConfig(contentDialogConfig({
+    dialogContext.setConfig(contentDialogDefinition({
       title: getAlertTitle(fileToShow),
       content: getAlertImageContainer(fileToShow)
     }));

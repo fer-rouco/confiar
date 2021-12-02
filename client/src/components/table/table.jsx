@@ -115,9 +115,9 @@ function Table(props) {
     if (props.columnDefinitions) {
       if (props.columnDefinitions.length > 0) {
         props.columnDefinitions.map((columnDefinition) => {
-          if (columnDefinition.dialogConfig) {
+          if (columnDefinition.dialogDefinition) {
             dialog.setTranslationPrefixKey(getId());
-            dialog.setConfig(columnDefinition.dialogConfig);
+            dialog.setConfig(columnDefinition.dialogDefinition);
           }
         });
   
@@ -317,7 +317,7 @@ function Table(props) {
       if (columnDefinition.onClick) {
         columnDefinition.onClick(rowObjectLocal);
       }
-      else if (columnDefinition.dialogConfig) {
+      else if (columnDefinition.dialogDefinition) {
         dialog.showDialog(rowObjectLocal);
       }
     }

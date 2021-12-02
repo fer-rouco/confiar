@@ -1,4 +1,4 @@
-import { yesNoDialogConfig } from "../../dialog/dialog-config";
+import { yesNoDialogDefinition } from "../../dialog/dialog-definition";
 
 function columnDefinition(props) {
   return {
@@ -27,6 +27,6 @@ export function removeColumnDefinition(props) {
   let column = iconColumnDefinition(props);
   column.type = 'icon';
   column.icon = 'trash-fill';
-  column.dialogConfig = yesNoDialogConfig(props.dialogConfig);
+  column.dialogDefinition = yesNoDialogDefinition(props.dialogDefinition);
   return column;
 }

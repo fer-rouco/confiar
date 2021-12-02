@@ -5,7 +5,7 @@ const DialogContext = createContext(() => {});
 export function DialogProvider(props) {
   const [showDialogState, setShowDialogState] = useState(false);
   const [afterConfirmation, setAfterConfirmation] = useState(false);
-  const [dialogConfig, setDialogConfig] = useState({});
+  const [dialogDefinition, setDialogDefinition] = useState({});
   const [modelState, setModelState] = useState({});
   const [translationPrefixKey, setTranslationPrefixKey] = useState('');
 
@@ -25,11 +25,11 @@ export function DialogProvider(props) {
   }
 
   const setConfig = (config) => {
-    setDialogConfig(config);
+    setDialogDefinition(config);
   }
 
   const getConfig = () => {
-    return dialogConfig;
+    return dialogDefinition;
   }
 
   const setModel = (localModel) => {
@@ -66,7 +66,7 @@ export function DialogProvider(props) {
       getTranslationPrefixKey,
       setTranslationPrefixKey
     };
-  }, [showDialogState, dialogConfig, modelState, afterConfirmation, translationPrefixKey]);
+  }, [showDialogState, dialogDefinition, modelState, afterConfirmation, translationPrefixKey]);
 
   return <DialogContext.Provider value={value} {...props} />;
 }

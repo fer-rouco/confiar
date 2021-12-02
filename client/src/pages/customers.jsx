@@ -26,8 +26,6 @@ function Customers() {
       textColumnDefinition({ key: 'lastName' }),
       textColumnDefinition({ key: 'mail' }),
       removeColumnDefinition({
-        key: 'remove',
-        icon: 'trash-fill',
         dialogDefinition: {
           key: 'remove',
           message: { key: "message", placeholders: ["name"] },

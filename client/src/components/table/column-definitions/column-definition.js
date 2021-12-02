@@ -5,28 +5,22 @@ function columnDefinition(props) {
     key: props.key,
     type: props.type,
     label: props.label,
-    onClick: props.onClick
+    onClick: props.onClick,
+    icon: props.icon,
+    target: props.target
   }
 }
 
 export function textColumnDefinition(props) {
-  let column = columnDefinition(props);
-  column.type = 'text';
-  column.target = props.target;
-  return column;
+  return columnDefinition({...props, type: 'text', target: props.target});
 }
 
 export function iconColumnDefinition(props) {
-  let column = columnDefinition(props);
-  column.type = 'icon';
-  column.icon = props.icon;
-  return column;
+  return columnDefinition({...props, type: 'icon', icon: props.icon});
 }
 
 export function removeColumnDefinition(props) {
-  let column = iconColumnDefinition(props);
-  column.type = 'icon';
-  column.icon = 'trash-fill';
+  let column = iconColumnDefinition({...props, key: 'remove', icon: 'trash-fill'});
   column.dialogDefinition = yesNoDialogDefinition(props.dialogDefinition);
   return column;
 }

@@ -32,7 +32,7 @@ const StyledModalContent = styled.div`
 
 export default function Dialog() {
   const dialogContext = useDialog();
-  const config = dialogContext.getConfig();
+  const config = dialogContext.getDefinition();
   const modalRef = createRef();
   const { resolveTranslation } = usePage();
   const [title, setTitle] = useState("");

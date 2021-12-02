@@ -24,11 +24,11 @@ export function DialogProvider(props) {
     return showDialogState;
   }
 
-  const setConfig = (config) => {
+  const setDefinition = (config) => {
     setDialogDefinition(config);
   }
 
-  const getConfig = () => {
+  const getDefinition = () => {
     return dialogDefinition;
   }
 
@@ -57,8 +57,8 @@ export function DialogProvider(props) {
       showDialog,
       hideDialog,
       getDialogVisibility,
-      setConfig,
-      getConfig,
+      setDefinition,
+      getDefinition,
       setModel,
       getModel,
       setAfterConfirmationFlag,

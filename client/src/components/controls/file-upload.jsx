@@ -219,7 +219,7 @@ export default function FileUpload(props) {
   function showItem(event, fileToShow) {
     event.stopPropagation();
 
-    dialogContext.setConfig(contentDialogDefinition({
+    dialogContext.setDefinition(contentDialogDefinition({
       title: getAlertTitle(fileToShow),
       content: getAlertImageContainer(fileToShow)
     }));

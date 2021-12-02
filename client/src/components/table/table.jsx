@@ -338,11 +338,7 @@ function Table(props) {
       case 'icon':
         cell = (
           <StyledTD key={getRowKey(columnDefinition, rowObject)} className="icon" >
-            <Icon
-              fontName={columnDefinition.icon}
-              medium
-              onClick={onIconClick.bind(this, rowObject)}
-            ></Icon>
+            <Icon fontName={columnDefinition.icon} medium onClick={onIconClick.bind(this, rowObject)} ></Icon>
           </StyledTD>
         );
         break;
@@ -420,7 +416,6 @@ function Table(props) {
     let filtersDOM = null;
     
     if (props.filterDefinitions) {
-    
       let filtersToBuild = [];
 
       props.filterDefinitions.map((filterDefinition) => {

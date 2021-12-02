@@ -6,6 +6,7 @@ import withPage from "../components/containers/page";
 import Panel from '../components/containers/panel';
 import Table from '../components/table/table';
 import { removeColumnDefinition, textColumnDefinition } from '../components/table/column-definitions/column-definition';
+import { addIconAction } from '../components/controls/action-definition';
 
 function Users() {
   const navigation = useNavigation();
@@ -71,17 +72,7 @@ function Users() {
   }, []);
 
   return (
-    <Panel
-      size="large"
-      model={{}}
-      actions={[
-        {
-          key: 'add',
-          icon: 'plus',
-          action: createUser
-        },
-      ]}
-    >
+    <Panel size="large" model={{}} actions={[addIconAction(createUser)]} >
       <Table requestRowObjectsFunction={findUsers} columnDefinitions={columnDefinitions} filterDefinitions={filterDefinitions} ></Table>
     </Panel>
   );

@@ -7,6 +7,7 @@ import Table from '../components/table/table';
 import { removeColumnDefinition, textColumnDefinition } from '../components/table/column-definitions/column-definition';
 import withPage from '../components/containers/page';
 import { usePage } from '../contexts/page-context';
+import { addIconAction } from '../components/controls/action-definition';
 
 function Customers() {
   const navigation = useNavigation();
@@ -58,16 +59,7 @@ function Customers() {
   }, []);
 
   return (
-    <Panel
-      model={{}}
-      actions={[
-        {
-          key: 'add',
-          icon: 'plus',
-          action: create
-        },
-      ]}
-    >
+    <Panel model={{}} actions={[addIconAction(create)]} >
       <Table columnDefinitions={columnDefinitions} requestRowObjectsFunction={findCustomers} filterDefinitions={filterDefinitions} ></Table>
     </Panel>
   );

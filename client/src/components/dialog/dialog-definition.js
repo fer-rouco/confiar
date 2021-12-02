@@ -1,4 +1,4 @@
-import { actionAccept, actionCancel, actionYes, actionNo } from "../controls/action-definition";
+import { acceptAction, cancelAction, yesAction, noAction } from "../controls/action-definition";
 
 function dialogDefinition(props) {
   return {
@@ -30,12 +30,12 @@ export function actionsDialogDefinition(props) {
 
 export function acceptCancelDialogDefinition(props) {
   let definition = messageDialogDefinition(props);
-  definition.actions = [actionCancel(props.onCancel), actionAccept(props.onAccept)];
+  definition.actions = [cancelAction(props.onCancel), acceptAction(props.onAccept)];
   return definition;
 }
 
 export function yesNoDialogDefinition(props) {
   let definition = messageDialogDefinition(props);
-  definition.actions = [actionNo(props.onCancel), actionYes(props.onAccept)];
+  definition.actions = [noAction(props.onCancel), yesAction(props.onAccept)];
   return definition;
 }

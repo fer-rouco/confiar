@@ -1,44 +1,60 @@
 
-function buildAction(key, label, action, color, focused, enabled) {
+function buildAction(props) {
   return {
-    key,
-    label,
-    action,
-    color,
-    focused,
-    enabled
+    key: props.key,
+    label: props.label,
+    icon: props.icon,
+    action: props.action,
+    color: props.color,
+    focused: props.focused,
+    enabled: props.enabled
   }
 }
 
-function buildActionAccept(label, actionFunction) {
-  return buildAction(
-    'accept',
+function buildAcceptAction(label, action) {
+  return buildAction({
+    key: 'accept',
     label,
-    actionFunction,
-    'primary'
-  );
+    action,
+    color: 'primary'
+  });
 }
 
-function buildActionCancel(label, actionFunction) {
-  return buildAction(
-    'cancel',
+function buildCancelAction(label, action) {
+  return buildAction({
+    key: 'cancel',
     label,
-    actionFunction,
-    'secondary'
-  );
-}
-export function actionAccept(actionFunction) {
-  return buildActionAccept('Aceptar', actionFunction);
+    action,
+    color: 'secondary'
+  });
 }
 
-export function actionYes(actionFunction) {
-  return buildActionAccept('Si', actionFunction);
+function buildIconAction(key, icon, action) {
+  return buildAction({
+    key,
+    icon,
+    action,
+    color: 'primary'
+  });
 }
 
-export function actionCancel(actionFunction) {
-  return buildActionCancel('Cancelar', actionFunction);
+export function acceptAction(actionFunction) {
+  return buildAcceptAction('Aceptar', actionFunction);
 }
 
-export function actionNo(actionFunction) {
-  return buildActionCancel('No', actionFunction);
+export function yesAction(actionFunction) {
+  return buildAcceptAction('Si', actionFunction);
 }
+
+export function cancelAction(actionFunction) {
+  return buildCancelAction('Cancelar', actionFunction);
+}
+
+export function noAction(actionFunction) {
+  return buildCancelAction('No', actionFunction);
+}
+
+export function addIconAction(actionFunction) {
+  return buildIconAction('add', 'plus', actionFunction);
+}
+

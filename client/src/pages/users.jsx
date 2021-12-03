@@ -4,7 +4,7 @@ import { deleteUser, findUsers, getAllUserProfiles } from '../services/server/us
 import withPage from "../components/containers/page";
 import Panel from '../components/containers/panel';
 import Table from '../components/table/table';
-import { removeColumnDefinition, textColumnDefinition } from '../components/table/column-definitions/column-definition';
+import { textColumnDefinition, enumColumnDefinition, removeColumnDefinition } from '../components/table/column-definitions/column-definition';
 import { addIconAction } from '../components/controls/action-definition';
 
 function Users() {
@@ -39,11 +39,7 @@ function Users() {
         textColumnDefinition({ key: 'lastName' }),
         textColumnDefinition({ key: 'userName' }),
         textColumnDefinition({ key: 'mail' }),
-        {
-          key: 'profile.id', 
-          type: 'enum',
-          options: profileListWithAllOption
-        }
+        enumColumnDefinition({ key: 'profile.id', options: profileListWithAllOption })
       ]);
     });
     

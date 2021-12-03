@@ -19,8 +19,14 @@ export function iconColumnDefinition(props) {
   return columnDefinition({...props, type: 'icon', icon: props.icon});
 }
 
+export function enumColumnDefinition(props) {
+  let definition = columnDefinition({...props, type: 'enum'});
+  definition.options = props.options;
+  return definition;
+}
+
 export function removeColumnDefinition(props) {
-  let column = iconColumnDefinition({...props, key: 'remove', icon: 'trash-fill'});
-  column.dialogDefinition = removeActionDialogDefinition(props.dialogDefinition);
-  return column;
+  let definition = iconColumnDefinition({...props, key: 'remove', icon: 'trash-fill'});
+  definition.dialogDefinition = removeActionDialogDefinition(props.dialogDefinition);
+  return definition;
 }

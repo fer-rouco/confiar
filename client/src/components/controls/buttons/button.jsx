@@ -62,13 +62,8 @@ export default function Button(props) {
     return buttonRef.current;
   };
 
-  const getParentId = () => {
-    const button = getButton();
-    return button.closest(".panel")?.id;
-  };
-
   const getLabel = () => {
-    return (props.hasOwnProperty('label') && props.label !== undefined) ? props.label : (translation) ? translation(getParentId() + "." + props.attr) : "";
+    return (props.hasOwnProperty('label') && props.label !== undefined) ? props.label : (translation) ? translation(props.parent + "." + props.attr) : "";
   }
   
   useEffect(() => {

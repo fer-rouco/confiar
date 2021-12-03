@@ -112,20 +112,10 @@ export default function FileUpload(props) {
   const [isDragOver, setIsDragOver] = useState(false);
   const [model, setModel] = useModel();
   const dialogContext = useDialog();
-  const reference = createRef();
   const { translation } = usePage();
 
-  const getFileUpload = () => {
-    return reference.current;
-  };
-
-  const getParentId = () => {
-    const fileUpload = getFileUpload();
-    return fileUpload.closest(".panel").id;
-  };
-
   const getLabel = () => {
-    return (props.hasOwnProperty('label') && props.label !== undefined) ? props.label : translation(getParentId() + "." + props.attr);
+    return (props.hasOwnProperty('label') && props.label !== undefined) ? props.label : translation(props.parent + "." + props.attr);
   }
 
   function getFilesFromModel() {
@@ -302,7 +292,7 @@ export default function FileUpload(props) {
   }, [props.attr, translation]);
   
   return (
-    <div ref={reference} >
+    <div>
       <StyledContainer className={(isDragOver) ? 'onDragOver' : ''} onClick={browseFiles} onDrop={event => handleDrop(event)} onDragOver={event => handleDragOver(event)} onDragLeave={event => handleDragLeave(event)} >
         <StyledLabel>{label}</StyledLabel>
         {

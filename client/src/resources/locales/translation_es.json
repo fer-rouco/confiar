@@ -31,6 +31,14 @@
         }
       }
     },
+    "dialog": {
+      "actions": {
+        "accept": "Aceptar",
+        "cancel": "Cancelar",
+        "yes": "Si",
+        "no": "No"
+      }
+    },
     "table": {
       "filters": {
         "title": "Filtros"

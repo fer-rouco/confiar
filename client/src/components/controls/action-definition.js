@@ -2,7 +2,6 @@
 function buildAction(props) {
   return {
     key: props.key,
-    label: props.label,
     icon: props.icon,
     action: props.action,
     color: props.color,
@@ -11,19 +10,17 @@ function buildAction(props) {
   }
 }
 
-function buildAcceptAction(label, action) {
+function buildAcceptAction(action) {
   return buildAction({
     key: 'accept',
-    label,
     action,
     color: 'primary'
   });
 }
 
-function buildCancelAction(label, action) {
+function buildCancelAction(action) {
   return buildAction({
     key: 'cancel',
-    label,
     action,
     color: 'secondary'
   });
@@ -39,19 +36,19 @@ function buildIconAction(key, icon, action) {
 }
 
 export function acceptAction(actionFunction) {
-  return buildAcceptAction('Aceptar', actionFunction);
+  return buildAcceptAction(actionFunction);
 }
 
 export function yesAction(actionFunction) {
-  return buildAcceptAction('Si', actionFunction);
+  return buildAcceptAction(actionFunction);
 }
 
 export function cancelAction(actionFunction) {
-  return buildCancelAction('Cancelar', actionFunction);
+  return buildCancelAction(actionFunction);
 }
 
 export function noAction(actionFunction) {
-  return buildCancelAction('No', actionFunction);
+  return buildCancelAction(actionFunction);
 }
 
 export function addIconAction(actionFunction) {

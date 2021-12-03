@@ -1,6 +1,7 @@
 import { createRef, useCallback, useEffect, useState } from 'react';
 import bootstrap from 'bootstrap/dist/js/bootstrap.js';
 import styled from 'styled-components';
+import i18next from "i18next";
 import Button from '../controls/buttons/button';
 import { useDialog } from '../../contexts/dialog-context';
 import { navigateIntoObjectByPath } from '../../theme';
@@ -34,6 +35,7 @@ export default function Dialog() {
   const dialogContext = useDialog();
   const config = dialogContext.getDefinition();
   const modalRef = createRef();
+  const componentTranslation = i18next.getFixedT(null, 'components', 'dialog');
   const { resolveTranslation } = usePage();
   const [title, setTitle] = useState("");
   const [message, setMessage] = useState("");
@@ -60,7 +62,7 @@ export default function Dialog() {
       {
         (config.actions) ?
           config.actions.map(actionConfig => (
-            <Button key={actionConfig.key} label={actionConfig.label} onClick={() => handleAction(actionConfig)} color={actionConfig.color} ></Button>
+            <Button key={actionConfig.key} label={componentTranslation("actions.".concat(actionConfig.key))} onClick={() => handleAction(actionConfig)} color={actionConfig.color} ></Button>
           ))
           : (<></>)
       }

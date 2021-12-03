@@ -20,7 +20,7 @@ function Login() {
   const doLogIn = () => {
     if (model.user && model.password) {
       logIn(model.user, model.password)
-        .then((session) => {
+        .then(() => {
           addSuccessMessage('Te logueaste exitosamente!');
           navigation.navigateTo('/Customers');
         })

@@ -115,10 +115,12 @@
             "profile.description": "Profile",
             "remove": ""
           },
-          "remove.dialog": {
-            "title": "Remove User",
-            "message": "Are you sure you want to delete the user {{name}}?",
-            "successMessage": "The user {{name}} was removed successfully."
+          "remove": {
+            "dialog": {
+              "title": "Remove User",
+              "message": "Are you sure you want to delete the user {{name}}?"
+            },
+            "success": "The user {{name}} was removed successfully."
           }
         }
       }
@@ -143,10 +145,12 @@
             "mail": "E-Mail",
             "remove": ""
           },
-          "remove.dialog": {
-            "title": "Remove Customer",
-            "message": "Are you sure you want to delete the customer {{name}}?",
-            "successMessage": "The customer {{name}} was removed successfully."
+          "remove": {
+            "dialog": {
+              "title": "Remove Customer",
+              "message": "Are you sure you want to delete the customer {{name}}?"
+            },
+            "success": "The customer {{name}} was removed successfully."
           }
         }
       }

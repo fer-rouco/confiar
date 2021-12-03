@@ -115,10 +115,12 @@
             "profile.description": "Perfil",
             "remove": ""
           },
-          "remove.dialog": {
-            "title": "Eliminar usuario",
-            "message": "Esta seguro que quiere eliminar el usuario {{name}}?",
-            "successMessage": "El usuario {{name}} fue eliminado exitosamente."
+          "remove": {
+            "dialog": {
+              "title": "Eliminar usuario",
+              "message": "Esta seguro que quiere eliminar el usuario {{name}}?"
+            },
+            "success": "El usuario {{name}} fue eliminado exitosamente."
           }
         }
       }
@@ -143,10 +145,12 @@
             "mail": "Mail",
             "remove": ""
           },
-          "remove.dialog": {
-            "title": "Eliminar Cliente",
-            "message": "Esta seguro que desea eliminar el cliente {{name}}?",
-            "successMessage": "El cliente {{name}} fue eliminado exitosamente."
+          "remove": {
+            "dialog": {
+              "title": "Eliminar Cliente",
+              "message": "Esta seguro que desea eliminar el cliente {{name}}?"
+            },
+            "success": "El cliente {{name}} fue eliminado exitosamente."
           }
         }
       }

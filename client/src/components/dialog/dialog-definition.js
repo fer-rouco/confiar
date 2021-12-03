@@ -25,7 +25,8 @@ export function yesNoDialogDefinition(props) {
 }
 
 export function removeActionDialogDefinition(props) {
-  let definition = dialogDefinition(props);
-  definition.actions = [noAction(props.onCancel), yesAction(props.onAccept)];
+  let definition = {...yesNoDialogDefinition(props)};
+  definition.key = (props.key) ? props.key : 'remove';
+  definition.message = (props.message) ? props.message : { key: "message", placeholders: ["name"] };
   return definition;
 }

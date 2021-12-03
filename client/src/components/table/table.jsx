@@ -14,6 +14,7 @@ import TextField from '../controls/fields/input/text-field';
 import SelectField from '../controls/fields/select/select-field';
 import storageManagerService from "./../../services/storage/storage-manager-service";
 import { navigateIntoObjectByPath } from '../../theme';
+import { useAlertMessage } from '../../contexts/alert-message-context';
 
 const getThemeAttribute = (theme, attrribute) => {
   return navigateIntoObjectByPath(theme, "components.table." + attrribute);
@@ -110,6 +111,7 @@ function Table(props) {
   const [settings] = settingsState;
   const filtersState = useState({});
   const dialog = useDialog();
+  const { addSuccessMessage, addErrorMessage } = useAlertMessage();
   
   useEffect(() => {
     if (props.columnDefinitions) {
@@ -137,11 +139,27 @@ function Table(props) {
   }, [settings, currentPagePosition, props.rowObjects, filtersState[0]]);
      
   useEffect(() => {
-    if (dialog.getAfterConfirmationFlag()) {
+    if (dialog.getAfterConfirmation()) {
       updateRowObjectsWithPaginator();
+      const translationKey = dialog.getTranslationPrefixKey().concat(".").concat(dialog.getTranslationActionKey()).concat(".success");
+      const placeholderList = dialog.getDefinition().message.placeholders;
+      let placeholdersToApply = {};
+      if (placeholderList) {
+        placeholderList.forEach(placeholder => {
+          placeholdersToApply[placeholder] = dialog.getModel()[placeholder];
+        });
+      }
+      addSuccessMessage(pageTranslation(translationKey, placeholdersToApply));
     }
-  }, [dialog.getAfterConfirmationFlag()]);
+  }, [dialog.getAfterConfirmation()]);
+       
+  useEffect(() => {
+    if (dialog.getAfterConfirmationError()) {
+      addErrorMessage(dialog.getAfterConfirmationError().message);
+    }
+  }, [dialog.getAfterConfirmationError()]);
   
+
   function getId() {
     return props.parent + "." + ((props.id) ? props.id : "main") + ".table";
   }

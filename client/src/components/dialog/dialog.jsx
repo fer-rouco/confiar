@@ -46,7 +46,10 @@ export default function Dialog() {
   const handleAction = (actionConfig) => {
     if (actionConfig.action) {
       actionConfig.action(dialogContext.getModel()).then(() => {
-        dialogContext.setAfterConfirmationFlag(actionConfig.key === 'accept');
+        dialogContext.setAfterConfirmationError(null);
+        dialogContext.setAfterConfirmation(actionConfig.key === 'accept');
+      }).catch((error) => {
+        dialogContext.setAfterConfirmationError(error);
       });
     }
     dialogContext.hideDialog();
@@ -68,12 +71,14 @@ export default function Dialog() {
     const modal = bootstrap.Modal.getOrCreateInstance(modalRef.current)
 
     if (dialogContext.getDialogVisibility()) {
+      dialogContext.setTranslationActionKey(config.key);
       const prefix = dialogContext.getTranslationPrefixKey() + '.' + config.key + '.dialog.';
       const titleToResolve = (config.title) ? config.title : { key: "title" };
       const messageToResolve = (config.message) ? config.message : { key: "message" };
       setTitle(resolveTranslation(titleToResolve, prefix, dialogContext.getModel()));
       setMessage(resolveTranslation(messageToResolve, prefix, dialogContext.getModel()));
-      dialogContext.setAfterConfirmationFlag(false);
+      dialogContext.setAfterConfirmation(false);
+      dialogContext.setAfterConfirmationError(null);
       modal.show();
     }
     else {

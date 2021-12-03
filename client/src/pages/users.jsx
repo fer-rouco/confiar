@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import { useAlertMessage } from '../contexts/alert-message-context';
 import useNavigation from '../hooks/navigation';
 import { deleteUser, findUsers, getAllUserProfiles } from '../services/server/user-service';
 import withPage from "../components/containers/page";
@@ -10,7 +9,6 @@ import { addIconAction } from '../components/controls/action-definition';
 
 function Users() {
   const navigation = useNavigation();
-  const { addSuccessMessage, addErrorMessage } = useAlertMessage();
   const [columnDefinitions, setColumnDefinitions] = useState([]);
   const [filterDefinitions, setFilterDefinitions] = useState([]);
 
@@ -26,24 +24,8 @@ function Users() {
       textColumnDefinition({ key: 'mail' }),
       textColumnDefinition({ key: 'profile.description' }),
       removeColumnDefinition({
-        key: 'remove',
-        icon: 'trash-fill',
         dialogDefinition: {
-          key: 'remove',
-          message: { key: "message", placeholders: ["name"] },
-          onAccept: (model) => {
-            return deleteUser(model.id)
-              .then((user) => {
-                addSuccessMessage(
-                  'El usuario ' + model.name + ' fue eliminado exitosamente.',
-                );
-              })
-              .then((errorData) => {
-                if (errorData) {
-                  addErrorMessage(errorData.message);
-                }
-              });
-          }
+          onAccept: (model) => { return deleteUser(model.id); }
         }
       })
     ]);

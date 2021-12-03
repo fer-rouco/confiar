@@ -1,4 +1,4 @@
-import { yesNoDialogDefinition } from "../../dialog/dialog-definition";
+import { removeActionDialogDefinition } from "../../dialog/dialog-definition";
 
 function columnDefinition(props) {
   return {
@@ -21,6 +21,6 @@ export function iconColumnDefinition(props) {
 
 export function removeColumnDefinition(props) {
   let column = iconColumnDefinition({...props, key: 'remove', icon: 'trash-fill'});
-  column.dialogDefinition = yesNoDialogDefinition(props.dialogDefinition);
+  column.dialogDefinition = removeActionDialogDefinition(props.dialogDefinition);
   return column;
 }

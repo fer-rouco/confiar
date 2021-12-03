@@ -4,10 +4,12 @@ const DialogContext = createContext(() => {});
 
 export function DialogProvider(props) {
   const [showDialogState, setShowDialogState] = useState(false);
-  const [afterConfirmation, setAfterConfirmation] = useState(false);
+  const [afterConfirmationFlagState, setAfterConfirmationFlagState] = useState(false);
+  const [afterConfirmationErrorState, setAfterConfirmationErrorState] = useState(null);
   const [dialogDefinition, setDialogDefinition] = useState({});
   const [modelState, setModelState] = useState({});
   const [translationPrefixKey, setTranslationPrefixKey] = useState('');
+  const [translationActionKey, setTranslationActionKey] = useState('');
 
   const showDialog = (localModel) => {
     if (localModel) {
@@ -40,18 +42,30 @@ export function DialogProvider(props) {
     return modelState;
   }
 
-  const getAfterConfirmationFlag = () => {
-    return afterConfirmation;
+  const getAfterConfirmation = () => {
+    return afterConfirmationFlagState;
   }
 
-  const setAfterConfirmationFlag = (afterConfirmationFlag) => {
-    setAfterConfirmation(afterConfirmationFlag);
+  const setAfterConfirmation = (afterConfirmationFlag) => {
+    setAfterConfirmationFlagState(afterConfirmationFlag);
+  }
+
+  const getAfterConfirmationError = () => {
+    return afterConfirmationErrorState;
+  }
+
+  const setAfterConfirmationError = (afterConfirmationError) => {
+    setAfterConfirmationErrorState(afterConfirmationError);
   }
 
   const getTranslationPrefixKey = () => {
     return translationPrefixKey;
   }
     
+  const getTranslationActionKey = () => {
+    return translationActionKey;
+  }
+
   const value = useMemo(() => {
     return {
       showDialog,
@@ -61,12 +75,16 @@ export function DialogProvider(props) {
       getDefinition,
       setModel,
       getModel,
-      setAfterConfirmationFlag,
-      getAfterConfirmationFlag,
+      setAfterConfirmation,
+      getAfterConfirmation,
+      setAfterConfirmationError,
+      getAfterConfirmationError,
       getTranslationPrefixKey,
-      setTranslationPrefixKey
+      setTranslationPrefixKey,
+      getTranslationActionKey,
+      setTranslationActionKey
     };
-  }, [showDialogState, dialogDefinition, modelState, afterConfirmation, translationPrefixKey]);
+  }, [showDialogState, dialogDefinition, modelState, afterConfirmationFlagState, afterConfirmationErrorState, translationPrefixKey]);
 
   return <DialogContext.Provider value={value} {...props} />;
 }

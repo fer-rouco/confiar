@@ -1,25 +1,38 @@
 import React, { useState } from 'react';
 
-import { useSession } from '../contexts/session-context';
+import { logIn } from './../services/server/session-service';
 import withPage from '../components/containers/page';
 import PanelForm from '../components/containers/panel-form';
 import TextField from '../components/controls/fields/input/text-field';
 import PasswordField from '../components/controls/fields/input/password-field';
 import SubmitButton from '../components/controls/buttons/submit-button';
+import { useError } from '../contexts/error-context';
+import { useAlertMessage } from '../contexts/alert-message-context';
+import useNavigation from '../hooks/navigation';
 
 function Login() {
-  const { logIn } = useSession();
   const modelState = useState(null);
   const [model] = modelState;
+  const { addFieldError } = useError();
+  const { addSuccessMessage, addErrorMessage } = useAlertMessage();
+  const navigation = useNavigation();
 
-  const doLogin = () => {
+  const doLogIn = () => {
     if (model.user && model.password) {
-      logIn(model.user, model.password);
+      logIn(model.user, model.password)
+        .then((session) => {
+          addSuccessMessage('Te logueaste exitosamente!');
+          navigation.navigateTo('/Customers');
+        })
+        .catch((error) => {
+          addFieldError(error.field, error.message);
+          addErrorMessage(error.message);
+        });
     }
   };
 
   return (
-    <PanelForm size="small" onSubmit={doLogin} model={modelState} >
+    <PanelForm size="small" onSubmit={doLogIn} model={modelState} >
       <div className="container">
         <div className="row justify-content-center">
           <div className="col-md-6">

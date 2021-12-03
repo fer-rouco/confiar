@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react';
 import { useTranslation } from "react-i18next";
-import { useSession } from '../contexts/session-context';
 import useReactPath from './path-name';
+import { getCurrentSession } from './../services/server/session-service';
+
 
 export const findActiveItem = (itemList) => {
   return itemList.find((item) => {
@@ -30,7 +31,7 @@ export const updateActiveItem = (itemList, defaultValue) => {
 
 export default function useNavigationItems(defaultValue) {
   const { t } = useTranslation('navigation');
-  const { session } = useSession();
+  const session = getCurrentSession();
   const pathname = useReactPath();
     
   let navigationItemList = [];
@@ -75,7 +76,7 @@ export default function useNavigationItems(defaultValue) {
 
   useEffect(() => {
     setNavigationItems(navigationItemList);
-  }, [t]);
+  }, [pathname, t]);
 
   return [navigationItems, setNavigationItems];
 }

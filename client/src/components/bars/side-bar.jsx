@@ -1,13 +1,14 @@
 import { useCallback, useEffect, useState } from 'react';
+import { useTranslation } from "react-i18next";
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-import { useTranslation } from "react-i18next";
-import { useBars } from './bars-context';
-import { useSession } from '../../contexts/session-context';
+import { useAlertMessage } from '../../contexts/alert-message-context';
 import useNavigationItems from '../../hooks/navigation-items';
-import Icon from '../general/icon';
 import useReactPath from '../../hooks/path-name';
 import { navigateIntoObjectByPath } from '../../theme';
+import Icon from '../general/icon';
+import { getCurrentSession, logOut } from './../../services/server/session-service';
+import { useBars } from './bars-context';
 
 const getThemeAttribute = (theme, attrribute) => {
   return navigateIntoObjectByPath(theme, "components.bars.sideBar." + attrribute);
@@ -69,12 +70,13 @@ const StyledProfileMenu = styled.ul`
 `;
 
 export default function SideBar(props) {
-  const { session, logOut } = useSession();
   const [navigationItems] = useNavigationItems();
   const { t } = useTranslation('components', { keyPrefix: 'bars.sideBar' });
   const [itemList, setItemList] = useState({ items: <></> });
   const { sidebarOpen } = useBars();
   const pathname = useReactPath();
+  const session = getCurrentSession();
+  const { addSuccessMessage, addErrorMessage } = useAlertMessage();
 
   const getUserName = () => {
     return session && session.user ? session.user.id : null;
@@ -155,6 +157,16 @@ export default function SideBar(props) {
     ],
   );
 
+  function doLogOut() {
+    logOut()
+      .then((session) => {
+        addSuccessMessage('Te deslogueaste exitosamente!');
+      })
+      .catch((error) => {
+        addErrorMessage(error.message);
+      });
+  }
+
   useEffect(() => {
     updateItems(sidebarOpen);
   }, [pathname, updateItems, sidebarOpen]);
@@ -213,7 +225,7 @@ export default function SideBar(props) {
               <hr className="dropdown-divider" />
             </li>
             <li>
-              <a className="dropdown-item" href="/#" onClick={logOut}>
+              <a className="dropdown-item" href="/#" onClick={doLogOut}>
                 {t('profileMenu.logOut')}
               </a>
             </li>

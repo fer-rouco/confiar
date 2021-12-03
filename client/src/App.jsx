@@ -8,7 +8,6 @@ import AlertMessage from './components/general/alert-message';
 import withAuth from './components/general/protected-routes';
 import { AlertMessageProvider } from './contexts/alert-message-context';
 import { ErrorProvider } from './contexts/error-context';
-import { SessionProvider } from './contexts/session-context';
 import { useTheme } from './contexts/theme-context';
 import Customer from './pages/customer';
 import Customers from './pages/customers';
@@ -37,51 +36,49 @@ function App({error}) {
       <AlertMessageProvider>
         <AlertMessage></AlertMessage>
           <ErrorProvider>
-            <SessionProvider>
-              <BarsProvider>
-                <NavBar title="Confiar" />
-                <SideBar icon="cart3"></SideBar>
-              </BarsProvider>
-              <div className="container mt-3">
-                <div className="row justify-content-center">
-                  <div className="col">
-                      { (!error) ?
-                        (
-                          <Switch>
-                            <Route exact path="/" component={UsersWithAuth} />
-                            <Route exact path="/Login">
-                              <Login />
-                            </Route>
-                            <Route exact path="/Settings">
-                              <SettingsWithAuth />
-                            </Route>
-                            <Route exact path="/Users">
-                              <UsersWithAuth />
-                            </Route>
-                            <Route exact path="/User">
-                              <UserWithAuth />
-                            </Route>
-                            <Route exact path="/Customers">
-                              <CustomersWithAuth />
-                            </Route>
-                            <Route exact path="/Customer">
-                              <CustomerWithAuth />
-                            </Route>
-                            <Route component={PageNotFound} />
-                            <Route component={ServerNotReady} />
-                          </Switch>
-                        )
-                      :
-                        (
-                          <Switch>
-                            <Route component={ServerNotReady} />
-                          </Switch>
-                        )
-                      }
-                  </div>
+            <BarsProvider>
+              <NavBar title="Confiar" />
+              <SideBar icon="cart3"></SideBar>
+            </BarsProvider>
+            <div className="container mt-3">
+              <div className="row justify-content-center">
+                <div className="col">
+                    { (!error) ?
+                      (
+                        <Switch>
+                          <Route exact path="/" component={UsersWithAuth} />
+                          <Route exact path="/Login">
+                            <Login />
+                          </Route>
+                          <Route exact path="/Settings">
+                            <SettingsWithAuth />
+                          </Route>
+                          <Route exact path="/Users">
+                            <UsersWithAuth />
+                          </Route>
+                          <Route exact path="/User">
+                            <UserWithAuth />
+                          </Route>
+                          <Route exact path="/Customers">
+                            <CustomersWithAuth />
+                          </Route>
+                          <Route exact path="/Customer">
+                            <CustomerWithAuth />
+                          </Route>
+                          <Route component={PageNotFound} />
+                          <Route component={ServerNotReady} />
+                        </Switch>
+                      )
+                    :
+                      (
+                        <Switch>
+                          <Route component={ServerNotReady} />
+                        </Switch>
+                      )
+                    }
                 </div>
               </div>
-            </SessionProvider>
+            </div>
           </ErrorProvider>
       </AlertMessageProvider>
     </ThemeProvider>

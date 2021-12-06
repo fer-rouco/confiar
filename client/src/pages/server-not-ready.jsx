@@ -9,6 +9,7 @@ const StyledRow = styled.div`
   margin-top: 30px;
 `;
 
+// TODO: Translate
 const ServerNotReady = () => {
   const getServerNotAvailableTitle = () => {
     return 'The application server is currently not available';

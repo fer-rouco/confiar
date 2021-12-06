@@ -29,12 +29,14 @@ function User() {
     let valid = true;
     if (!update && model.password !== model.repeatPassword) {
       valid = false;
+      // TODO: Translate
       addFieldError(REPEAT_PASSWORD, 'Esta contraseña debe ser igual a la del campo password.');
     }
     if (valid) {
       let responsePromise = updateUser(createTransferObject(model.id));
       responsePromise
         .then((user) => {
+          // TODO: Translate
           addSuccessMessage('El usuario ' + user.name + ' fue ' + (update ? 'actualizado' : 'creado') + ' exitosamente.');
           navigation.navigateTo('/Users');
         })
@@ -90,6 +92,7 @@ function User() {
           setModel(localUser);
         });
       } catch (err) {
+        // TODO: Translate
         addErrorMessage('Se produzco un error al buscar el cliente ' + location.state.userName);
         navigation.navigateTo('/Users');
       }

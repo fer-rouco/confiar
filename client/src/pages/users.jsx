@@ -32,6 +32,7 @@ function Users() {
 
     getAllUserProfiles().then(response => {
       let profileList = response.map((profile) => { return {value: profile.id, label: profile.description }; });
+      // TODO: Translate
       let profileListWithAllOption = [{value: '', label: 'Todos' }, ...profileList];
       
       setFilterDefinitions([

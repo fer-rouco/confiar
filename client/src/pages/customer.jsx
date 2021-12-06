@@ -29,6 +29,7 @@ function Customer() {
       let responsePromise = updateCustomer(createTransferObject(model.id));
       responsePromise
         .then((user) => {
+          // TODO: Translate
           addSuccessMessage('El cliente ' + user.name + ' fue ' + (update ? 'actualizado' : 'creado') + ' exitosamente.');
           navigation.navigateTo('/Customers');
         })

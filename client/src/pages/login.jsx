@@ -21,6 +21,7 @@ function Login() {
     if (model.user && model.password) {
       logIn(model.user, model.password)
         .then(() => {
+          // TODO: Translate
           addSuccessMessage('Te logueaste exitosamente!');
           navigation.navigateTo('/Customers');
         })

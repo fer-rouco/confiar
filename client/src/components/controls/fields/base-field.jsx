@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useFormContext } from "react-hook-form";
 import baseControl from "../base-control";
 import { useModel } from "../fields/model-context";
@@ -7,6 +7,7 @@ export default function baseField(props) {
   const control = baseControl(props);
   const [model, setModel] = useModel();
   const { register, setValue, formState: { errors } } = useFormContext();
+  const [execOnChange, setExecOnChange] = useState(false)
 
   const field = {
     model,
@@ -21,40 +22,24 @@ export default function baseField(props) {
       return fieldDOM ? fieldDOM[field.valueProperty] : null;
     },
     update: () => {
-    // let rawValue = control.getValue();
-    // let value;
-    
-    // if (props.type === 'number') {
-    //   value = Number.parseFloat(rawValue);
-    // }
-    // else {
-    //   value = rawValue;
-    // }
+      // let rawValue = control.getValue();
+      // let value;
+      
+      // if (props.type === 'number') {
+      //   value = Number.parseFloat(rawValue);
+      // }
+      // else {
+      //   value = rawValue;
+      // }
 
-    // let modelCopy = Object.assign({}, model);
-    // modelCopy[props.attr] = value;
-    // setModel(modelCopy);
-    // if (setValue) {
-    //   setValue(props.attr, value);
-    // }
-    
-    // if (props.onChange) {
-    //   props.onChange();
-    // }
-      let value = field.getValue();
-
-      // model[props.attr] = value;
-  
+      let value = field.getValue(); 
       let modelCopy = Object.assign({}, model);
       modelCopy[props.attr] = value;
       setModel(modelCopy);
       if (setValue) {
         setValue(props.attr, value);
       }
-  
-      if (props.onChange) {
-        props.onChange(value);
-      }
+      setExecOnChange(true);
     },
     useEffect: () => {     
       control.useEffect();
@@ -64,6 +49,13 @@ export default function baseField(props) {
           setValue(props.attr, model[props.attr]);
         }
       }, [setValue, props.attr, model]);
+      
+      useEffect(() => {
+        if (props.onChange && execOnChange) {
+          setExecOnChange(false);
+          props.onChange(model[props.attr]);
+        }
+      }, [model]);
     }
   }
 

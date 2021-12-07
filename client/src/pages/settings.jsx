@@ -17,7 +17,7 @@ function Settings(props) {
   const { i18n } = useTranslation('pages', { keyPrefix: 'settings' });
   const languages = Object.keys(i18n.services.resourceStore.data).map((language) => { return {value: language, label: language }; });
 
-  function handleLanguageChange(language) {
+  function handleLanguageChange() {
     i18n.changeLanguage(model.language, (error, t) => {
       if (!error) {
         localStorageService.setItem(STORAGE_LANGUAGE, model.language);

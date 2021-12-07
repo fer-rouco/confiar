@@ -1,9 +1,6 @@
-import { createRef, useEffect, useState } from 'react';
-import { useFormContext } from 'react-hook-form';
 import styled from 'styled-components';
 import { navigateIntoObjectByPath } from '../../../../theme';
-import { useModel } from '../model-context';
-import { usePage } from '../../../../contexts/page-context';
+import baseField from '../base-field';
 
 const getThemeAttribute = (theme, attrribute) => {
   return navigateIntoObjectByPath(theme, "components.controls.fields.select." + attrribute);
@@ -39,28 +36,7 @@ const StyledFormSelect = styled.select`
 
 // props: register, attr, label, options
 export default function SelectField(props) {
-  const [label, setLabel] = useState("");
-  const { register, setValue } = useFormContext();
-  const [model, setModel] = useModel();
-  const fieldRef = createRef();
-  const { translation } = usePage();
-
-  const getId = () => {
-    return 'select-' + props.attr;
-  };
-
-  const getField = () => {
-    return fieldRef.current.getElementsByClassName('field')[0];
-  };
-
-  const getValue = () => {
-    let field = getField();
-    return field ? field.value : null;
-  };
-
-  const getLabel = () => {
-    return (props.hasOwnProperty('label') && props.label !== undefined) ? props.label : translation(props.parent + "." + props.attr);
-  }
+  const field = baseField({...props, type: "select"});
 
   const getOptions = () => {
     return props.options.map((option) => (
@@ -70,45 +46,20 @@ export default function SelectField(props) {
     ));
   };
 
-  const onChange = () => {
-    let value = getValue();
-
-    model[props.attr] = value;
-
-    let modelCopy = Object.assign({}, model);
-    modelCopy[props.attr] = value;
-    setModel(modelCopy);
-    if (setValue) {
-      setValue(props.attr, value);
-    }
-
-    if (props.onChange) {
-      props.onChange(value);
-    }
-  };
-
-  useEffect(() => {
-    setLabel(getLabel());
-  }, [props.attr, translation]);
-
-  useEffect(() => {
-    if (setValue && model) {
-      setValue(props.attr, model[props.attr]);
-    }
-  }, [setValue, props.attr, model]);
+  field.useEffect();
 
   return (
-    <div ref={fieldRef} className="form-floating" >
+    <div ref={field.ref} className="form-floating" >
       <StyledFormSelect
-        {...register ? {...register(props.attr)} : (null)}
-        id={getId(props.attr)}
+        {...field.register ? {...field.register(props.attr)} : (null)}
+        id={field.getId()}
         className="field form-select form-select-lg mb-4"
         required={props.required}
-        onChange={onChange}
+        onChange={field.update}
       >
         {getOptions()}
       </StyledFormSelect>
-      <label htmlFor="floatingInput">{label}</label>
+      <label htmlFor="floatingInput">{field.label}</label>
     </div>
   );
 }

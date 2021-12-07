@@ -1,11 +1,12 @@
 import { createRef, useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { useDialog } from '../../contexts/dialog-context';
-import { usePage } from '../../contexts/page-context';
-import { navigateIntoObjectByPath } from '../../theme';
-import { dialogDefinition } from '../dialog/dialog-definition';
-import Button from './buttons/button';
-import { useModel } from './fields/model-context';
+import { useDialog } from '../../../contexts/dialog-context';
+import { usePage } from '../../../contexts/page-context';
+import { navigateIntoObjectByPath } from '../../../theme';
+import { dialogDefinition } from '../../dialog/dialog-definition';
+import Button from '../buttons/button';
+import baseField from './base-field';
+import { useModel } from './model-context';
 
 
 const getThemeAttribute = (theme, attrribute) => {
@@ -108,24 +109,18 @@ const StyledLabelContainer = styled.div`
 
 
 export default function FileUpload(props) {
-  const [label, setLabel] = useState("");
   const [isDragOver, setIsDragOver] = useState(false);
-  const [model, setModel] = useModel();
   const dialogContext = useDialog();
-  const { translation } = usePage();
-
-  const getLabel = () => {
-    return (props.hasOwnProperty('label') && props.label !== undefined) ? props.label : translation(props.parent + "." + props.attr);
-  }
+  const field = baseField({...props, type: 'file-upload' });
 
   function getFilesFromModel() {
-    return (model && model[props.attr]) ? model[props.attr] : [];
+    return (field.model && field.model[props.attr]) ? field.model[props.attr] : [];
   }
   
   function setFilesToModel(files) {
-    let modelCopy = Object.assign({}, model);
+    let modelCopy = Object.assign({}, field.model);
     modelCopy[props.attr] = files;
-    setModel(modelCopy);
+    field.setModel(modelCopy);
   }
 
   function createFileInfoObject(file, content) {
@@ -287,14 +282,12 @@ export default function FileUpload(props) {
     return content.split(',')[1];
   }
 
-  useEffect(() => {
-    setLabel(getLabel());
-  }, [props.attr, translation]);
+  field.useEffect();
   
   return (
     <div>
       <StyledContainer className={(isDragOver) ? 'onDragOver' : ''} onClick={browseFiles} onDrop={event => handleDrop(event)} onDragOver={event => handleDragOver(event)} onDragLeave={event => handleDragLeave(event)} >
-        <StyledLabel>{label}</StyledLabel>
+        <StyledLabel>{field.label}</StyledLabel>
         {
           (getFilesFromModel().length === 0) ? 
             (

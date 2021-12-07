@@ -1,6 +1,5 @@
-import { createRef, useEffect, useState } from "react";
 import styled from "styled-components";
-import { usePage } from "../../../contexts/page-context";
+import baseControl from "../base-control";
 
 const StyledButton = styled.button((props) => {
   return `
@@ -13,14 +12,13 @@ const StyledButton = styled.button((props) => {
 });
 
 export default function Button(props) {
-  const [label, setLabel] = useState("");
-  const buttonRef = createRef();
-  const { translation } = usePage();
-
+  
   const getType = () => {
     return props.type ? props.type : 'button';
   };
-
+  
+  const control = baseControl({...props, type: getType()});
+  
   const getClasses = () => {
     let classes = 'btn ' + (props.className ? props.className + ' ' : ' ');
     let color = (props.defaultColor) ? props.defaultColor : 'btn-primary';
@@ -58,22 +56,12 @@ export default function Button(props) {
     return classes.trim();
   };
 
-  const getButton = () => {
-    return buttonRef.current;
-  };
-
-  const getLabel = () => {
-    return (props.hasOwnProperty('label') && props.label !== undefined) ? props.label : (translation) ? translation(props.parent + "." + props.attr) : "";
-  }
-  
-  useEffect(() => {
-    setLabel(getLabel());
-  }, [props.label, translation]);
+  control.useEffect();
 
   return (
-    <StyledButton type={getType()} className={getClasses()} disabled={props.disabled} ref={buttonRef} onClick={props.onClick} onKeyPress={props.onKeyPress} >
+    <StyledButton type={getType()} className={getClasses()} disabled={props.disabled} ref={control.ref} onClick={props.onClick} onKeyPress={props.onKeyPress} >
       {props.left}
-      {label}
+      {control.label}
       {props.right}
     </StyledButton>
   );

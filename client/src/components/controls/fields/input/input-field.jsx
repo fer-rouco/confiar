@@ -1,11 +1,9 @@
-import { createRef, useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { useError } from '../../../../contexts/error-context';
-import { toCamelCase } from '../../../../utils/string-utils';
 import styled from 'styled-components';
-import { useModel } from '../model-context';
 import { navigateIntoObjectByPath } from '../../../../theme';
-import { usePage } from '../../../../contexts/page-context';
+import baseField from '../base-field';
 
 const getThemeAttribute = (theme, attrribute) => {
   return navigateIntoObjectByPath(theme, "components.controls.fields.input." + attrribute);
@@ -59,75 +57,32 @@ const StyledLabel = styled.label`
 
 // props: register, type, attr, label, required, validationObject
 export default function InputField(props) {
-  const [label, setLabel] = useState("");
-  const { register, setValue, formState: { errors } } = useFormContext();
-  const [model, setModel] = useModel();
-  const fieldRef = createRef();
+  const { formState: { errors } } = useFormContext();
   const { fieldError } = useError();
-  const { translation } = usePage();
-
-  const getId = () => {
-    return 'input-' + props.attr;
-  };
-
-  const getField = useCallback(() => {
-    return fieldRef.current?.getElementsByClassName('field')[0];
-  }, [fieldRef]);
-
-  const getValue = useCallback(() => {
-    let field = getField();
-    return field ? field.value : null;
-  }, [getField]);
-
-  const getLabel = () => {
-    return (props.hasOwnProperty('label') && props.label !== undefined) ? props.label : translation(props.parent + "." + props.attr);
-  }
-
-  const updateField = () => {
-    let rawValue = getValue();
-    let value;
-    
-    if (props.type === 'number') {
-      value = Number.parseFloat(rawValue);
-    }
-    else {
-      value = rawValue;
-    }
-
-    let modelCopy = Object.assign({}, model);
-    modelCopy[props.attr] = value;
-    setModel(modelCopy);
-    if (setValue) {
-      setValue(props.attr, value);
-    }
-    
-    if (props.onChange) {
-      props.onChange();
-    }
-  };
+  const field = baseField(props);
 
   const cleanErrorClasses = useCallback(() => {
-    let field = getField();
-    if (field) {
-      field.classList.remove('is-invalid');
-      field.classList.remove('is-valid');
+    let fieldDOM = field.getField();
+    if (fieldDOM) {
+      fieldDOM.classList.remove('is-invalid');
+      fieldDOM.classList.remove('is-valid');
     }
-  }, [getField]);
+  }, [field.getField]);
 
   const updateErrorClasses = useCallback(() => {
-    let field = getField();
-    if (field) {
+    let fieldDOM = field.getField();
+    if (fieldDOM) {
       if ((errors && errors[props.attr]) || fieldError.field === props.attr) {
-        field.classList.add('is-invalid');
+        fieldDOM.classList.add('is-invalid');
       } else {
-        field.classList.add('is-valid');
+        fieldDOM.classList.add('is-valid');
       }
     }
-  }, [getField, errors, fieldError, props.attr]);
+  }, [field.getField, errors, fieldError, props.attr]);
 
   const handleErrorClasses = useCallback(() => {
     if (!props.avoidValidations) {
-      if (getValue()) {
+      if (field.getValue()) {
         cleanErrorClasses();
         updateErrorClasses();
       } else {
@@ -142,17 +97,9 @@ export default function InputField(props) {
         }
       }
     }
-  }, [getValue, cleanErrorClasses, updateErrorClasses, errors, props.attr]);
+  }, [field.getValue, cleanErrorClasses, updateErrorClasses, errors, props.attr]);
 
-  useEffect(() => {
-    setLabel(getLabel());
-  }, [props.attr, translation]);
-
-  useEffect(() => {
-    if (setValue && model) {
-      setValue(props.attr, model[props.attr]);
-    }
-  }, [setValue, props.attr, model]);
+  field.useEffect();
 
   useEffect(() => {
     handleErrorClasses();
@@ -207,17 +154,17 @@ export default function InputField(props) {
   }
 
   return (
-    <div className={(!props.small) ? "form-floating" : "input-group mb-3" } ref={fieldRef} style={{ width: props.width }}>
-      {(props.small && label) ? <span className="input-group-text">{label}</span> : <></>}
+    <div className={(!props.small) ? "form-floating" : "input-group mb-3" } ref={field.ref} style={{ width: props.width }}>
+      {(props.small && field.label) ? <span className="input-group-text">{field.label}</span> : <></>}
       <StyledFormControl
-        {...register ? {...register(props.attr, validationObject)} : (null)}
+        {...field.register ? {...field.register(props.attr, validationObject)} : (null)}
         type={props.type}
         className={"field form-control " + ((props.small) ? "small-mode" : "floating-mode")}
         style={{ width: props.width }}
-        id={getId()}
+        id={field.getId()}
         // placeholder={toCamelCase(props.attr)}
-        placeholder={(props.placeholder && label) ? props.placeholder : ((props.small) ? "" : label)}
-        onChange={updateField}
+        placeholder={(props.placeholder && field.label) ? props.placeholder : ((props.small) ? "" : field.label)}
+        onChange={field.update}
         min={props.min}
         max={props.max}
         step={props.step}
@@ -225,7 +172,7 @@ export default function InputField(props) {
       <StyledErrorMessage>
         {errors && errors[props.attr] ? errors[props.attr].message : ((fieldError.field === props.attr) ? fieldError.message : '')}
       </StyledErrorMessage>
-      {(!props.small && label) ? <StyledLabel htmlFor="floatingInput">{label}</StyledLabel> : <></>}
+      {(!props.small && field.label) ? <StyledLabel htmlFor="floatingInput">{field.label}</StyledLabel> : <></>}
     </div>
   );
 }

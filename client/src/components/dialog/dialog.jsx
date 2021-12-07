@@ -13,21 +13,24 @@ const getThemeAttribute = (theme, attrribute) => {
 }
 
 const StyledModalContent = styled.div`
-  width: fit-content
-  &.modal-content .modal-header .modal-title {
-    color: ${({ theme }) => getThemeAttribute(theme, "header.color")};
-  }
-  &.modal-content .modal-header {
-    background-color: ${({ theme }) => getThemeAttribute(theme, "header.bgColor")};
-    color: ${({ theme }) => getThemeAttribute(theme, "header.color")};
-  }
-  &.modal-content .modal-body {
-    background-color: ${({ theme }) => getThemeAttribute(theme, "body.bgColor")};
-    color: ${({ theme }) => getThemeAttribute(theme, "body.color")};
-  }
-  &.modal-content .modal-footer {
-    background-color: ${({ theme }) => getThemeAttribute(theme, "footer.bgColor")};
-    color: ${({ theme }) => getThemeAttribute(theme, "footer.color")};
+  &.modal-content {
+    width: fit-content;
+    
+    .modal-header .modal-title {
+      color: ${({ theme }) => getThemeAttribute(theme, "header.color")};
+    }
+    .modal-header {
+      background-color: ${({ theme }) => getThemeAttribute(theme, "header.bgColor")};
+      color: ${({ theme }) => getThemeAttribute(theme, "header.color")};
+    }
+    .modal-body {
+      background-color: ${({ theme }) => getThemeAttribute(theme, "body.bgColor")};
+      color: ${({ theme }) => getThemeAttribute(theme, "body.color")};
+    }
+    .modal-footer {
+      background-color: ${({ theme }) => getThemeAttribute(theme, "footer.bgColor")};
+      color: ${({ theme }) => getThemeAttribute(theme, "footer.color")};
+    }
   }
 `;
 

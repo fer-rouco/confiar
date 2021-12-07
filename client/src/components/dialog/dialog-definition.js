@@ -5,6 +5,7 @@ export function dialogDefinition(props) {
     key: props.key,
     title: props.title,
     message: props.message,
+    content: props.content,
     actions: props.actions,
     modeless: props.modeless,
     draggable: props.draggable,

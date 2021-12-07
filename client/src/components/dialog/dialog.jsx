@@ -1,4 +1,4 @@
-import { createRef, useCallback, useEffect, useState } from 'react';
+import { createRef, useEffect, useState } from 'react';
 import bootstrap from 'bootstrap/dist/js/bootstrap.js';
 import styled from 'styled-components';
 import i18next from "i18next";
@@ -16,17 +16,20 @@ const StyledModalContent = styled.div`
   &.modal-content {
     width: fit-content;
     
-    .modal-header .modal-title {
-      color: ${({ theme }) => getThemeAttribute(theme, "header.color")};
-    }
     .modal-header {
       background-color: ${({ theme }) => getThemeAttribute(theme, "header.bgColor")};
       color: ${({ theme }) => getThemeAttribute(theme, "header.color")};
+      
+      .modal-title {
+        color: ${({ theme }) => getThemeAttribute(theme, "header.color")};
+      }
     }
+
     .modal-body {
       background-color: ${({ theme }) => getThemeAttribute(theme, "body.bgColor")};
       color: ${({ theme }) => getThemeAttribute(theme, "body.color")};
     }
+    
     .modal-footer {
       background-color: ${({ theme }) => getThemeAttribute(theme, "footer.bgColor")};
       color: ${({ theme }) => getThemeAttribute(theme, "footer.color")};

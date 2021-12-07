@@ -22,17 +22,16 @@ export default function baseField(props) {
       return fieldDOM ? fieldDOM[field.valueProperty] : null;
     },
     update: () => {
-      // let rawValue = control.getValue();
-      // let value;
+      let rawValue = field.getValue();
+      let value;
       
-      // if (props.type === 'number') {
-      //   value = Number.parseFloat(rawValue);
-      // }
-      // else {
-      //   value = rawValue;
-      // }
+      if (props.type === 'number') {
+        value = Number.parseFloat(rawValue);
+      }
+      else {
+        value = rawValue;
+      }
 
-      let value = field.getValue(); 
       let modelCopy = Object.assign({}, model);
       modelCopy[props.attr] = value;
       setModel(modelCopy);

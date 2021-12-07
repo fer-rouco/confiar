@@ -2,13 +2,14 @@ import i18n from "i18next";
 import { initReactI18next } from "react-i18next";
 import translationEN from './resources/locales/translation_en.json'
 import translationES from './resources/locales/translation_es.json'
+import { STORAGE_LANGUAGE } from "./services/storage/storage-constants";
 import storageManagerService from "./services/storage/storage-manager-service";
 
 const localStorageService = storageManagerService();
-let languageInStorage = localStorageService.getItem("language");
+let languageInStorage = localStorageService.getItem(STORAGE_LANGUAGE);
 if (!languageInStorage) {
   languageInStorage = "en"
-  localStorageService.setItem("language", languageInStorage);
+  localStorageService.setItem(STORAGE_LANGUAGE, languageInStorage);
 } 
 
 // the translations

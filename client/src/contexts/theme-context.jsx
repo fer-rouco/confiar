@@ -1,4 +1,5 @@
 import React from 'react';
+import { STORAGE_THEME } from '../services/storage/storage-constants';
 import storageManagerService from "../services/storage/storage-manager-service";
 import { lightTheme, darkTheme} from './../theme';
 
@@ -6,12 +7,12 @@ const ThemeContext = React.createContext(() => {});
 
 export function ThemeModeProvider(props) {
   const localStorageService = storageManagerService();
-  const themeModeStored = localStorageService.getItem("theme.mode");
+  const themeModeStored = localStorageService.getItem(STORAGE_THEME);
   let darkMode = (themeModeStored) ? themeModeStored.dark : false;
   const [darkThemeState, setDarkThemeState] = React.useState(darkMode);
 
   const toggle = () => {
-    localStorageService.setItem("theme.mode", { dark: !darkThemeState });
+    localStorageService.setItem(STORAGE_THEME, { dark: !darkThemeState });
     setDarkThemeState(!darkThemeState);
   }
 

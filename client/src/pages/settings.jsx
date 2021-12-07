@@ -7,11 +7,12 @@ import SwitchField from "../components/controls/fields/check/switch-field";
 import SelectField from "../components/controls/fields/select/select-field";
 import { useTranslation } from "react-i18next";
 import storageManagerService from "../services/storage/storage-manager-service";
+import { STORAGE_LANGUAGE } from "../services/storage/storage-constants";
 
 function Settings(props) {
   const theme = useTheme();
   const localStorageService = storageManagerService();
-  const modelState = useState({ dark: theme.isDark(), language: localStorageService.getItem("language")});
+  const modelState = useState({ dark: theme.isDark(), language: localStorageService.getItem(STORAGE_LANGUAGE)});
   const [model, setModel] = modelState;
   const { i18n } = useTranslation('pages', { keyPrefix: 'settings' });
   const languages = Object.keys(i18n.services.resourceStore.data).map((language) => { return {value: language, label: language }; });
@@ -19,7 +20,7 @@ function Settings(props) {
   function handleLanguageChange(language) {
     i18n.changeLanguage(model.language, (error, t) => {
       if (!error) {
-        localStorageService.setItem("language", model.language);
+        localStorageService.setItem(STORAGE_LANGUAGE, model.language);
       }
       else {
         return console.error('Something went wrong trying to change the language.', error);

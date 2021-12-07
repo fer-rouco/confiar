@@ -6,18 +6,24 @@ import { useTheme } from "../contexts/theme-context";
 import SwitchField from "../components/controls/fields/check/switch-field";
 import SelectField from "../components/controls/fields/select/select-field";
 import { useTranslation } from "react-i18next";
+import storageManagerService from "../services/storage/storage-manager-service";
 
 function Settings(props) {
   const theme = useTheme();
-  const modelState = useState({ dark: theme.isDark() });
+  const localStorageService = storageManagerService();
+  const modelState = useState({ dark: theme.isDark(), language: localStorageService.getItem("language")});
   const [model, setModel] = modelState;
   const { i18n } = useTranslation('pages', { keyPrefix: 'settings' });
   const languages = Object.keys(i18n.services.resourceStore.data).map((language) => { return {value: language, label: language }; });
-  const t = i18n.getFixedT(null, 'pages', 'settings');
 
-  function handleLanguageChange() {
+  function handleLanguageChange(language) {
     i18n.changeLanguage(model.language, (error, t) => {
-      if (error) return console.error('Something went wrong trying to change the language.', error);
+      if (!error) {
+        localStorageService.setItem("language", model.language);
+      }
+      else {
+        return console.error('Something went wrong trying to change the language.', error);
+      }
     });
   }
 
@@ -26,7 +32,7 @@ function Settings(props) {
       <PanelForm id="general" subTitle model={modelState}>
         <div className="row">
           <div className="col-md-6">
-            <SelectField attr="language" options={languages} onChange={() => { handleLanguageChange() }} ></SelectField>
+            <SelectField attr="language" options={languages} onChange={(language) => { handleLanguageChange(language) }} ></SelectField>
           </div>
         </div>
       </PanelForm>

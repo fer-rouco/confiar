@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useTranslation } from "react-i18next";
+import i18next from "i18next";
 import useReactPath from './path-name';
 import { getCurrentSession } from './../services/server/session-service';
 
@@ -31,20 +32,21 @@ export const updateActiveItem = (itemList, defaultValue) => {
 
 export default function useNavigationItems(defaultValue) {
   const { t } = useTranslation('navigation');
+  const routesTranslation = i18next.getFixedT(null, 'routes');
   const session = getCurrentSession();
   const pathname = useReactPath();
     
   let navigationItemList = [];
   
   // fill navigationItemList
-  let navigationPaths = t("paths", {returnObjects: true});
-  Object.entries(navigationPaths).forEach((navigationPath) => {
-    let key = navigationPath[0];
-    let value = navigationPath[1];
+  let navigationTexts = t("texts", {returnObjects: true});
+  Object.entries(navigationTexts).forEach((navigationItem) => {
+    let key = navigationItem[0];
+    let value = navigationItem[1];
     let item = {
       id: key,
-      path: value,
-      text: t("texts." + key),
+      path: routesTranslation(key),
+      text: value,
       icon: t("icons." + key),
       condition: t("conditions." + key),
     }

@@ -13,7 +13,7 @@ function Customers() {
   const [filterDefinitions, setFilterDefinitions] = useState([]);
 
   function create() {
-    navigation.navigateTo('/Customer');
+    navigation.navigateToId('customer');
   };
 
   useEffect(() => {

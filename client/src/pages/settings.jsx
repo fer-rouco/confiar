@@ -1,5 +1,6 @@
 import { useState } from "react";
-import withPage, { pageIds } from "../components/containers/page";
+import i18next from "i18next";
+import withPage from "../components/containers/page";
 import Panel from "../components/containers/panel";
 import PanelForm from "../components/containers/panel-form";
 import { useTheme } from "../contexts/theme-context";
@@ -14,6 +15,7 @@ function Settings(props) {
   const localStorageService = storageManagerService();
   const modelState = useState({ dark: theme.isDark(), language: localStorageService.getItem(STORAGE_LANGUAGE)});
   const [model, setModel] = modelState;
+  const navigationTranslation = i18next.getFixedT(null, 'routes');
   const { i18n } = useTranslation('pages', { keyPrefix: 'settings' });
   const languages = Object.keys(i18n.services.resourceStore.data).map((language) => { return {value: language, label: language }; });
 
@@ -21,6 +23,7 @@ function Settings(props) {
     i18n.changeLanguage(model.language, (error, t) => {
       if (!error) {
         localStorageService.setItem(STORAGE_LANGUAGE, model.language);
+        window.history.pushState(null, null, navigationTranslation("settings"));
       }
       else {
         return console.error('Something went wrong trying to change the language.', error);

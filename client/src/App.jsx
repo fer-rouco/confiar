@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Route, Switch, withRouter } from 'react-router-dom';
 import { ThemeProvider } from 'styled-components';
+import i18next from "i18next";
 import { BarsProvider } from './components/bars/bars-context';
 import NavBar from './components/bars/nav-bar';
 import SideBar from './components/bars/side-bar';
@@ -17,6 +18,7 @@ import Settings from './pages/settings';
 import User from './pages/user';
 import Users from './pages/users';
 import { GlobalStyles } from './theme';
+import useReactPath from './hooks/path-name';
 // import Tooltip from './components/tooltip';
 
 const SettingsWithAuth = withRouter(withAuth(Settings));
@@ -27,6 +29,42 @@ const CustomersWithAuth = withRouter(withAuth(Customers));
 
 function App({error}) {
   const theme = useTheme();
+  const pathname = useReactPath();
+  const navigationTranslation = i18next.getFixedT(null, 'routes');
+  const [routes, setRoutes] = useState(null);
+
+  function buildRoutes() {
+    setRoutes(
+      <Switch>
+        <Route exact path="/" component={UsersWithAuth} />
+        <Route exact path={navigationTranslation("logIn")}>
+          <Login />
+        </Route>
+        {/* <Route exact path={navigationTranslation("settings")}> */}
+        <Route exact path={navigationTranslation("settings")}>
+          <SettingsWithAuth />
+        </Route>
+        <Route exact path={navigationTranslation("users")}>
+          <UsersWithAuth />
+        </Route>
+        <Route exact path={navigationTranslation("user")}>
+          <UserWithAuth />
+        </Route>
+        <Route exact path={navigationTranslation("customers")}>
+          <CustomersWithAuth />
+        </Route>
+        <Route exact path={navigationTranslation("customer")}>
+          <CustomerWithAuth />
+        </Route>
+        <Route component={PageNotFound} />
+        <Route component={ServerNotReady} />
+      </Switch>
+    );
+  }
+
+  useEffect(() => {
+    buildRoutes();
+  }, [pathname]);
 
   return (
     <ThemeProvider theme={theme.getCurrent()}>
@@ -42,31 +80,7 @@ function App({error}) {
           <div className="row justify-content-center">
             <div className="col">
                 { (!error) ?
-                  (
-                    <Switch>
-                      <Route exact path="/" component={UsersWithAuth} />
-                      <Route exact path="/Login">
-                        <Login />
-                      </Route>
-                      <Route exact path="/Settings">
-                        <SettingsWithAuth />
-                      </Route>
-                      <Route exact path="/Users">
-                        <UsersWithAuth />
-                      </Route>
-                      <Route exact path="/User">
-                        <UserWithAuth />
-                      </Route>
-                      <Route exact path="/Customers">
-                        <CustomersWithAuth />
-                      </Route>
-                      <Route exact path="/Customer">
-                        <CustomerWithAuth />
-                      </Route>
-                      <Route component={PageNotFound} />
-                      <Route component={ServerNotReady} />
-                    </Switch>
-                  )
+                  routes
                 :
                   (
                     <Switch>

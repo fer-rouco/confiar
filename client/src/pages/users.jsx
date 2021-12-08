@@ -13,7 +13,7 @@ function Users() {
   const [filterDefinitions, setFilterDefinitions] = useState([]);
 
   function createUser() {
-    navigation.navigateTo('/User');
+    navigation.navigateToId('user');
   };
 
   useEffect(() => {

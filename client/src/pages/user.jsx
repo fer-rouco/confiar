@@ -38,7 +38,7 @@ function User() {
         .then((user) => {
           // TODO: Translate
           addSuccessMessage('El usuario ' + user.name + ' fue ' + (update ? 'actualizado' : 'creado') + ' exitosamente.');
-          navigation.navigateTo('/Users');
+          navigation.navigateToId('users');
         })
         .catch((error) => {
           addFieldError(error.field, error.message);
@@ -94,7 +94,7 @@ function User() {
       } catch (err) {
         // TODO: Translate
         addErrorMessage('Se produzco un error al buscar el cliente ' + location.state.userName);
-        navigation.navigateTo('/Users');
+        navigation.navigateToId('users');
       }
     }
     else {

@@ -31,7 +31,7 @@ function Customer() {
         .then((user) => {
           // TODO: Translate
           addSuccessMessage('El cliente ' + user.name + ' fue ' + (update ? 'actualizado' : 'creado') + ' exitosamente.');
-          navigation.navigateTo('/Customers');
+          navigation.navigateToId('customers');
         })
         .catch((error) => {
           addErrorMessage(error.message);
@@ -75,7 +75,7 @@ function Customer() {
           setModel(customer);
         })
         .catch(() => {
-          navigation.navigateTo('/Customers');
+          navigation.navigateToId('customers');
         });
     }
     else {

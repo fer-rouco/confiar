@@ -1,10 +1,13 @@
 {
+  "routes": {
+    "logIn": "/Login",
+    "settings": "/Configuraciones",
+    "users": "/Usuarios",
+    "user": "/Usuario",
+    "customers": "/Clientes",
+    "customer": "/Cliente"
+  },
   "navigation": {
-    "paths": {
-      "users": "/Usuarios",
-      "customers": "/Clientes",
-      "logIn": "/Login"
-    },
     "texts": {
       "users": "Usuarios",
       "customers": "Clientes",

@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useTranslation } from "react-i18next";
+import i18next from "i18next";
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { useAlertMessage } from '../../contexts/alert-message-context';
@@ -72,6 +73,7 @@ const StyledProfileMenu = styled.ul`
 export default function SideBar(props) {
   const [navigationItems] = useNavigationItems();
   const { t } = useTranslation('components', { keyPrefix: 'bars.sideBar' });
+  const navigationTranslation = i18next.getFixedT(null, 'routes');
   const [itemList, setItemList] = useState({ items: <></> });
   const { sidebarOpen } = useBars();
   const pathname = useReactPath();
@@ -212,7 +214,7 @@ export default function SideBar(props) {
             aria-labelledby="dropdownUser"
           >
             <li>
-              <a className="dropdown-item" href="/Settings">
+              <a className="dropdown-item" href={navigationTranslation("settings")}>
                  {t('profileMenu.settings')}
               </a>
             </li>

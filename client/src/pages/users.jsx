@@ -18,7 +18,7 @@ function Users() {
 
   useEffect(() => {
     setColumnDefinitions([
-      textColumnDefinition({ key: 'name', target: '/User' }),
+      textColumnDefinition({ key: 'name', target: 'user' }),
       textColumnDefinition({ key: 'lastName' }),
       textColumnDefinition({ key: 'userName' }),
       textColumnDefinition({ key: 'mail' }),
@@ -36,7 +36,7 @@ function Users() {
       let profileListWithAllOption = [{value: '', label: 'Todos' }, ...profileList];
       
       setFilterDefinitions([
-        textColumnDefinition({ key: 'name', target: '/User' }),
+        textColumnDefinition({ key: 'name' }),
         textColumnDefinition({ key: 'lastName' }),
         textColumnDefinition({ key: 'userName' }),
         textColumnDefinition({ key: 'mail' }),

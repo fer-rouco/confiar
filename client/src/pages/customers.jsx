@@ -18,7 +18,7 @@ function Customers() {
 
   useEffect(() => {
     setColumnDefinitions([
-      textColumnDefinition({ key: 'name', target: '/Customer' }),
+      textColumnDefinition({ key: 'name', target: 'customer' }),
       textColumnDefinition({ key: 'lastName' }),
       textColumnDefinition({ key: 'mail' }),
       removeColumnDefinition({
@@ -29,7 +29,7 @@ function Customers() {
     ]);
 
     setFilterDefinitions([
-      textColumnDefinition({ key: 'name', target: '/User' }),
+      textColumnDefinition({ key: 'name' }),
       textColumnDefinition({ key: 'lastName' }),
       textColumnDefinition({ key: 'mail' })
     ]);

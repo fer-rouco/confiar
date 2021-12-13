@@ -37,16 +37,16 @@ async function processRequest(promise) {
   });
 }
 
-export async function get(url, body) {
-  return await processRequest(Axios.get(SERVER_URL + url, body));
+export async function get(url, body, config) {
+  return await processRequest(Axios.get(SERVER_URL + url, body, config));
 }
 
 export async function findById(url, id) {
   return get(url + '/' + id);
 }
 
-export async function post(url, body) {
-  return await processRequest(Axios.post(SERVER_URL + url, body));
+export async function post(url, body, config) {
+  return await processRequest(Axios.post(SERVER_URL + url, body, config));
 }
 
 export async function postPaginator(url, pageFrom, pageSize, projectionFieldsParam, filtersParam) {
@@ -67,8 +67,8 @@ export async function postPaginator(url, pageFrom, pageSize, projectionFieldsPar
   return post(url, formdata);
 }
 
-export async function put(url, body) {
-  return await processRequest(Axios.put(SERVER_URL + url, body));
+export async function put(url, body, config) {
+  return await processRequest(Axios.put(SERVER_URL + url, body, config));
 }
 
 export async function remove(url, id) {

@@ -1,6 +1,7 @@
 package com.fnr.confiar.models;
 
 import com.fnr.confiar.entities.BaseEntity;
+import com.fnr.confiar.utils.StringUtil;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -13,6 +14,7 @@ import lombok.experimental.FieldNameConstants;
 @FieldNameConstants
 public class SessionInfoModel extends BaseModel<BaseEntity> {
   private static SessionInfoModel     instance;
+  private String                      token;
   private UserInfoData                user;
 
   public static SessionInfoModel getInstance() {
@@ -20,6 +22,10 @@ public class SessionInfoModel extends BaseModel<BaseEntity> {
       instance = new SessionInfoModel();
     }
     return instance;
+  }
+
+  public void generateNewToken() {
+    this.setToken(StringUtil.generateNewToken());
   }
 
   @Data

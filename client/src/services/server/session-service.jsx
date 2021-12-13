@@ -1,4 +1,4 @@
-import { get } from './base-service';
+import { get, post } from './base-service';
 import jsSHA from 'jssha';
 import storageManagerService from "./../storage/storage-manager-service";
 import { STORAGE_SESSION_IDENTIFIER } from './../storage/storage-constants';
@@ -28,6 +28,17 @@ export async function logOut() {
     BASE_URL + '/logout'
   ).then((session) => {
     sessionStorageService.removeItem(STORAGE_SESSION_IDENTIFIER);
+    return session;
+  });
+}
+
+export async function validateSession(token) {
+  const headers = {
+    'Content-Type': 'text/plain'
+  }
+  return post(
+    BASE_URL + '/validate', token, { headers: headers }
+  ).then((session) => {
     return session;
   });
 }

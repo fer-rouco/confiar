@@ -5,7 +5,9 @@
     "users": "/Users",
     "user": "/User",
     "customers": "/Customers",
-    "customer": "/Customer"
+    "customer": "/Customer",
+    "pageNotFound": "/PageNotFound",
+    "serverNotReady": "/ServerNotReady"
   },
   "navigation": {
     "texts": {

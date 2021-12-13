@@ -1,6 +1,8 @@
 package com.fnr.confiar.utils;
 
 import java.nio.charset.StandardCharsets;
+import java.security.SecureRandom;
+import java.util.Base64;
 
 import com.google.common.hash.Hashing;
 
@@ -18,6 +20,12 @@ public class StringUtil {
 
   public static String toSha256(String stringToHash) {
     return Hashing.sha256().hashString(stringToHash, StandardCharsets.UTF_8).toString();
+  }
+
+  public static String generateNewToken() {
+      byte[] randomBytes = new byte[24];
+      new SecureRandom().nextBytes(randomBytes);
+      return Base64.getUrlEncoder().encodeToString(randomBytes);
   }
 
 }

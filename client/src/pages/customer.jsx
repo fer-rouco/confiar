@@ -125,4 +125,4 @@ function Customer() {
   );
 }
 
-export default withPage("customer")(Customer);
+export default withPage()(Customer);

@@ -51,4 +51,4 @@ function Settings(props) {
   );
 }
 
-export default withPage("settings")(Settings);
+export default withPage()(Settings);

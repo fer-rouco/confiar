@@ -57,4 +57,4 @@ function Users() {
   );
 }
 
-export default withPage("users")(Users);
+export default withPage()(Users);

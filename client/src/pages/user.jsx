@@ -151,4 +151,4 @@ function User() {
   );
 }
 
-export default withPage("user")(User);
+export default withPage()(User);

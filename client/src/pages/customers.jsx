@@ -47,4 +47,4 @@ function Customers() {
   );
 }
 
-export default withPage("customers")(Customers);
+export default withPage()(Customers);

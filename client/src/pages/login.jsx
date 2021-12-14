@@ -56,4 +56,4 @@ function Login() {
   );
 }
 
-export default withPage("login")(Login);
+export default withPage()(Login);

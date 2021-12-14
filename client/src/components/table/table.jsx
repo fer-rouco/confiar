@@ -2,6 +2,7 @@ import { createRef, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import i18next from "i18next";
+import useRoutesResolver from './../../hooks/routes-resolver';
 import { useDialog } from '../../contexts/dialog-context';
 import { usePage } from '../../contexts/page-context';
 import Button from '../controls/buttons/button';
@@ -99,7 +100,7 @@ const StyledNumericField = styled(NumericField)`
 
 function Table(props) {
   const componentTranslation = i18next.getFixedT(null, 'components', 'table');
-  const navigationTranslation = i18next.getFixedT(null, 'routes');
+  const routesResolver = useRoutesResolver();
   const page = usePage();
   const pageTranslation = page.translation;
   const [rowObjects, setRowObjects] = useState(null);
@@ -346,7 +347,7 @@ function Table(props) {
         cell = (
           (columnDefinition.target) ?               
             <StyledTH key={getRowKey(columnDefinition, rowObject)}>
-              <Link to={{ pathname: navigationTranslation(columnDefinition.target), state: rowObject }}>{getRowObjectProperty(columnDefinition, rowObject)}</Link>
+              <Link to={{ pathname: routesResolver.get(columnDefinition.target), state: rowObject }}>{getRowObjectProperty(columnDefinition, rowObject)}</Link>
             </StyledTH>
           :
             <StyledTD key={getRowKey(columnDefinition, rowObject)}>

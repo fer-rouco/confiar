@@ -1,15 +1,15 @@
 import { useEffect } from 'react';
 import { useHistory } from 'react-router';
 import { useError } from '../contexts/error-context';
-import i18next from "i18next";
+import useRoutesResolver from './routes-resolver';
 
 const useNavigation = () => {
   const history = useHistory();
-  const navigationTranslation = i18next.getFixedT(null, 'routes');
   const { cleanFieldError } = useError();
+  const routesResolver = useRoutesResolver();
 
   const navigateToId = (id) => {
-    history.push(navigationTranslation(id));
+    history.push(routesResolver.get(id));
   };
   
   useEffect(() => {

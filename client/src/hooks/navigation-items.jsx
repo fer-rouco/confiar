@@ -1,14 +1,22 @@
 import { useEffect, useState } from 'react';
 import { useTranslation } from "react-i18next";
-import i18next from "i18next";
+import useRoutesResolver from './routes-resolver';
 import useReactPath from './path-name';
 import { getCurrentSession } from './../services/server/session-service';
 
 
 export const findActiveItem = (itemList) => {
-  return itemList.find((item) => {
-    return item.path === window.location.pathname;
+  let activeItem = null;
+  activeItem = itemList.find((item) => {
+    return item.url === window.location.pathname;
   });
+
+  // TODO: find the child url
+  // if (!activeItem) {
+  //   activeItem = activeItem.children.url;
+  // }
+
+  return activeItem;
 };
 
 export const updateActiveItem = (itemList, defaultValue) => {
@@ -32,7 +40,7 @@ export const updateActiveItem = (itemList, defaultValue) => {
 
 export default function useNavigationItems(defaultValue) {
   const { t } = useTranslation('navigation');
-  const routesTranslation = i18next.getFixedT(null, 'routes');
+  const routesResolver = useRoutesResolver();
   const session = getCurrentSession();
   const pathname = useReactPath();
     
@@ -45,10 +53,11 @@ export default function useNavigationItems(defaultValue) {
     let value = navigationItem[1];
     let item = {
       id: key,
-      path: routesTranslation(key),
+      url: routesResolver.get(key),
       text: value,
       icon: t("icons." + key),
       condition: t("conditions." + key),
+      children: routesResolver.getChildren(key)
     }
     navigationItemList.push(item);
   });

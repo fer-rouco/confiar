@@ -79,16 +79,12 @@ export default function NavBar(props) {
         <ul className="navbar-nav me-auto mb-2 mb-lg-0">
           {navigationItems.map((item, index) =>
             !item.conditionFunction || (item.conditionFunction && item.conditionFunction()) ? (
-              <StyledNavItem to={item.path} key={item.id}>
+              <StyledNavItem to={item.url} key={item.id}>
                 <div className="d-inline-block align-text-top">
                   <StyledNavItemLeft className="fs-4">
                     <Icon fontName={item.icon} medium color="#fff"></Icon>
                   </StyledNavItemLeft>
-                  <StyledNavItemRight
-                    className="nav-link active"
-                    aria-current="page"
-                    href={item.path}
-                  >
+                  <StyledNavItemRight className="nav-link active" aria-current="page" href={item.url} >
                     {item.text}
                   </StyledNavItemRight>
                 </div>

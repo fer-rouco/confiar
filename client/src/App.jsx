@@ -19,6 +19,7 @@ import User from './pages/user';
 import Users from './pages/users';
 import { GlobalStyles } from './theme';
 import useReactPath from './hooks/path-name';
+import useRoutesResolver from './hooks/routes-resolver';
 // import Tooltip from './components/tooltip';
 
 const SettingsWithAuth = withRouter(withAuth(Settings));
@@ -30,30 +31,30 @@ const CustomersWithAuth = withRouter(withAuth(Customers));
 function App({error}) {
   const theme = useTheme();
   const pathname = useReactPath();
-  const navigationTranslation = i18next.getFixedT(null, 'routes');
   const [routes, setRoutes] = useState(null);
+  const routesResolver = useRoutesResolver();
 
   function buildRoutes() {
     setRoutes(
       <Switch>
         <Route exact path="/" component={UsersWithAuth} />
-        <Route exact path={navigationTranslation("logIn")}>
+        <Route exact path={routesResolver.get("logIn")}>
           <Login />
         </Route>
-        {/* <Route exact path={navigationTranslation("settings")}> */}
-        <Route exact path={navigationTranslation("settings")}>
+        {/* <Route exact path={routesResolver.get("settings")}> */}
+        <Route exact path={routesResolver.get('settings')}>
           <SettingsWithAuth />
         </Route>
-        <Route exact path={navigationTranslation("users")}>
+        <Route exact path={routesResolver.get("users")}>
           <UsersWithAuth />
         </Route>
-        <Route exact path={navigationTranslation("user")}>
+        <Route exact path={routesResolver.get("user")}>
           <UserWithAuth />
         </Route>
-        <Route exact path={navigationTranslation("customers")}>
+        <Route exact path={routesResolver.get("customers")}>
           <CustomersWithAuth />
         </Route>
-        <Route exact path={navigationTranslation("customer")}>
+        <Route exact path={routesResolver.get("customer")}>
           <CustomerWithAuth />
         </Route>
         <Route component={PageNotFound} />

@@ -1,13 +1,13 @@
 {
   "routes": {
-    "logIn": "/Login",
-    "settings": "/Settings",
-    "users": "/Users",
-    "user": "/User",
-    "customers": "/Customers",
-    "customer": "/Customer",
-    "pageNotFound": "/PageNotFound",
-    "serverNotReady": "/ServerNotReady"
+    "items": {
+      "logIn": { "url": "/Login" },
+      "settings": { "url": "/Settings" },
+      "users": { "url": "/Users", "children": { "user": { "url": "/User" } } },
+      "customers": { "url": "/Customers", "children": { "customer": { "url": "/Customer" }  } },
+      "pageNotFound": { "url": "/PageNotFound" },
+      "serverNotReady": { "url": "/ServerNotReady" }
+    }
   },
   "navigation": {
     "texts": {

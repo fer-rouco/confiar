@@ -37,8 +37,7 @@ function Login() {
       <div className="container">
         <div className="row justify-content-center">
           <div className="col-md-6">
-            <TextField attr="user" required
-            ></TextField>
+            <TextField attr="user" required ></TextField>
           </div>
         </div>
         <div className="row justify-content-center">

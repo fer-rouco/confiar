@@ -1,9 +1,9 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useTranslation } from "react-i18next";
-import i18next from "i18next";
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { useAlertMessage } from '../../contexts/alert-message-context';
+import useRoutesResolver from './../../hooks/routes-resolver';
 import useNavigationItems from '../../hooks/navigation-items';
 import useReactPath from '../../hooks/path-name';
 import { navigateIntoObjectByPath } from '../../theme';
@@ -73,7 +73,7 @@ const StyledProfileMenu = styled.ul`
 export default function SideBar(props) {
   const [navigationItems] = useNavigationItems();
   const { t } = useTranslation('components', { keyPrefix: 'bars.sideBar' });
-  const navigationTranslation = i18next.getFixedT(null, 'routes');
+  const routesResolver = useRoutesResolver();
   const [itemList, setItemList] = useState({ items: <></> });
   const { sidebarOpen } = useBars();
   const pathname = useReactPath();
@@ -107,43 +107,19 @@ export default function SideBar(props) {
               {navigationItems.map((item, index) =>
                 !item.conditionFunction || (item.conditionFunction && item.conditionFunction()) ? (
                   <StyledNavItem key={item.id} className="nav-item">
-                    {item.path ? (
-                      <StyledNavLink
-                        className={
-                          'nav-link ' +
-                          getActiveClass(item) +
-                          ' ' +
-                          getSideBarOpenClass()
-                        }
-                        to={item.path}
-                        onClick={() => {
-                          onItemClick(item);
-                        }}
-                      >
-                        <Icon
-                          fontName={item.icon}
-                          size={sidebarOpenMode ? 'small' : 'medium'}
-                        ></Icon>
+                    {item.url ? (
+                      <StyledNavLink to={item.url} onClick={() => { onItemClick(item); }} className={'nav-link ' + getActiveClass(item) + ' ' + getSideBarOpenClass()}>
+                        <Icon fontName={item.icon} size={sidebarOpenMode ? 'small' : 'medium'} ></Icon>
                         {sidebarOpenMode ? item.text : null}
                       </StyledNavLink>
                     ) : (
-                      <StyledNavAnchor
-                        className={
-                          'nav-link ' +
-                          getActiveClass(item) +
-                          ' ' +
-                          getSideBarOpenClass()
-                        }
-                        onClick={() => {
-                          onItemClick(item);
-                        }}
-                      >
+                      <StyledNavAnchor onClick={() => { onItemClick(item); }} className={'nav-link ' + getActiveClass(item) + ' ' + getSideBarOpenClass()} >
                         <Icon fontName={item.icon} small></Icon>
                         {item.text}
                       </StyledNavAnchor>
                     )}
                   </StyledNavItem>
-                ) : null,
+                ) : null
               )}
             </ul>
           ),
@@ -214,7 +190,7 @@ export default function SideBar(props) {
             aria-labelledby="dropdownUser"
           >
             <li>
-              <a className="dropdown-item" href={navigationTranslation("settings")}>
+              <a className="dropdown-item" href={routesResolver.get("settings")}>
                  {t('profileMenu.settings')}
               </a>
             </li>

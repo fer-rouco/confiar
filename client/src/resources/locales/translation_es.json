@@ -1,11 +1,13 @@
 {
   "routes": {
-    "logIn": "/Login",
-    "settings": "/Configuraciones",
-    "users": "/Usuarios",
-    "user": "/Usuario",
-    "customers": "/Clientes",
-    "customer": "/Cliente"
+    "items": {
+      "logIn": { "url": "/Login" },
+      "settings": { "url": "/Configuraciones" },
+      "users": { "url": "/Usuarios", "children": { "user": { "url": "/Usuario" } } },
+      "customers": { "url": "/Clientes", "children": { "customer": { "url": "/Cliente" } } },
+      "pageNotFound": { "url": "/PaginaNoEncontrada" },
+      "serverNotReady": { "url": "/ServidorNoDisponible" }
+    }
   },
   "navigation": {
     "texts": {

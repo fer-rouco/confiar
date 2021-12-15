@@ -11,10 +11,29 @@
   },
   "navigation": {
     "items": [
-      {"id": "users", "text": "Users", "icon": "people", "condition": "logged-in" },
-      {"id": "customers", "text": "Customers", "icon": "person-plus", "condition": "logged-in" },
-      {"id": "logIn", "text": "Sign In", "icon": "people", "condition": "not logged-in" }
+      { "id": "users", "text": "Users", "icon": "people", "condition": "logged-in" },
+      { "id": "customers", "text": "Customers", "icon": "person-plus", "condition": "logged-in" },
+      { "id": "logIn", "text": "Sign In", "icon": "people", "condition": "not logged-in" }
     ]
+  },
+  "generic": {
+    "form": {
+      "field": {
+        "name": "Name",
+        "lastName": "Last name",
+        "userName": "User",
+        "mail": "E-Mail",
+        "password": "Password",
+        "profile": "Profile",
+        "address": "Address",
+        "phone": "Phone"
+      },
+      "action": {
+        "create": "Create",
+        "update": "Update",
+        "delete": "Remove"
+      }
+    }
   },
   "components": {
     "bars": {
@@ -57,8 +76,8 @@
     "login": {
       "main.panel": {
         "title": "Login",
-        "user": "User or Email address",
-        "password": "Password",
+        "user": "$t(generic:form.field.userName) or $t(generic:form.field.mail)",
+        "password": "$t(generic:form.field.password)",
         "submitButton": "Sign in"
       }
     },
@@ -78,19 +97,19 @@
     "user": {
       "main.panel": {
         "title": {
-          "new": "New user",
-          "update": "Update user {{name}}"
+          "new": "$t(generic:form.action.create) user",
+          "update": "$t(generic:form.action.update) user {{name}}"
         },
-        "name": "Name",
-        "lastName": "Last name",
-        "userName": "User",
-        "mail": "E-Mail",
-        "password": "Password",
+        "name": "$t(generic:form.field.name)",
+        "lastName": "$t(generic:form.field.lastName)",
+        "userName": "$t(generic:form.field.userName)",
+        "mail": "$t(generic:form.field.mail)",
+        "password": "$t(generic:form.field.password)",
         "repeatPassword": "Repeat password",
-        "profile": "Profile",
+        "profile": "$t(generic:form.field.profile)",
         "submitButton": {
-          "create": "Create",
-          "update": "Update"
+          "create": "$t(generic:form.action.create)",
+          "update": "$t(generic:form.action.update)"
         }
       }
     },
@@ -99,28 +118,28 @@
         "title": "Users.",
         "actions": {
           "tooltip": {
-            "add": "Create new user."
+            "add": "$t(generic:form.action.create) new user."
           }
         },
         "main.table": {
           "filters.panel": {
-            "name": "Name",
-            "lastName": "Last name",
-            "userName": "User",
-            "mail": "E-Mail",
-            "profile.id": "Profile"
+            "name": "$t(generic:form.field.name)",
+            "lastName": "$t(generic:form.field.lastName)",
+            "userName": "$t(generic:form.field.userName)",
+            "mail": "$t(generic:form.field.mail)",
+            "profile.id": "$t(generic:form.field.profile)"
           },
           "header": {
-            "name": "Name",
-            "lastName": "Last name",
-            "userName": "User",
-            "mail": "E-Mail",
-            "profile.description": "Profile",
+            "name": "$t(generic:form.field.name)",
+            "lastName": "$t(generic:form.field.lastName)",
+            "userName": "$t(generic:form.field.userName)",
+            "mail": "$t(generic:form.field.mail)",
+            "profile.description": "$t(generic:form.field.profile)",
             "remove": ""
           },
           "remove": {
             "dialog": {
-              "title": "Remove User",
+              "title": "$t(generic:form.action.delete) User",
               "message": "Are you sure you want to delete the user {{name}}?"
             },
             "success": "The user {{name}} was removed successfully."
@@ -133,24 +152,24 @@
         "title": "Customers.",
         "actions": {
           "tooltip": {
-            "add": "Create new customer."
+            "add": "$t(generic:form.action.create) new customer."
           }
         },
         "main.table": {
           "filters.panel": {
-            "name": "Name",
-            "lastName": "Last name",
-            "mail": "E-Mail"
+            "name": "$t(generic:form.field.name)",
+            "lastName": "$t(generic:form.field.lastName)",
+            "mail": "$t(generic:form.field.mail)"
           },
           "header": {
-            "name": "Name",
-            "lastName": "Last name",
-            "mail": "E-Mail",
+            "name": "$t(generic:form.field.name)",
+            "lastName": "$t(generic:form.field.lastName)",
+            "mail": "$t(generic:form.field.mail)",
             "remove": ""
           },
           "remove": {
             "dialog": {
-              "title": "Remove Customer",
+              "title": "$t(generic:form.action.delete) Customer",
               "message": "Are you sure you want to delete the customer {{name}}?"
             },
             "success": "The customer {{name}} was removed successfully."
@@ -161,19 +180,19 @@
     "customer": {
       "main.panel": {
         "title": {
-          "new": "New customer",
-          "update": "Update customer {{name}}"
+          "new": "$t(generic:form.action.create) customer",
+          "update": "$t(generic:form.action.update) customer {{name}}"
         },
-        "name": "Name",
-        "lastName": "Last name",
-        "address": "Address",
-        "mail": "E-Mail",
-        "phone": "Phone",
+        "name": "$t(generic:form.field.name)",
+        "lastName": "$t(generic:form.field.lastName)",
+        "address": "$t(generic:form.field.address)",
+        "mail": "$t(generic:form.field.mail)",
+        "phone": "$t(generic:form.field.phone)",
         "identityDocuments": "DNI (Front and Back)",
         "paychecks": "Payslips",
         "submitButton": {
-          "create": "Create",
-          "update": "Update"
+          "create": "$t(generic:form.action.create)",
+          "update": "$t(generic:form.action.update)"
         }
       }
     }

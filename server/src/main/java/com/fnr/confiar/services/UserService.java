@@ -27,7 +27,11 @@ public class UserService extends BaseService<User> {
     return (List<UserProfile>) userProfileRepository.findAll();
   }
   
-  public Optional<UserProfile> findByProfileById(Long id) {
+  public Iterable<User> findAll() {
+    return userRepository.findAll();
+  }
+
+  public Optional<UserProfile> findProfileById(Long id) {
     return userProfileRepository.findById(id);
   }
 

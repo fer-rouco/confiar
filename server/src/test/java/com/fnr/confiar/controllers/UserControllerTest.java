@@ -106,7 +106,7 @@ public class UserControllerTest extends BaseControllerTest {
   void testGetUsersByProfile() throws Exception {
     UserProfile profile = MockDataProvider.getProfileAdministrator();
     List<User> users = MockDataProvider.getUsers();
-    when(userService.findByProfileById(1L)).thenReturn(Optional.ofNullable(profile));
+    when(userService.findProfileById(1L)).thenReturn(Optional.ofNullable(profile));
     when(userService.findByProfile(profile)).thenReturn(users);
 
     this.mockMvc.perform(get(buildMapping("byProfile")).param(UserModel.Fields.profile, "1"))

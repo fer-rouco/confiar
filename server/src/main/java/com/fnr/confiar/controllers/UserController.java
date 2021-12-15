@@ -56,7 +56,7 @@ public class UserController extends BaseController {
 
   @GetMapping("/byProfile")
   public ResponseEntity<Response> getUsersByProfile(@RequestParam(UserModel.Fields.profile) Long profile) {
-    return responseEntityList(userService.findByProfile(userService.findByProfileById(profile).get()), UserModel.class);
+    return responseEntityList(userService.findByProfile(userService.findProfileById(profile).get()), UserModel.class);
   }
 
   @DeleteMapping(path = "/{id}")

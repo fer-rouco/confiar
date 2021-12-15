@@ -1,13 +1,13 @@
 {
   "routes": {
-    "items": {
-      "logIn": { "url": "/Login" },
-      "settings": { "url": "/Settings" },
-      "users": { "url": "/Users", "children": { "user": { "url": "/User" } } },
-      "customers": { "url": "/Customers", "children": { "customer": { "url": "/Customer" }  } },
-      "pageNotFound": { "url": "/PageNotFound" },
-      "serverNotReady": { "url": "/ServerNotReady" }
-    }
+    "items": [
+      { "id": "logIn", "url": "/Login" },
+      { "id": "settings", "url": "/Settings" },
+      { "id": "users", "url": "/Users", "children": [{ "id": "user", "url": "/User" }] },
+      { "id": "customers", "url": "/Customers", "children": [{ "id": "customer", "url": "/Customer" }] },
+      { "id": "pageNotFound", "url": "/PageNotFound" },
+      { "id": "serverNotReady", "url": "/ServerNotReady" }
+    ]
   },
   "navigation": {
     "texts": {

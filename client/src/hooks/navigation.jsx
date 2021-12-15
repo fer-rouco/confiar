@@ -9,7 +9,7 @@ const useNavigation = () => {
   const routesResolver = useRoutesResolver();
 
   const navigateToId = (id) => {
-    history.push(routesResolver.get(id));
+    history.push(routesResolver.getUrl(id));
   };
   
   useEffect(() => {

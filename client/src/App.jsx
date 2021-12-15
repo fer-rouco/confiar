@@ -38,23 +38,23 @@ function App({error}) {
     setRoutes(
       <Switch>
         <Route exact path="/" component={UsersWithAuth} />
-        <Route exact path={routesResolver.get("logIn")}>
+        <Route exact path={routesResolver.getUrl("logIn")}>
           <Login />
         </Route>
-        {/* <Route exact path={routesResolver.get("settings")}> */}
-        <Route exact path={routesResolver.get('settings')}>
+        {/* <Route exact path={routesResolver.getUrl("settings")}> */}
+        <Route exact path={routesResolver.getUrl('settings')}>
           <SettingsWithAuth />
         </Route>
-        <Route exact path={routesResolver.get("users")}>
+        <Route exact path={routesResolver.getUrl("users")}>
           <UsersWithAuth />
         </Route>
-        <Route exact path={routesResolver.get("user")}>
+        <Route exact path={routesResolver.getUrl("user")}>
           <UserWithAuth />
         </Route>
-        <Route exact path={routesResolver.get("customers")}>
+        <Route exact path={routesResolver.getUrl("customers")}>
           <CustomersWithAuth />
         </Route>
-        <Route exact path={routesResolver.get("customer")}>
+        <Route exact path={routesResolver.getUrl("customer")}>
           <CustomerWithAuth />
         </Route>
         <Route component={PageNotFound} />

@@ -190,7 +190,7 @@ export default function SideBar(props) {
             aria-labelledby="dropdownUser"
           >
             <li>
-              <a className="dropdown-item" href={routesResolver.get("settings")}>
+              <a className="dropdown-item" href={routesResolver.getUrl("settings")}>
                  {t('profileMenu.settings')}
               </a>
             </li>

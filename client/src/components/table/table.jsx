@@ -347,7 +347,7 @@ function Table(props) {
         cell = (
           (columnDefinition.target) ?               
             <StyledTH key={getRowKey(columnDefinition, rowObject)}>
-              <Link to={{ pathname: routesResolver.get(columnDefinition.target), state: rowObject }}>{getRowObjectProperty(columnDefinition, rowObject)}</Link>
+              <Link to={{ pathname: routesResolver.getUrl(columnDefinition.target), state: rowObject }}>{getRowObjectProperty(columnDefinition, rowObject)}</Link>
             </StyledTH>
           :
             <StyledTD key={getRowKey(columnDefinition, rowObject)}>

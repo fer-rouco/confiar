@@ -4,24 +4,7 @@ import useRoutesResolver from './routes-resolver';
 import useReactPath from './path-name';
 import { getCurrentSession } from './../services/server/session-service';
 
-
-export const findActiveItem = (itemList) => {
-  let activeItem = null;
-  activeItem = itemList.find((item) => {
-    return item.url === window.location.pathname;
-  });
-
-  // TODO: find the child url
-  // if (!activeItem) {
-  //   activeItem = activeItem.children.url;
-  // }
-
-  return activeItem;
-};
-
-export const updateActiveItem = (itemList, defaultValue) => {
-  const activeItem = findActiveItem(itemList);
-
+const updateActiveItem = (itemList, activeItem) => {
   itemList.forEach((itemInLoop) => {
     itemInLoop.active = false;
   });
@@ -51,13 +34,14 @@ export default function useNavigationItems(defaultValue) {
   Object.entries(navigationTexts).forEach((navigationItem) => {
     let key = navigationItem[0];
     let value = navigationItem[1];
+    let route = routesResolver.get(key);
     let item = {
       id: key,
-      url: routesResolver.get(key),
+      url: route.url,
       text: value,
       icon: t("icons." + key),
       condition: t("conditions." + key),
-      children: routesResolver.getChildren(key)
+      children: route.children
     }
     navigationItemList.push(item);
   });
@@ -76,13 +60,13 @@ export default function useNavigationItems(defaultValue) {
   
   if (!navigationItems) {
     setNavigationItems(navigationItemList);
-    const currentItem = findActiveItem(navigationItemList);
-    updateActiveItem(navigationItemList, currentItem);
+    const activeItem = routesResolver.findActiveUrlItem(navigationItemList);
+    updateActiveItem(navigationItemList, activeItem);
   }
 
   useEffect(() => {
-    const currentItem = findActiveItem(navigationItems);
-    updateActiveItem(navigationItems, currentItem);
+    const activeItem = routesResolver.findActiveUrlItem(navigationItems);
+    updateActiveItem(navigationItems, activeItem);
   }, [pathname, navigationItems]);
 
   useEffect(() => {

@@ -12,14 +12,14 @@ const withAuth = (WrappedComponent) => {
       const session = getCurrentSession();
       if (!configData.DEVELOP_MODE) {
         if (!session) {
-          props.history.push(routesResolver.get('login'));
+          props.history.push(routesResolver.getUrl('login'));
         }
         else {
           validateSession(session.token).then((result) => {
             // console.log("Valid session token: " + result.token);
           })
           .catch((error) => {
-            props.history.push(routesResolver.get('login'));
+            props.history.push(routesResolver.getUrl('login'));
           });
         }
       }

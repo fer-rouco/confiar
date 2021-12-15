@@ -3,55 +3,62 @@ import i18next from 'i18next';
 const useRoutesResolver = () => {
   const navigationTranslation = i18next.getFixedT(null, 'routes');
 
-  // const get = (route) => {
-  //   return navigationTranslation("items.".concat(route).concat(".url"))
-  // };
-
-  const getChildren = (id) => {
-    let children = null;
-    let translationResult = navigationTranslation(id);
-    if (translationResult === id || translationResult.indexOf(' ') > -1) {
-      let translationObject = navigationTranslation('items', { returnObjects: true });
-      children = translationObject[id].children;
-    }
-    return children;
-  }
-
   const get = (id) => {
-    let objectToNavigate = null;
-    let translationResult = navigationTranslation(id);
-    if (translationResult === id || translationResult.indexOf(' ') > -1) {
-      let translationObject = navigationTranslation('items', { returnObjects: true });
-      objectToNavigate = findIdInChildren(id, translationObject);
-    }
-    if (objectToNavigate) {
-      // console.log(objectToNavigate.url);
-      return objectToNavigate.url;
-    }
-    else {
-      console.error("Navigation id %s not found", id);
-    }
+    return findInChildrenById(id, navigationTranslation('items', { returnObjects: true }));
   };
 
-  const findIdInChildren = (id, translationObjectParam) => {
-    let objectToReturn = null;
-    let translationObject = (translationObjectParam) ? translationObjectParam : navigationTranslation(id, { returnObjects: true });
-    translationObject
-    if (Object.keys(translationObject).indexOf(id) > -1) {
-      objectToReturn = translationObject[id];
-    }
-    else {
-      Object.values(translationObject).forEach((item) => {
+  const getUrl = (id) => {
+    let objectToNavigate = get(id);
+    return (objectToNavigate) ? objectToNavigate.url : undefined;
+  };
+  
+  const findInChildrenBy = (by, valueToFindBy, translationObject) => {
+    let objectToReturn;
+
+    objectToReturn = translationObject.find((translationItem) => { return translationItem[by] === valueToFindBy; });
+    if (!objectToReturn) {     
+      translationObject.forEach((item) => {
         if (item.children) {
-          let childFound = findIdInChildren(id, item.children);
+          let childFound = findInChildrenBy(by, valueToFindBy, item.children);
           objectToReturn = (childFound) ? childFound : objectToReturn;
         }
-      })
+      });
     }
-    return objectToReturn;
+      
+      return objectToReturn;
   }
+  
+  const findInChildrenById = (id, translationObject) => {
+    return findInChildrenBy('id', id, translationObject);
+  }
+  
+  const findInChildrenByUrl = (url, translationObject) => {
+    return findInChildrenBy('url', url, translationObject);
+  }
+  
+  const isItemChildOfOtherItem = (currentItem, item) => {
+    let childFlag = false;
+    if (item.children) {
+      let childItemFound = item.children.filter((childItem) => {
+        return childItem === currentItem;
+      });
+      childFlag = childItemFound.length > 0; 
+    }
+    return childFlag;
+  };
 
-  return { get, getChildren };
+  const findActiveUrlItem = (itemList) => {
+    const pathname = window.location.pathname;
+    const currentItem = findInChildrenByUrl(pathname, itemList);
+    
+    let activeItem = itemList.find((item) => {
+      return item.url === pathname || isItemChildOfOtherItem(currentItem, item);
+    });
+  
+    return activeItem;
+  };
+
+  return { get, getUrl, findInChildrenById, findInChildrenByUrl, findActiveUrlItem };
 };
 
 export default useRoutesResolver;

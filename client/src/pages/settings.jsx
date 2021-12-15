@@ -23,7 +23,7 @@ function Settings(props) {
     i18n.changeLanguage(model.language, (error, t) => {
       if (!error) {
         localStorageService.setItem(STORAGE_LANGUAGE, model.language);
-        window.history.pushState(null, null, routesResolver.get("settings"));
+        window.history.pushState(null, null, routesResolver.getUrl("settings"));
       }
       else {
         return console.error('Something went wrong trying to change the language.', error);

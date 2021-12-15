@@ -1,10 +1,10 @@
 import i18next from 'i18next';
 
 const useRoutesResolver = () => {
-  const navigationTranslation = i18next.getFixedT(null, 'routes');
+  const routesTranslation = i18next.getFixedT(null, 'routes');
 
   const get = (id) => {
-    return findInChildrenById(id, navigationTranslation('items', { returnObjects: true }));
+    return findInChildrenById(id, routesTranslation('items', { returnObjects: true }));
   };
 
   const getUrl = (id) => {

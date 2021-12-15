@@ -21,36 +21,22 @@ const updateActiveItem = (itemList, activeItem) => {
   }
 };
 
-export default function useNavigationItems(defaultValue) {
+export default function useNavigationItems() {
   const { t } = useTranslation('navigation');
   const routesResolver = useRoutesResolver();
   const session = getCurrentSession();
   const pathname = useReactPath();
     
-  let navigationItemList = [];
-  
-  // fill navigationItemList
-  let navigationTexts = t("texts", {returnObjects: true});
-  Object.entries(navigationTexts).forEach((navigationItem) => {
-    let key = navigationItem[0];
-    let value = navigationItem[1];
-    let route = routesResolver.get(key);
-    let item = {
-      id: key,
-      url: route.url,
-      text: value,
-      icon: t("icons." + key),
-      condition: t("conditions." + key),
-      children: route.children
-    }
-    navigationItemList.push(item);
-  });
+  let navigationItemList = t('items', { returnObjects: true });
+  navigationItemList.forEach((navigationItem) => {
+    let route = routesResolver.get(navigationItem.id);
+    navigationItem.url = route.url;
+    navigationItem.children = route.children;
 
-  // set conditionFunction to each item of navigationItemList
-  navigationItemList.forEach((itemInLoop) => {
-    if (itemInLoop.condition.indexOf('logged-in') > -1) {
-      const not = itemInLoop.condition.indexOf('not') > -1;
-      itemInLoop.conditionFunction = () => {
+    // set conditionFunction to each item of navigationItemList
+    if (navigationItem.condition.indexOf('logged-in') > -1) {
+      const not = navigationItem.condition.indexOf('not') > -1;
+      navigationItem.conditionFunction = () => {
         return (not) ? !session : session;
       };
     }

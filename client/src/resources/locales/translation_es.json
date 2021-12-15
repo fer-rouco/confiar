@@ -10,21 +10,11 @@
     ]
   },
   "navigation": {
-    "texts": {
-      "users": "Usuarios",
-      "customers": "Clientes",
-      "logIn": "Login"
-    },
-    "icons": {
-      "users": "people",
-      "customers": "person-plus",
-      "logIn": "people"
-    },
-    "conditions": {
-      "users": "logged-in",
-      "customers": "logged-in",
-      "logIn": "not logged-in"
-    }
+    "items": [
+      {"id": "users", "text": "Usuarios", "icon": "people", "condition": "logged-in" },
+      {"id": "customers", "text": "Clientes", "icon": "person-plus", "condition": "logged-in" },
+      {"id": "logIn", "text": "Login", "icon": "people", "condition": "not logged-in" }
+    ]
   },
   "components": {
     "bars": {

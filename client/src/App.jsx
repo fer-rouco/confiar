@@ -27,9 +27,7 @@ const componentsMap = {
   users: withRouter(withAuth(Users)),
   user: withRouter(withAuth(User)),
   customers: withRouter(withAuth(Customers)),
-  customer: withRouter(withAuth(Customer)),
-  pageNotFound: PageNotFound,
-  serverNotReady: ServerNotReady
+  customer: withRouter(withAuth(Customer))
 }
 
 function App({error}) {
@@ -56,6 +54,7 @@ function App({error}) {
             </Route>
           ))
         }
+        <Route component={PageNotFound} />
       </Switch>
     );
   }

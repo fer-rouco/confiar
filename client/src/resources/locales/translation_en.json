@@ -4,9 +4,7 @@
       { "id": "logIn", "url": "/Login" },
       { "id": "settings", "url": "/Settings" },
       { "id": "users", "url": "/Users", "children": [{ "id": "user", "url": "/User" }] },
-      { "id": "customers", "url": "/Customers", "children": [{ "id": "customer", "url": "/Customer" }] },
-      { "id": "pageNotFound", "url": "/PageNotFound" },
-      { "id": "serverNotReady", "url": "/ServerNotReady" }
+      { "id": "customers", "url": "/Customers", "children": [{ "id": "customer", "url": "/Customer" }] }
     ]
   },
   "navigation": {

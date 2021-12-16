@@ -4,9 +4,7 @@
       { "id": "logIn", "url": "/Login" },
       { "id": "settings", "url": "/Configuraciones" },
       { "id": "users", "url": "/Usuarios", "children": [{ "id": "user", "url": "/Usuario" }] },
-      { "id": "customers", "url": "/Clientes", "children": [{ "id": "customer", "url": "/Cliente" }] },
-      { "id": "pageNotFound", "url": "/PaginaNoEncontrada" },
-      { "id": "serverNotReady", "url": "/ServidorNoDisponible" }
+      { "id": "customers", "url": "/Clientes", "children": [{ "id": "customer", "url": "/Cliente" }] }
     ]
   },
   "navigation": {

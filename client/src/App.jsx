@@ -1,7 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Route, Switch, withRouter } from 'react-router-dom';
 import { ThemeProvider } from 'styled-components';
-import i18next from "i18next";
 import { BarsProvider } from './components/bars/bars-context';
 import NavBar from './components/bars/nav-bar';
 import SideBar from './components/bars/side-bar';
@@ -22,11 +21,16 @@ import useReactPath from './hooks/path-name';
 import useRoutesResolver from './hooks/routes-resolver';
 // import Tooltip from './components/tooltip';
 
-const SettingsWithAuth = withRouter(withAuth(Settings));
-const UsersWithAuth = withRouter(withAuth(Users));
-const UserWithAuth = withRouter(withAuth(User));
-const CustomerWithAuth = withRouter(withAuth(Customer));
-const CustomersWithAuth = withRouter(withAuth(Customers));
+const componentsMap = { 
+  logIn: Login,
+  settings: withRouter(withAuth(Settings)),
+  users: withRouter(withAuth(Users)),
+  user: withRouter(withAuth(User)),
+  customers: withRouter(withAuth(Customers)),
+  customer: withRouter(withAuth(Customer)),
+  pageNotFound: PageNotFound,
+  serverNotReady: ServerNotReady
+}
 
 function App({error}) {
   const theme = useTheme();
@@ -34,31 +38,24 @@ function App({error}) {
   const [routes, setRoutes] = useState(null);
   const routesResolver = useRoutesResolver();
 
+  const buildDynamicComponent = (componentName) => {
+    const DynamicComponent = componentsMap[componentName];
+    return <DynamicComponent/>;
+  }
+
+  let items = routesResolver.getAllItems();
+
   function buildRoutes() {
     setRoutes(
       <Switch>
-        <Route exact path="/" component={UsersWithAuth} />
-        <Route exact path={routesResolver.getUrl("logIn")}>
-          <Login />
-        </Route>
-        {/* <Route exact path={routesResolver.getUrl("settings")}> */}
-        <Route exact path={routesResolver.getUrl('settings')}>
-          <SettingsWithAuth />
-        </Route>
-        <Route exact path={routesResolver.getUrl("users")}>
-          <UsersWithAuth />
-        </Route>
-        <Route exact path={routesResolver.getUrl("user")}>
-          <UserWithAuth />
-        </Route>
-        <Route exact path={routesResolver.getUrl("customers")}>
-          <CustomersWithAuth />
-        </Route>
-        <Route exact path={routesResolver.getUrl("customer")}>
-          <CustomerWithAuth />
-        </Route>
-        <Route component={PageNotFound} />
-        <Route component={ServerNotReady} />
+        <Route exact path="/" component={componentsMap['users']} />
+        {
+          routesResolver.getAllItems().map((routeItem) => (
+            <Route exact path={routesResolver.getUrl(routeItem.id)} key={routeItem.id} >
+              {buildDynamicComponent(routeItem.id)}
+            </Route>
+          ))
+        }
       </Switch>
     );
   }

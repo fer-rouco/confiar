@@ -3,8 +3,12 @@ import i18next from 'i18next';
 const useRoutesResolver = () => {
   const routesTranslation = i18next.getFixedT(null, 'routes');
 
+  const getAllItems = () => {
+    return routesTranslation('items', { returnObjects: true });
+  };
+
   const get = (id) => {
-    return findInChildrenById(id, routesTranslation('items', { returnObjects: true }));
+    return findInChildrenById(id, getAllItems());
   };
 
   const getUrl = (id) => {
@@ -58,7 +62,7 @@ const useRoutesResolver = () => {
     return activeItem;
   };
 
-  return { get, getUrl, findInChildrenById, findInChildrenByUrl, findActiveUrlItem };
+  return { getAllItems, get, getUrl, findInChildrenById, findInChildrenByUrl, findActiveUrlItem };
 };
 
 export default useRoutesResolver;

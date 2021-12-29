@@ -4,7 +4,7 @@ import { ErrorProvider } from '../../contexts/error-context';
 import Dialog from '../dialog/dialog';
 
 const withPage = () => (WrappedComponent) => {
-  return function LoadIndicator(props) {
+  return function Page(props) {
     return (
       <PageProvider id={WrappedComponent.name.toLocaleLowerCase()}>
         <ErrorProvider>

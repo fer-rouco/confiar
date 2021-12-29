@@ -13,6 +13,7 @@ import com.fnr.confiar.repositories.CustomerRepository;
 
 import org.modelmapper.ModelMapper;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -20,6 +21,7 @@ import lombok.NoArgsConstructor;
 @Data
 @EqualsAndHashCode(callSuper=false)
 @NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = "customer")
 public class Customer extends BaseEntity {

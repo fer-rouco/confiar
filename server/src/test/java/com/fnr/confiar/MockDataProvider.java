@@ -3,6 +3,7 @@ package com.fnr.confiar;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fnr.confiar.entities.Customer;
 import com.fnr.confiar.entities.User;
 import com.fnr.confiar.entities.UserProfile;
 import com.fnr.confiar.utils.StringUtil;
@@ -62,5 +63,17 @@ public class MockDataProvider {
     users.add(getUserSeller());
     users.add(getUserEmployee());
     return users;
+  }
+  
+  public static Customer getCustomer() {
+    Customer customer = new Customer("Pablo", "Perez", "Siempre viva 4323", "perez@gmail.com", "+541161255454", null, null);
+    customer.setId(1L);
+    return customer;
+  }
+    
+  public static List<Customer> getCustomers() {
+    List<Customer> customer = new ArrayList<>();
+    customer.add(getCustomer());
+    return customer;
   }
 }

@@ -36,24 +36,43 @@ function App({error}) {
   const [routes, setRoutes] = useState(null);
   const routesResolver = useRoutesResolver();
 
-  const buildDynamicComponent = (componentName) => {
+  function buildDynamicComponent(componentName) {
     const DynamicComponent = componentsMap[componentName];
     return <DynamicComponent/>;
   }
 
-  let items = routesResolver.getAllItems();
+  function buildRegisteredRoutes(routeItem) {
+    let routes = [];
+
+    if (routeItem.children) {
+      routes = buildRegisteredRoutes(routeItem.children);
+    }
+    if (routeItem) {
+      if (Array.isArray(routeItem)) {
+        routeItem.forEach((routeItemChild) => {
+          routes.push(buildRegisteredRoute(routeItemChild));
+        });
+      }
+      else if (Object(routeItem) === routeItem) {
+        routes.push(buildRegisteredRoute(routeItem));
+      }
+    }
+    return routes;
+  }
+
+  function buildRegisteredRoute(routeItem) {
+    return (routeItem) ? (
+      <Route exact path={routesResolver.getUrl(routeItem.id)} key={routeItem.id} >
+        { buildDynamicComponent(routeItem.id) }
+      </Route>
+    ) : (<></>);
+  }
 
   function buildRoutes() {
     setRoutes(
       <Switch>
         <Route exact path="/" component={componentsMap['users']} />
-        {
-          routesResolver.getAllItems().map((routeItem) => (
-            <Route exact path={routesResolver.getUrl(routeItem.id)} key={routeItem.id} >
-              {buildDynamicComponent(routeItem.id)}
-            </Route>
-          ))
-        }
+          { routesResolver.getAllItems().map((routeItem) => buildRegisteredRoutes(routeItem)) }
         <Route component={PageNotFound} />
       </Switch>
     );

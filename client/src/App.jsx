@@ -42,22 +42,22 @@ function App({error}) {
   }
 
   function buildRegisteredRoutes(routeItem) {
-    let routes = [];
+    let registeredRoutes = [];
 
     if (routeItem.children) {
-      routes = buildRegisteredRoutes(routeItem.children);
+      registeredRoutes = buildRegisteredRoutes(routeItem.children);
     }
     if (routeItem) {
       if (Array.isArray(routeItem)) {
         routeItem.forEach((routeItemChild) => {
-          routes.push(buildRegisteredRoute(routeItemChild));
+          registeredRoutes.push(buildRegisteredRoute(routeItemChild));
         });
       }
       else if (Object(routeItem) === routeItem) {
-        routes.push(buildRegisteredRoute(routeItem));
+        registeredRoutes.push(buildRegisteredRoute(routeItem));
       }
     }
-    return routes;
+    return registeredRoutes;
   }
 
   function buildRegisteredRoute(routeItem) {

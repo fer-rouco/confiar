@@ -17,3 +17,15 @@ export function useModel() {
 
   return context;
 }
+
+export function createModel(modelObjectParam) {
+  let modelObject = { loading: true };
+  modelObject = (modelObjectParam) ? { ...modelObject, ...modelObjectParam } : modelObject;
+  return useState(modelObject);
+}
+
+export function updateModel(modelState, loading) {
+  const [model, setModel] = modelState;
+
+  setModel({ ...model, loading: ((loading) ? loading : false) });
+}

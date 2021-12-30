@@ -4,6 +4,7 @@ import { navigateIntoObjectByPath } from '../../theme';
 import Icon from './../general/icon';
 import withLoader from './../general/load-indicator';
 import { usePage } from '../../contexts/page-context';
+import { ModelProvider } from '../controls/fields/model-context';
 
 const getThemeAttribute = (theme, attrribute) => {
   return navigateIntoObjectByPath(theme, "components.containers.panel." + attrribute);
@@ -225,15 +226,17 @@ function Panel(props) {
   }, [props.title, translation]);
  
   return (
-    <StyledContainer ref={panelRef} className={getClasses()} id={getId()}>
-      <div className="row justify-content-center">
-        <div>
-          {buildTitle()}
-          {buildSubTitle()}
-          {childrenWithProps()}
+    <ModelProvider model={props.model} >
+      <StyledContainer ref={panelRef} className={getClasses()} id={getId()}>
+        <div className="row justify-content-center">
+          <div>
+            {buildTitle()}
+            {buildSubTitle()}
+            {childrenWithProps()}
+          </div>
         </div>
-      </div>
-    </StyledContainer>
+      </StyledContainer>
+    </ModelProvider>
   );
 }
 

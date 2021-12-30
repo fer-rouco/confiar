@@ -12,11 +12,12 @@ import { useAlertMessage } from '../contexts/alert-message-context';
 import { useError } from '../contexts/error-context';
 import { findUserById, getAllUserProfiles, updateUser } from '../services/server/user-service';
 import withPage from '../components/containers/page';
+import { createModel } from '../components/controls/fields/model-context';
 
 function User() {
   const navigation = useNavigation();
   const [update, setUpdate] = useState(false);
-  const modelState = useState(null);
+  const modelState = createModel();
   const [model, setModel] = modelState;
   const [profiles, setProfiles] = useState([]);
   const { addSuccessMessage, addErrorMessage } = useAlertMessage();

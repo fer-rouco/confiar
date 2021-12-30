@@ -6,8 +6,10 @@ import Panel from '../components/containers/panel';
 import Table from '../components/table/table';
 import { textColumnDefinition, enumColumnDefinition, removeColumnDefinition } from '../components/table/column-definitions/column-definition';
 import { addIconAction } from '../components/controls/action-definition';
+import { createModel, updateModel } from '../components/controls/fields/model-context';
 
 function Users() {
+  const modelState = createModel();
   const navigation = useNavigation();
   const [columnDefinitions, setColumnDefinitions] = useState([]);
   const [filterDefinitions, setFilterDefinitions] = useState([]);
@@ -42,6 +44,9 @@ function Users() {
         textColumnDefinition({ key: 'mail' }),
         enumColumnDefinition({ key: 'profile.id', options: profileListWithAllOption })
       ]);
+
+      // La tabla no se renderiza hasta que no se hace la llamada a este updateModel!
+      updateModel(modelState);
     });
     
     return () => {
@@ -51,7 +56,7 @@ function Users() {
   }, []);
 
   return (
-    <Panel size="large" model={{}} actions={[addIconAction(createUser)]} >
+    <Panel size="large" model={modelState} actions={[addIconAction(createUser)]} >
       <Table requestRowObjectsFunction={findUsers} columnDefinitions={columnDefinitions} filterDefinitions={filterDefinitions} ></Table>
     </Panel>
   );

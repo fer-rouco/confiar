@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import useRoutesResolver from './../hooks/routes-resolver';
 import withPage from "../components/containers/page";
 import Panel from "../components/containers/panel";
@@ -9,20 +9,21 @@ import SelectField from "../components/controls/fields/select/select-field";
 import { useTranslation } from "react-i18next";
 import storageManagerService from "../services/storage/storage-manager-service";
 import { STORAGE_LANGUAGE } from "../services/storage/storage-constants";
+import { createModel, updateModel } from "../components/controls/fields/model-context";
 
 function Settings(props) {
   const theme = useTheme();
   const localStorageService = storageManagerService();
-  const modelState = useState({ dark: theme.isDark(), language: localStorageService.getItem(STORAGE_LANGUAGE)});
-  const [model, setModel] = modelState;
+  const generalModelState = createModel({ language: localStorageService.getItem(STORAGE_LANGUAGE) }), [generalModel] = generalModelState;
+  const themeModelState = createModel({ dark: theme.isDark() });
   const routesResolver = useRoutesResolver();
   const { i18n } = useTranslation('pages', { keyPrefix: 'settings' });
   const languages = Object.keys(i18n.services.resourceStore.data).map((language) => { return {value: language, label: language }; });
 
   function handleLanguageChange() {
-    i18n.changeLanguage(model.language, (error, t) => {
+    i18n.changeLanguage(generalModel.language, (error, t) => {
       if (!error) {
-        localStorageService.setItem(STORAGE_LANGUAGE, model.language);
+        localStorageService.setItem(STORAGE_LANGUAGE, generalModel.language);
         window.history.pushState(null, null, routesResolver.getUrl("settings"));
       }
       else {
@@ -31,16 +32,21 @@ function Settings(props) {
     });
   }
 
+  useEffect(() => {
+    updateModel(generalModelState);
+    updateModel(themeModelState);
+  }, []);
+
   return (
     <Panel size="medium" model={{}} >
-      <PanelForm id="general" subTitle model={modelState}>
+      <PanelForm id="general" subTitle model={generalModelState} >
         <div className="row">
           <div className="col-md-6">
             <SelectField attr="language" options={languages} onChange={(language) => { handleLanguageChange(language) }} ></SelectField>
           </div>
         </div>
       </PanelForm>
-      <PanelForm id="theme" subTitle model={modelState} >
+      <PanelForm id="theme" subTitle model={themeModelState} >
         <div className="row">
           <div className="col-md-6">
             <SwitchField attr="dark" onChange={() => theme.toggle()} ></SwitchField>

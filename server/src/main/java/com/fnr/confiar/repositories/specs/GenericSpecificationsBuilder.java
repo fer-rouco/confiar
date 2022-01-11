@@ -36,9 +36,9 @@ public class GenericSpecificationsBuilder<T> {
       result = new GenericSpecification<>(params.get(0));
       for (int index = 1; index < params.size(); ++index) {
         SearchCriteria searchCriteria = params.get(index);
-        result = searchCriteria.isOrOperation() ?
-          Specification.where(result).or(new GenericSpecification<>(searchCriteria)) :
-          Specification.where(result).and(new GenericSpecification<>(searchCriteria));
+        Specification<T> where = Specification.where(result);
+        GenericSpecification<T> specification = new GenericSpecification<>(searchCriteria);
+        result = searchCriteria.isOrOperation() ? where.or(specification) : where.and(specification);
       }
     }
     if (!specifications.isEmpty()) {

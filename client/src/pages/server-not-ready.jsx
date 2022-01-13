@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
 
 const StyledContainer = styled.div`
@@ -9,18 +10,19 @@ const StyledRow = styled.div`
   margin-top: 30px;
 `;
 
-// TODO: Translate
 const ServerNotReady = () => {
+  const { t } = useTranslation('generic', { keyPrefix: 'serverError' });
+
   const getServerNotAvailableTitle = () => {
-    return 'The application server is currently not available';
+    return t('notAvailable');
   };
 
   const getServerNotAvailableDescription = () => {
-    return 'Please try again later.';
+    return t('tryLater');
   };
 
   const getServerNotAvailableActionText = () => {
-    return 'Try again';
+    return t('tryAgainAction');
   };
 
   const onServerNotAvailableAction = () => {

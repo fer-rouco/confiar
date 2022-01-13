@@ -31,6 +31,11 @@
         "update": "Actualizar",
         "delete": "Eliminar"
       }
+    },
+    "serverError": {
+      "notAvailable": "El servidor no esta disponible en este momento.",
+      "tryLater": "Por favor intente mas tarde.",
+      "tryAgainAction": "Intentar otra vez"
     }
   },
   "components": {

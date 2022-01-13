@@ -31,6 +31,11 @@
         "update": "Update",
         "delete": "Remove"
       }
+    },
+    "serverError": {
+      "notAvailable": "The application server is currently not available.",
+      "tryLater": "Please try again later.",
+      "tryAgainAction": "Try again"
     }
   },
   "components": {

@@ -1,9 +1,13 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 
-// TODO: Translate
-const PageNotFound = () => (
-  <>
-    <h1>Oops, you came to an unknown world. Better go back to the start.</h1>
-  </>
-);
+const PageNotFound = () => {
+  const { t } = useTranslation('generic', { keyPrefix: 'page' });
+
+  return (
+    <>
+      <h1>{t("notFound")}</h1>
+    </>
+  )
+};
 export default PageNotFound;

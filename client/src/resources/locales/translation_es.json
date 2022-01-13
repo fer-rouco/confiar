@@ -32,6 +32,9 @@
         "delete": "Eliminar"
       }
     },
+    "page": {
+      "notFound": "Pagina no encontrada."
+    },
     "serverError": {
       "notAvailable": "El servidor no esta disponible en este momento.",
       "tryLater": "Por favor intente mas tarde.",

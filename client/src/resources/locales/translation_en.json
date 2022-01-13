@@ -32,6 +32,9 @@
         "delete": "Remove"
       }
     },
+    "page": {
+      "notFound": "Page not found."
+    },
     "serverError": {
       "notAvailable": "The application server is currently not available.",
       "tryLater": "Please try again later.",

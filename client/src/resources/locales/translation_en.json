@@ -17,6 +17,9 @@
   "generic": {
     "form": {
       "field": {
+        "select": {
+          "allOption": "All"
+        },
         "name": "Name",
         "lastName": "Last name",
         "userName": "User",

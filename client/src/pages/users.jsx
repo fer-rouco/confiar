@@ -7,12 +7,14 @@ import Table from '../components/table/table';
 import { textColumnDefinition, enumColumnDefinition, removeColumnDefinition } from '../components/table/column-definitions/column-definition';
 import { addIconAction } from '../components/controls/action-definition';
 import { createModel, updateModel } from '../components/controls/fields/model-context';
+import { useTranslation } from 'react-i18next';
 
 function Users() {
   const modelState = createModel();
   const navigation = useNavigation();
   const [columnDefinitions, setColumnDefinitions] = useState([]);
   const [filterDefinitions, setFilterDefinitions] = useState([]);
+  const { t } = useTranslation('generic', { keyPrefix: 'form.field.select' });
 
   function createUser() {
     navigation.navigateToId('user');
@@ -34,8 +36,7 @@ function Users() {
 
     getAllUserProfiles().then(response => {
       let profileList = response.map((profile) => { return {value: profile.id, label: profile.description }; });
-      // TODO: Translate
-      let profileListWithAllOption = [{value: '', label: 'Todos' }, ...profileList];
+      let profileListWithAllOption = [{value: '', label: t("allOption") }, ...profileList];
       
       setFilterDefinitions([
         textColumnDefinition({ key: 'name' }),

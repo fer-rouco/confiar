@@ -35,8 +35,8 @@ export default function useNavigationItems() {
 
     // set conditionFunction to each item of navigationItemList
     if (navigationItem.condition.indexOf('logged-in') > -1) {
-      const not = navigationItem.condition.indexOf('not') > -1;
-      navigationItem.conditionFunction = () => {
+      navigationItem.conditionFunction = function conditionFunction() {
+        const not = this.condition.indexOf('not') > -1;
         return (not) ? !session : session;
       };
     }

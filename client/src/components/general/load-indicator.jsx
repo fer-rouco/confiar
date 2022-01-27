@@ -1,6 +1,3 @@
-/* Method that checks whether a props is empty 
-prop can be an object, string or an array */
-
 import styled from 'styled-components';
 
 const StyledLoadingContainer = styled.div`
@@ -11,19 +8,8 @@ const StyledLoadingContainer = styled.div`
   margin: 0 auto;
 `;
 
-const isLoading = (props) =>
-  props && props[0] && props[0].loading;
-
-const withLoader = (loadingProp) => (WrappedComponent) => {
-  return function LoadIndicator(props) {
-    return isLoading(props[loadingProp]) ? (
-      <WrappedComponent {...props}>
-        <StyledLoadingContainer></StyledLoadingContainer>
-      </WrappedComponent>
-    ) : (
-      <WrappedComponent {...props}></WrappedComponent>
-    );
-  };
-};
-
-export default withLoader;
+export default function LoadIndicator() {
+  return (
+    <StyledLoadingContainer></StyledLoadingContainer>
+  );
+}

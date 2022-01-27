@@ -9,7 +9,7 @@ import Button from '../controls/buttons/button';
 import NumericField from '../controls/fields/input/numeric-field';
 import Form from '../containers/form';
 import Icon from '../general/icon';
-import withLoader from '../general/load-indicator';
+import withLoader from '../general/load-indicator-hoc';
 import PanelForm from '../containers/panel-form';
 import TextField from '../controls/fields/input/text-field';
 import SelectField from '../controls/fields/select/select-field';

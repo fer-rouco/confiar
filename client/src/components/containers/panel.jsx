@@ -2,7 +2,7 @@ import { Children, cloneElement, createRef, isValidElement, useEffect, useState 
 import styled, { css } from 'styled-components';
 import { navigateIntoObjectByPath } from '../../theme';
 import Icon from './../general/icon';
-import withLoader from './../general/load-indicator';
+import withLoader from './../general/load-indicator-hoc';
 import { usePage } from '../../contexts/page-context';
 import { ModelProvider } from '../controls/fields/model-context';
 

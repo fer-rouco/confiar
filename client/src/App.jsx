@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, Suspense, lazy } from 'react';
 import { Route, Switch, withRouter } from 'react-router-dom';
 import { ThemeProvider } from 'styled-components';
 import { BarsProvider } from './components/bars/bars-context';
@@ -8,26 +8,23 @@ import AlertMessage from './components/general/alert-message';
 import withAuth from './components/general/protected-routes';
 import { AlertMessageProvider } from './contexts/alert-message-context';
 import { useTheme } from './contexts/theme-context';
-import Customer from './pages/customer';
-import Customers from './pages/customers';
-import Login from './pages/login';
-import PageNotFound from './pages/page-not-found';
-import ServerNotReady from './pages/server-not-ready';
-import Settings from './pages/settings';
-import User from './pages/user';
-import Users from './pages/users';
 import { GlobalStyles } from './theme';
 import useReactPath from './hooks/path-name';
 import useRoutesResolver from './hooks/routes-resolver';
+import LoadIndicator from './components/general/load-indicator';
 // import Tooltip from './components/tooltip';
 
+function lazyImport(route) {
+  return lazy(() => import('./pages/'.concat(route)));
+}
+
 const componentsMap = { 
-  logIn: Login,
-  settings: withRouter(withAuth(Settings)),
-  users: withRouter(withAuth(Users)),
-  user: withRouter(withAuth(User)),
-  customers: withRouter(withAuth(Customers)),
-  customer: withRouter(withAuth(Customer))
+  logIn: lazyImport('login'),
+  settings: withRouter(withAuth(lazyImport('settings'))),
+  users: withRouter(withAuth(lazyImport('users'))),
+  user: withRouter(withAuth(lazyImport('user'))),
+  customers: withRouter(withAuth(lazyImport('customers'))),
+  customer: withRouter(withAuth(lazyImport('customer')))
 }
 
 function App({error}) {
@@ -73,7 +70,7 @@ function App({error}) {
       <Switch>
         <Route exact path="/" component={componentsMap['users']} />
           { routesResolver.getAllItems().map((routeItem) => buildRegisteredRoutes(routeItem)) }
-        <Route component={PageNotFound} />
+        <Route component={lazyImport('page-not-found')} />
       </Switch>
     );
   }
@@ -95,15 +92,17 @@ function App({error}) {
         <div className="container mt-3">
           <div className="row justify-content-center">
             <div className="col">
+              <Suspense fallback={<LoadIndicator></LoadIndicator>}>
                 { (!error) ?
                   routes
                 :
                   (
                     <Switch>
-                      <Route component={ServerNotReady} />
+                      <Route component={lazyImport('server-not-ready')} />
                     </Switch>
                   )
-                }
+                }                
+              </Suspense>
             </div>
           </div>
         </div>

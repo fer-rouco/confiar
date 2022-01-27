@@ -36,7 +36,7 @@ prop can be an object, string or an array */
  */
 
 import { useState } from 'react';
-import './loading-gif.css';
+import LoadIndicator from './load-indicator';
 
 const IsLoadingHOC = (props) => (WrappedComponent, loadingMessage) => {
   return function HOC(props) {
@@ -48,7 +48,7 @@ const IsLoadingHOC = (props) => (WrappedComponent, loadingMessage) => {
 
     return (
       <>
-        {isLoading && <div className="loading" ></div>}
+        {isLoading && <LoadIndicator></LoadIndicator>}
         <WrappedComponent {...props} setLoading={setLoadingState} ></WrappedComponent>
       </>
     );

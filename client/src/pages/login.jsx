@@ -23,7 +23,7 @@ function Login() {
         .then(() => {
           // TODO: Translate
           addSuccessMessage('Te logueaste exitosamente!');
-          navigation.navigateToId('customers');
+          navigation.navigateToId('/');
         })
         .catch((error) => {
           addFieldError(error.field, error.message);

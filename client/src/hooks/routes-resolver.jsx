@@ -13,7 +13,7 @@ const useRoutesResolver = () => {
 
   const getUrl = (id) => {
     let objectToNavigate = get(id);
-    return (objectToNavigate) ? objectToNavigate.url : undefined;
+    return (objectToNavigate) ? objectToNavigate.url : '/';
   };
   
   const findInChildrenBy = (by, valueToFindBy, translationObject) => {

@@ -18,23 +18,21 @@ function lazyImport(route) {
   return lazy(() => import('./pages/'.concat(route)));
 }
 
-const componentsMap = { 
-  logIn: lazyImport('login'),
-  settings: withRouter(withAuth(lazyImport('settings'))),
-  users: withRouter(withAuth(lazyImport('users'))),
-  user: withRouter(withAuth(lazyImport('user'))),
-  customers: withRouter(withAuth(lazyImport('customers'))),
-  customer: withRouter(withAuth(lazyImport('customer')))
-}
-
 function App({error}) {
   const theme = useTheme();
   const pathname = useReactPath();
   const [routes, setRoutes] = useState(null);
   const routesResolver = useRoutesResolver();
 
-  function buildDynamicComponent(componentName) {
-    const DynamicComponent = componentsMap[componentName];
+  function buildDynamicRouteComponent(componentName) {
+    let DynamicComponent;
+    const componentNameInLowerCase = componentName.toLowerCase();
+    if (componentName.indexOf('logIn') > -1) {
+      DynamicComponent = withRouter(lazyImport(componentNameInLowerCase));
+    }
+    else {
+      DynamicComponent = withRouter(withAuth(lazyImport(componentNameInLowerCase)));
+    }
     return <DynamicComponent/>;
   }
 
@@ -60,15 +58,16 @@ function App({error}) {
   function buildRegisteredRoute(routeItem) {
     return (routeItem) ? (
       <Route exact path={routesResolver.getUrl(routeItem.id)} key={routeItem.id} >
-        { buildDynamicComponent(routeItem.id) }
+        { buildDynamicRouteComponent(routeItem.id) }
       </Route>
     ) : (<></>);
   }
 
   function buildRoutes() {
+    const mainRoute = withRouter(withAuth(lazyImport('users')));
     setRoutes(
       <Switch>
-        <Route exact path="/" component={componentsMap['users']} />
+        <Route exact path="/" component={mainRoute} />
           { routesResolver.getAllItems().map((routeItem) => buildRegisteredRoutes(routeItem)) }
         <Route component={lazyImport('page-not-found')} />
       </Switch>

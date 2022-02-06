@@ -13,18 +13,27 @@ import com.fnr.confiar.repositories.CustomerRepository;
 
 import org.modelmapper.ModelMapper;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 @Data
 @EqualsAndHashCode(callSuper=false)
 @NoArgsConstructor
-@AllArgsConstructor
 @Entity
 @Table(name = "customer")
 public class Customer extends BaseEntity {
+
+  @Builder
+  public Customer(Long id, String name, String lastName, String address, String mail, String phone) {
+    super(id);
+    this.name = name;
+    this.lastName = lastName;
+    this.address = address;
+    this.mail = mail;
+    this.phone = phone;
+  }
   
   @Column(length = 30)
   private String name;

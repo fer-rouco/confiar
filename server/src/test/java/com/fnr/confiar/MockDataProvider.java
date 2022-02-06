@@ -11,21 +11,15 @@ import com.fnr.confiar.utils.StringUtil;
 public class MockDataProvider {
   
   public static UserProfile getProfileAdministrator() {
-    UserProfile profile = new UserProfile("Administrador");
-    profile.setId(1L);
-    return profile;
+    return UserProfile.builder().id(1L).description("Administrador").build();
   }
 
   public static UserProfile getProfileSeller() {
-    UserProfile profile = new UserProfile("Vendedor");
-    profile.setId(2L);
-    return profile;
+    return UserProfile.builder().id(2L).description("Vendedor").build();
   }
 
   public static UserProfile getProfileEmployee() {
-    UserProfile profile = new UserProfile("Empleado administrativo");
-    profile.setId(3L);
-    return profile;
+    return UserProfile.builder().id(3L).description("Empleado administrativo").build();
   }
 
   public static List<UserProfile> getProfiles() {
@@ -37,24 +31,39 @@ public class MockDataProvider {
   }
 
   public static User getUserAdministrator() {
-    String hashedPass = StringUtil.toSha256("PPerez99");
-    User user = new User("Pablo", "Perez", "perez", "perez@gmail.com", hashedPass, getProfileAdministrator());
-    user.setId(1L);
-    return user;
+    return User.builder()
+      .id(1L)
+      .name("Pablo")
+      .lastName("Perez")
+      .userName("perez")
+      .mail("perez@gmail.com")
+      .password(StringUtil.toSha256("PPerez99"))
+      .profile(getProfileAdministrator())
+      .build();
   }
   
   public static User getUserSeller() {
-    String hashedPass = StringUtil.toSha256("MSuarez");
-    User user = new User("Maria", "Suarez", "msuarez", "msuarez@gmail.com", hashedPass, getProfileSeller());
-    user.setId(1L);
-    return user;
+    return User.builder()
+      .id(2L)
+      .name("Maria")
+      .lastName("Suarez")
+      .userName("msuarez")
+      .mail("msuarez@gmail.com")
+      .password(StringUtil.toSha256("MSuarez"))
+      .profile(getProfileSeller())
+      .build();
   }
     
   public static User getUserEmployee() {
-    String hashedPass = StringUtil.toSha256("FlorM");
-    User user = new User("Flor", "Martinez", "florm", "florm@gmail.com", hashedPass, getProfileEmployee());
-    user.setId(1L);
-    return user;
+    return User.builder()
+      .id(3L)
+      .name("Flor")
+      .lastName("Martinez")
+      .userName("florm")
+      .mail("florm@gmail.com")
+      .password(StringUtil.toSha256("FlorM"))
+      .profile(getProfileEmployee())
+      .build();
   }
 
   public static List<User> getUsers() {
@@ -66,9 +75,14 @@ public class MockDataProvider {
   }
   
   public static Customer getCustomer() {
-    Customer customer = new Customer("Pablo", "Perez", "Siempre viva 4323", "perez@gmail.com", "+541161255454", null, null);
-    customer.setId(1L);
-    return customer;
+    return Customer.builder()
+      .id(3L)
+      .name("Pablo")
+      .lastName("Perez")
+      .address("Siempre viva 4323")
+      .mail("perez@gmail.com")
+      .phone("+541161255454")
+      .build();
   }
     
   public static List<Customer> getCustomers() {

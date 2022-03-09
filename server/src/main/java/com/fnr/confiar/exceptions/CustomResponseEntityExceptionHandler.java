@@ -1,8 +1,11 @@
 package com.fnr.confiar.exceptions;
 
 import org.hibernate.exception.ConstraintViolationException;
+import org.reflections.Reflections;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,7 +16,16 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
+import java.lang.reflect.Field;
 import java.time.LocalDateTime;
+import java.util.Iterator;
+import java.util.Set;
+
+import com.fnr.confiar.config.BaseDTO;
+import com.fnr.confiar.config.ErrorResponse;
+import com.fnr.confiar.config.Response;
+import com.fnr.confiar.generic.services.MessageService;
+import com.fnr.confiar.utils.StringUtil;
 
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
 import static org.springframework.http.HttpStatus.UNSUPPORTED_MEDIA_TYPE;
@@ -23,6 +35,9 @@ import static org.springframework.http.HttpStatus.UNSUPPORTED_MEDIA_TYPE;
 @ControllerAdvice
 public class CustomResponseEntityExceptionHandler extends ResponseEntityExceptionHandler {
 
+    @Autowired
+    private MessageService messageService;
+    
     @ExceptionHandler(AlreadyExistsEntityException.class)
     public final ResponseEntity<ErrorDetails> handleEntityAlreadyExists(AlreadyExistsEntityException ex, WebRequest request) {
         ErrorDetails errorDetails = new ErrorDetails(LocalDateTime.now(), ex.getMessage(),
@@ -72,49 +87,33 @@ public class CustomResponseEntityExceptionHandler extends ResponseEntityExceptio
         return buildResponseEntity(new ErrorDetails(LocalDateTime.now(), builder.substring(0, builder.length() - 2), ex.getLocalizedMessage()), UNSUPPORTED_MEDIA_TYPE);
     }
 
-    @ExceptionHandler(ConstraintViolationException.class)
-    public ResponseEntity<Object> handleConstraintViolation(ConstraintViolationException ex) {
-        ErrorDetails errorDetails = new ErrorDetails(
-                LocalDateTime.now(),
-                "Constraint violation",
-                ex.getConstraintName() + " - " + ex.getLocalizedMessage());
-                // ex.getConstraintViolations()
-                //         .stream()
-                //         .map(constraintViolation ->
-                //                 constraintViolation.getPropertyPath() + " - " +
-                //                         constraintViolation.getMessage())
-                //         .collect(Collectors.joining()));
-        return buildResponseEntity(errorDetails, BAD_REQUEST);
-    }
-
-    // TODO: try to get it work
-    // @ExceptionHandler({ ResponseException.class, ConstraintViolationException.class, DataIntegrityViolationException.class })
-    // public ResponseEntity<Response> handleBadRequest(WebRequest request, Exception exception) {
-    //   ErrorResponse responseBody = null;
-    //   Reflections reflections = new Reflections("com.fnr.confiar.models");
-    //   Set<Class<? extends BaseModel>> classes = reflections.getSubTypesOf(BaseModel.class);
+    @ExceptionHandler({ ResponseException.class, ConstraintViolationException.class, DataIntegrityViolationException.class })
+    public ResponseEntity<Response> handleBadRequest(WebRequest request, Exception exception) {
+      ErrorResponse responseBody = null;
+      Reflections reflections = new Reflections("com.fnr.confiar");
+      Set<Class<? extends BaseDTO>> classes = reflections.getSubTypesOf(BaseDTO.class);
   
-    //   Iterator<Class<? extends BaseModel>> classIterator = classes.iterator();
-    //   while (classIterator.hasNext() && responseBody == null) {
-    //     Class<? extends BaseModel> clazz = classIterator.next();
-    //     String entityName = clazz.getSimpleName().replaceAll("Model", "").toUpperCase();
+      Iterator<Class<? extends BaseDTO>> classIterator = classes.iterator();
+      while (classIterator.hasNext() && responseBody == null) {
+        Class<? extends BaseDTO> clazz = classIterator.next();
+        String entityName = clazz.getSimpleName().replaceAll("DTO", "").toUpperCase();
         
-    //     if (exception.getLocalizedMessage().indexOf(entityName) > -1) {
-    //       for (Field f : clazz.getDeclaredFields()) {
-    //         if (exception.getLocalizedMessage().indexOf("(" + StringUtil.camelCaseToUnderscores(f.getName()).toUpperCase() + ")") > -1) {
-    //           responseBody = new ErrorResponse(HttpStatus.CONFLICT, new BaseModel<BaseEntity>(null), messageService.getMessage("field.error." + f.getName()), f.getName());
-    //           break;
-    //         }
-    //       }
-    //     }
-    //   }
+        if (exception.getLocalizedMessage().indexOf(entityName) > -1) {
+          for (Field f : clazz.getDeclaredFields()) {
+            if (exception.getLocalizedMessage().indexOf("(" + StringUtil.camelCaseToUnderscores(f.getName()).toUpperCase()) > -1) {
+              responseBody = new ErrorResponse(HttpStatus.CONFLICT, null, messageService.getMessage("field.error." + f.getName()), f.getName());
+              break;
+            }
+          }
+        }
+      }
   
-    //   if (responseBody == null) {
-    //     responseBody = new ErrorResponse(HttpStatus.CONFLICT, new BaseModel<BaseEntity>(null), messageService.getMessage("general.error"), null);
-    //   }
+      if (responseBody == null) {
+        responseBody = new ErrorResponse(HttpStatus.CONFLICT, null, messageService.getMessage("general.error"), null);
+      }
   
-    //   return ResponseEntity.status(responseBody.getStatus()).body(responseBody);
-    // }
+      return ResponseEntity.status(responseBody.getStatus()).body(responseBody);
+    }
   
     private ResponseEntity<Object> buildResponseEntity(ErrorDetails error, HttpStatus status) {
         return new ResponseEntity<>(error, status);

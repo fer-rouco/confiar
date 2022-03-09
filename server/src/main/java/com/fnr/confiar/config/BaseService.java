@@ -9,8 +9,7 @@ import java.util.stream.Collectors;
 import com.fnr.confiar.config.persistence.BaseEntity;
 import com.fnr.confiar.generic.dtos.FilterDTO;
 import com.fnr.confiar.generic.dtos.PaginatorDTO;
-import com.fnr.confiar.generic.specification.GenericSpecificationsBuilder;
-import com.fnr.confiar.generic.specification.SpecificationFactory;
+import com.fnr.confiar.generic.specification.GenericSpecificationBuilder;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
@@ -28,10 +27,7 @@ import jakarta.persistence.criteria.Root;
 import jakarta.persistence.criteria.Selection;
 
 public abstract class BaseService<E extends BaseEntity<?>> {
-  
-  @Autowired
-  private SpecificationFactory<E> specificationFactory;
-  
+
   @Autowired
   public EntityManager entityManager;
 
@@ -168,22 +164,21 @@ public abstract class BaseService<E extends BaseEntity<?>> {
   }
  
   public Specification<E> buildSpecificationsByFilters(FilterDTO filter) {
-    GenericSpecificationsBuilder<E> builder = new GenericSpecificationsBuilder<>();
+    GenericSpecificationBuilder<E> builder = GenericSpecificationBuilder.of(getClazz());
 
     for (Map.Entry<String, FilterDTO.Filter> filterItem : filter.getFilters().entrySet()) {
       switch(filterItem.getValue().getType()) {
         case TEXT:
-          builder.with(specificationFactory.isLike(filterItem.getKey(), filterItem.getValue().getValue()));
+          builder = builder.like(filterItem.getKey(), filterItem.getValue().getValue());
           break;
         case NUMBER:
         case ENUM:
-          builder.with(specificationFactory.isEqual(filterItem.getKey(), filterItem.getValue().getValue()));
+          builder = builder.equals(filterItem.getKey(), Short.parseShort(filterItem.getValue().getValue()));
           break;
       }
     }
 
-    Specification<E> spec = builder.build();
-    return spec;
+    return builder.build();
   }
 
   public List<? extends DataTransferObjectInterface<? extends Number>> findByFilters(FilterDTO filter) {

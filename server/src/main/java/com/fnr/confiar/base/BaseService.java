@@ -6,9 +6,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import com.fnr.confiar.base.specification.GenericSpecificationBuilder;
 import com.fnr.confiar.generic.dtos.FilterDTO;
 import com.fnr.confiar.generic.dtos.PaginatorDTO;
-import com.fnr.confiar.generic.specification.GenericSpecificationBuilder;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;

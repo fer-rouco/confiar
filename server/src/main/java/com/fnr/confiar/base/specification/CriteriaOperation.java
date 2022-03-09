@@ -1,4 +1,4 @@
-package com.fnr.confiar.generic.specification;
+package com.fnr.confiar.base.specification;
 
 enum CriteriaOperation {
 

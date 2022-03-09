@@ -1,4 +1,4 @@
-package com.fnr.confiar.generic.specification;
+package com.fnr.confiar.base.specification;
 
 import lombok.Getter;
 import lombok.Setter;

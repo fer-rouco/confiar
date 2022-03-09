@@ -1,4 +1,4 @@
-package com.fnr.confiar.exceptions;
+package com.fnr.confiar.base.exceptions;
 
 import com.fnr.confiar.base.DataTransferObjectInterface;
 import com.fnr.confiar.base.ErrorResponse;

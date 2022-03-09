@@ -7,9 +7,9 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.nio.charset.StandardCharsets;
 import java.util.Optional;
 
-import com.fnr.confiar.exceptions.InvalidPasswordResponseException;
-import com.fnr.confiar.exceptions.ResponseException;
-import com.fnr.confiar.exceptions.UserNotFoundResponseException;
+import com.fnr.confiar.base.exceptions.InvalidPasswordResponseException;
+import com.fnr.confiar.base.exceptions.ResponseException;
+import com.fnr.confiar.base.exceptions.UserNotFoundResponseException;
 import com.fnr.confiar.modules.session.LoginService;
 import com.fnr.confiar.modules.session.SessionInfoDTO;
 import com.fnr.confiar.modules.users.User;

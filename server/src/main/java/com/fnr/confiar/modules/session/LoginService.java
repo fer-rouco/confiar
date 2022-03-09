@@ -1,7 +1,7 @@
 package com.fnr.confiar.modules.session;
 
-import com.fnr.confiar.exceptions.InvalidPasswordResponseException;
-import com.fnr.confiar.exceptions.UserNotFoundResponseException;
+import com.fnr.confiar.base.exceptions.InvalidPasswordResponseException;
+import com.fnr.confiar.base.exceptions.UserNotFoundResponseException;
 import com.fnr.confiar.modules.users.UserDTO;
 import com.fnr.confiar.utils.StringUtils;
 

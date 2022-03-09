@@ -1,4 +1,4 @@
-package com.fnr.confiar.exceptions;
+package com.fnr.confiar.base.exceptions;
 
 import org.hibernate.exception.ConstraintViolationException;
 import org.reflections.Reflections;

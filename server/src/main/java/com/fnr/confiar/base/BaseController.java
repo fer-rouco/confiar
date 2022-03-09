@@ -3,7 +3,7 @@ package com.fnr.confiar.base;
 import java.util.List;
 import java.util.Optional;
 
-import com.fnr.confiar.exceptions.ResponseException;
+import com.fnr.confiar.base.exceptions.ResponseException;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

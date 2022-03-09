@@ -1,4 +1,4 @@
-package com.fnr.confiar.customers;
+package com.fnr.confiar.modules.customers;
 
 import com.fnr.confiar.base.EntityConverter;
 

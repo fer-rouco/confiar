@@ -1,4 +1,4 @@
-package com.fnr.confiar.session;
+package com.fnr.confiar.modules.session;
 
 import com.fnr.confiar.base.BaseDTO;
 import com.fnr.confiar.utils.StringUtils;

@@ -1,8 +1,8 @@
-package com.fnr.confiar.session;
+package com.fnr.confiar.modules.session;
 
 import com.fnr.confiar.exceptions.InvalidPasswordResponseException;
 import com.fnr.confiar.exceptions.UserNotFoundResponseException;
-import com.fnr.confiar.users.UserDTO;
+import com.fnr.confiar.modules.users.UserDTO;
 import com.fnr.confiar.utils.StringUtils;
 
 import org.springframework.stereotype.Service;

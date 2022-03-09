@@ -1,4 +1,4 @@
-package com.fnr.confiar.users;
+package com.fnr.confiar.modules.users;
 
 import com.fnr.confiar.base.BaseController;
 import com.fnr.confiar.base.BaseDTO;

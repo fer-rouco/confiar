@@ -1,13 +1,13 @@
-package com.fnr.confiar.session;
+package com.fnr.confiar.modules.session;
 
 import com.fnr.confiar.base.BaseController;
 import com.fnr.confiar.base.Response;
 import com.fnr.confiar.exceptions.InvalidPasswordResponseException;
 import com.fnr.confiar.exceptions.UserNotFoundResponseException;
 import com.fnr.confiar.generic.services.MessageService;
-import com.fnr.confiar.users.UserService;
-import com.fnr.confiar.users.User;
-import com.fnr.confiar.users.UserDTO;
+import com.fnr.confiar.modules.users.User;
+import com.fnr.confiar.modules.users.UserDTO;
+import com.fnr.confiar.modules.users.UserService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;

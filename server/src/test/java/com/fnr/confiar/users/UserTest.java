@@ -8,6 +8,11 @@ import java.util.Collection;
 import java.util.List;
 
 import com.fnr.confiar.MockDataProvider;
+import com.fnr.confiar.modules.users.User;
+import com.fnr.confiar.modules.users.UserConverter;
+import com.fnr.confiar.modules.users.UserDTO;
+import com.fnr.confiar.modules.users.UserProfileDTO;
+import com.fnr.confiar.modules.users.UserService;
 import com.fnr.confiar.utils.StringUtils;
 
 import org.junit.jupiter.api.BeforeEach;

@@ -1,4 +1,4 @@
-package com.fnr.confiar.users;
+package com.fnr.confiar.modules.users;
 
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;

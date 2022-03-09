@@ -3,9 +3,9 @@ package com.fnr.confiar;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.fnr.confiar.customers.CustomerDTO;
-import com.fnr.confiar.users.UserDTO;
-import com.fnr.confiar.users.UserProfileDTO;
+import com.fnr.confiar.modules.customers.CustomerDTO;
+import com.fnr.confiar.modules.users.UserDTO;
+import com.fnr.confiar.modules.users.UserProfileDTO;
 import com.fnr.confiar.utils.StringUtils;
 
 public class MockDataProvider {

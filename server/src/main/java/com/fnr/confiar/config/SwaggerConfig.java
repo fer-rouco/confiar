@@ -1,4 +1,4 @@
-package com.fnr.confiar.config.swagger;
+package com.fnr.confiar.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

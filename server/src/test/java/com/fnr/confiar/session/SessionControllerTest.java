@@ -13,10 +13,11 @@ import com.fnr.confiar.BaseControllerTest;
 import com.fnr.confiar.MockDataProvider;
 import com.fnr.confiar.base.BaseDTO;
 import com.fnr.confiar.base.Response;
-import com.fnr.confiar.session.SessionInfoDTO.UserInfoData;
-import com.fnr.confiar.users.User;
-import com.fnr.confiar.users.UserDTO;
-import com.fnr.confiar.users.UserService;
+import com.fnr.confiar.modules.session.SessionInfoDTO;
+import com.fnr.confiar.modules.session.SessionInfoDTO.UserInfoData;
+import com.fnr.confiar.modules.users.User;
+import com.fnr.confiar.modules.users.UserDTO;
+import com.fnr.confiar.modules.users.UserService;
 import com.fnr.confiar.utils.StringUtils;
 
 import org.junit.jupiter.api.BeforeEach;

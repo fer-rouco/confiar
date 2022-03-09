@@ -16,6 +16,9 @@ import com.fnr.confiar.MockDataProvider;
 import com.fnr.confiar.base.Response;
 import com.fnr.confiar.generic.dtos.FilterDTO;
 import com.fnr.confiar.generic.dtos.PaginatorDTO;
+import com.fnr.confiar.modules.users.UserDTO;
+import com.fnr.confiar.modules.users.UserProfileDTO;
+import com.fnr.confiar.modules.users.UserService;
 import com.fnr.confiar.utils.StringUtils;
 
 import org.junit.jupiter.api.BeforeEach;

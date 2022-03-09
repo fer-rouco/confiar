@@ -10,9 +10,11 @@ import java.util.Optional;
 import com.fnr.confiar.exceptions.InvalidPasswordResponseException;
 import com.fnr.confiar.exceptions.ResponseException;
 import com.fnr.confiar.exceptions.UserNotFoundResponseException;
-import com.fnr.confiar.users.User;
-import com.fnr.confiar.users.UserConverter;
-import com.fnr.confiar.users.UserRepository;
+import com.fnr.confiar.modules.session.LoginService;
+import com.fnr.confiar.modules.session.SessionInfoDTO;
+import com.fnr.confiar.modules.users.User;
+import com.fnr.confiar.modules.users.UserConverter;
+import com.fnr.confiar.modules.users.UserRepository;
 import com.google.common.hash.Hashing;
 
 import org.junit.jupiter.api.Test;

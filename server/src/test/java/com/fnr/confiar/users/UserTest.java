@@ -9,7 +9,7 @@ import java.util.Collection;
 import java.util.List;
 
 import com.fnr.confiar.MockDataProvider;
-import com.fnr.confiar.utils.StringUtil;
+import com.fnr.confiar.utils.StringUtils;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -102,7 +102,7 @@ public class UserTest {
     assertEquals("Perez", newSupervisorInDb.getLastName());
     assertEquals("perez@gmail.com", newSupervisorInDb.getMail());
     assertEquals("perez", newSupervisorInDb.getUserName());
-    assertEquals(Base64.getEncoder().encodeToString(StringUtil.toSha256("PPerez99")), Base64.getEncoder().encodeToString(newSupervisorInDb.getPassword()));
+    assertEquals(Base64.getEncoder().encodeToString(StringUtils.toSha256("PPerez99")), Base64.getEncoder().encodeToString(newSupervisorInDb.getPassword()));
     assertEquals((short) 1, newSupervisorInDb.getProfile().getId());
 
     when(userService.findByUserName(user.getUserName())).thenReturn(user);
@@ -112,7 +112,7 @@ public class UserTest {
     userInDb.setLastName("NewTest");
     userInDb.setMail("new.user.test@gmail.com");
     userInDb.setUserName("NewUserTest");
-    userInDb.setPassword(StringUtil.toSha256("NewUserTest99"));
+    userInDb.setPassword(StringUtils.toSha256("NewUserTest99"));
     userInDb.setProfile(userService.findProfileById(Long.valueOf(1)));
 
     when(userService.saveUser(userInDb)).thenReturn(userInDb);
@@ -122,7 +122,7 @@ public class UserTest {
     assertEquals("NewTest", updatedUserInDb.getLastName());
     assertEquals("new.user.test@gmail.com", updatedUserInDb.getMail());
     assertEquals("NewUserTest", updatedUserInDb.getUserName());
-    assertEquals(Base64.getEncoder().encodeToString(StringUtil.toSha256("NewUserTest99")), Base64.getEncoder().encodeToString(updatedUserInDb.getPassword()));
+    assertEquals(Base64.getEncoder().encodeToString(StringUtils.toSha256("NewUserTest99")), Base64.getEncoder().encodeToString(updatedUserInDb.getPassword()));
     assertEquals((short) 1, updatedUserInDb.getProfile().getId());
 
   }

@@ -6,7 +6,7 @@ import java.util.List;
 import com.fnr.confiar.customers.CustomerDTO;
 import com.fnr.confiar.users.UserDTO;
 import com.fnr.confiar.users.UserProfileDTO;
-import com.fnr.confiar.utils.StringUtil;
+import com.fnr.confiar.utils.StringUtils;
 
 public class MockDataProvider {
   
@@ -42,7 +42,7 @@ public class MockDataProvider {
       .lastName("Perez")
       .userName("perez")
       .mail("perez@gmail.com")
-      .password(StringUtil.toSha256("PPerez99"))
+      .password(StringUtils.toSha256("PPerez99"))
       .profile(getProfileAdministrator())
       .build();
     user.setId(1L);
@@ -55,7 +55,7 @@ public class MockDataProvider {
       .lastName("Suarez")
       .userName("msuarez")
       .mail("msuarez@gmail.com")
-      .password(StringUtil.toSha256("MSuarez"))
+      .password(StringUtils.toSha256("MSuarez"))
       .profile(getProfileSeller())
       .build();
     user.setId(2L);
@@ -68,7 +68,7 @@ public class MockDataProvider {
     .lastName("Martinez")
     .userName("florm")
     .mail("florm@gmail.com")
-    .password(StringUtil.toSha256("FlorM"))
+    .password(StringUtils.toSha256("FlorM"))
     .profile(getProfileEmployee())
     .build();
     user.setId(3L);

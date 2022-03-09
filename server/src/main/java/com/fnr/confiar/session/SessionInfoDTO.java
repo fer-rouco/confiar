@@ -1,7 +1,7 @@
 package com.fnr.confiar.session;
 
 import com.fnr.confiar.config.BaseDTO;
-import com.fnr.confiar.utils.StringUtil;
+import com.fnr.confiar.utils.StringUtils;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -25,7 +25,7 @@ public class SessionInfoDTO extends BaseDTO<Short> {
   }
 
   public void generateNewToken() {
-    this.setToken(StringUtil.generateNewToken());
+    this.setToken(StringUtils.generateNewToken());
   }
 
   @Data

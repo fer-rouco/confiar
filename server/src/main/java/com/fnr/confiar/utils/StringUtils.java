@@ -6,7 +6,7 @@ import java.util.Base64;
 
 import com.google.common.hash.Hashing;
 
-public class StringUtil {
+public class StringUtils {
   
   public static String camelCaseToUnderscores(String camel) {
     String underscore;

@@ -25,7 +25,7 @@ import com.fnr.confiar.config.BaseDTO;
 import com.fnr.confiar.config.ErrorResponse;
 import com.fnr.confiar.config.Response;
 import com.fnr.confiar.generic.services.MessageService;
-import com.fnr.confiar.utils.StringUtil;
+import com.fnr.confiar.utils.StringUtils;
 
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
 import static org.springframework.http.HttpStatus.UNSUPPORTED_MEDIA_TYPE;
@@ -100,7 +100,7 @@ public class CustomResponseEntityExceptionHandler extends ResponseEntityExceptio
         
         if (exception.getLocalizedMessage().indexOf(entityName) > -1) {
           for (Field f : clazz.getDeclaredFields()) {
-            if (exception.getLocalizedMessage().indexOf("(" + StringUtil.camelCaseToUnderscores(f.getName()).toUpperCase()) > -1) {
+            if (exception.getLocalizedMessage().indexOf("(" + StringUtils.camelCaseToUnderscores(f.getName()).toUpperCase()) > -1) {
               responseBody = new ErrorResponse(HttpStatus.CONFLICT, null, messageService.getMessage("field.error." + f.getName()), f.getName());
               break;
             }

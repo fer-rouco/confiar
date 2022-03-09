@@ -17,7 +17,7 @@ import com.fnr.confiar.session.SessionInfoDTO.UserInfoData;
 import com.fnr.confiar.users.User;
 import com.fnr.confiar.users.UserDTO;
 import com.fnr.confiar.users.UserService;
-import com.fnr.confiar.utils.StringUtil;
+import com.fnr.confiar.utils.StringUtils;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -48,7 +48,7 @@ public class SessionControllerTest extends BaseControllerTest {
 
     LinkedMultiValueMap<String, String> requestParams = new LinkedMultiValueMap<>();
     requestParams.add(User.Fields.userName, user.getUserName());
-    requestParams.add(User.Fields.password, StringUtil.fromSha256(user.getPassword()));
+    requestParams.add(User.Fields.password, StringUtils.fromSha256(user.getPassword()));
 
     String jsonPathSessionInfoUser = buildJsonPath(Response.Fields.model.concat("[0]"), SessionInfoDTO.Fields.user);
     this.mockMvc.perform(get(buildMapping("login")).params(requestParams))

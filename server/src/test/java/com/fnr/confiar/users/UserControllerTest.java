@@ -17,7 +17,7 @@ import com.fnr.confiar.MockDataProvider;
 import com.fnr.confiar.config.Response;
 import com.fnr.confiar.generic.dtos.FilterDTO;
 import com.fnr.confiar.generic.dtos.PaginatorDTO;
-import com.fnr.confiar.utils.StringUtil;
+import com.fnr.confiar.utils.StringUtils;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -73,7 +73,7 @@ public class UserControllerTest extends BaseControllerTest {
   void testUpdate() throws Exception {
     UserProfileDTO userProfileModel = new UserProfileDTO("Administrator");
     userProfileModel.setId(Short.parseShort("1"));
-    UserDTO user = new UserDTO("Flor", "Martinez", "florm", "florm@gmail.com", StringUtil.toSha256("flor"), userProfileModel);
+    UserDTO user = new UserDTO("Flor", "Martinez", "florm", "florm@gmail.com", StringUtils.toSha256("flor"), userProfileModel);
     when(userService.saveUser(user)).thenReturn(user);
 
     String responseModelIndexZero = Response.Fields.model.concat("[0]");

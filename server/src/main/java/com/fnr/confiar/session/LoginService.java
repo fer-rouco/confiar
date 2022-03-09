@@ -3,7 +3,7 @@ package com.fnr.confiar.session;
 import com.fnr.confiar.exceptions.InvalidPasswordResponseException;
 import com.fnr.confiar.exceptions.UserNotFoundResponseException;
 import com.fnr.confiar.users.UserDTO;
-import com.fnr.confiar.utils.StringUtil;
+import com.fnr.confiar.utils.StringUtils;
 
 import org.springframework.stereotype.Service;
 
@@ -15,7 +15,7 @@ public class LoginService {
       throw new UserNotFoundResponseException();
     }
 
-    if (user != null && password.compareTo(StringUtil.fromSha256(user.getPassword())) != 0) {
+    if (user != null && password.compareTo(StringUtils.fromSha256(user.getPassword())) != 0) {
       throw new InvalidPasswordResponseException();
     }
 

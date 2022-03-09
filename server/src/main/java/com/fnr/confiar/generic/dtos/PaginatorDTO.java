@@ -2,7 +2,7 @@ package com.fnr.confiar.generic.dtos;
 
 import java.util.List;
 
-import com.fnr.confiar.config.BaseDTO;
+import com.fnr.confiar.base.BaseDTO;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;

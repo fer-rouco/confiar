@@ -1,8 +1,8 @@
 package com.fnr.confiar.users;
 
-import com.fnr.confiar.config.BaseController;
-import com.fnr.confiar.config.BaseDTO;
-import com.fnr.confiar.config.Response;
+import com.fnr.confiar.base.BaseController;
+import com.fnr.confiar.base.BaseDTO;
+import com.fnr.confiar.base.Response;
 import com.fnr.confiar.generic.dtos.FilterDTO;
 
 import org.springframework.beans.factory.annotation.Autowired;

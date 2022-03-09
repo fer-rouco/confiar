@@ -9,7 +9,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import com.fasterxml.jackson.databind.SerializationFeature;
-import com.fnr.confiar.config.BaseDTO;
+import com.fnr.confiar.base.BaseDTO;
 import com.google.common.collect.ObjectArrays;
 
 import org.junit.jupiter.api.BeforeEach;

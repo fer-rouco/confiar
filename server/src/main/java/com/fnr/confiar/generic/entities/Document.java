@@ -2,7 +2,7 @@ package com.fnr.confiar.generic.entities;
 
 import java.util.Date;
 
-import com.fnr.confiar.config.persistence.BaseEntity;
+import com.fnr.confiar.base.BaseEntity;
 
 import jakarta.persistence.Basic;
 import jakarta.persistence.Column;

@@ -21,9 +21,9 @@ import java.time.LocalDateTime;
 import java.util.Iterator;
 import java.util.Set;
 
-import com.fnr.confiar.config.BaseDTO;
-import com.fnr.confiar.config.ErrorResponse;
-import com.fnr.confiar.config.Response;
+import com.fnr.confiar.base.BaseDTO;
+import com.fnr.confiar.base.ErrorResponse;
+import com.fnr.confiar.base.Response;
 import com.fnr.confiar.generic.services.MessageService;
 import com.fnr.confiar.utils.StringUtils;
 

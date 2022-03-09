@@ -1,4 +1,4 @@
-package com.fnr.confiar.config.persistence;
+package com.fnr.confiar.base;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;

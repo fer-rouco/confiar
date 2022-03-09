@@ -3,7 +3,7 @@ package com.fnr.confiar.customers;
 import java.util.List;
 import java.util.Optional;
 
-import com.fnr.confiar.config.DataTransferObjectInterface;
+import com.fnr.confiar.base.DataTransferObjectInterface;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

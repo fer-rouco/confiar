@@ -11,8 +11,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.fnr.confiar.BaseControllerTest;
 import com.fnr.confiar.MockDataProvider;
-import com.fnr.confiar.config.BaseDTO;
-import com.fnr.confiar.config.Response;
+import com.fnr.confiar.base.BaseDTO;
+import com.fnr.confiar.base.Response;
 import com.fnr.confiar.session.SessionInfoDTO.UserInfoData;
 import com.fnr.confiar.users.User;
 import com.fnr.confiar.users.UserDTO;

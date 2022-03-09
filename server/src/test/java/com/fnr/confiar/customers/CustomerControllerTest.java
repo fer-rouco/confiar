@@ -13,7 +13,7 @@ import java.util.List;
 
 import com.fnr.confiar.BaseControllerTest;
 import com.fnr.confiar.MockDataProvider;
-import com.fnr.confiar.config.Response;
+import com.fnr.confiar.base.Response;
 import com.fnr.confiar.generic.dtos.FilterDTO;
 import com.fnr.confiar.generic.dtos.PaginatorDTO;
 

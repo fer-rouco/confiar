@@ -1,7 +1,7 @@
 package com.fnr.confiar.session;
 
-import com.fnr.confiar.config.BaseController;
-import com.fnr.confiar.config.Response;
+import com.fnr.confiar.base.BaseController;
+import com.fnr.confiar.base.Response;
 import com.fnr.confiar.exceptions.InvalidPasswordResponseException;
 import com.fnr.confiar.exceptions.UserNotFoundResponseException;
 import com.fnr.confiar.generic.services.MessageService;

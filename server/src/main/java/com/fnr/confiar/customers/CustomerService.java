@@ -2,7 +2,7 @@ package com.fnr.confiar.customers;
 
 import java.util.List;
 
-import com.fnr.confiar.config.BaseService;
+import com.fnr.confiar.base.BaseService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

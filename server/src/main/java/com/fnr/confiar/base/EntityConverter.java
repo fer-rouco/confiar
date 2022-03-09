@@ -1,4 +1,4 @@
-package com.fnr.confiar.config;
+package com.fnr.confiar.base;
 
 import java.util.Collection;
 import java.util.List;
@@ -6,8 +6,6 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
-
-import com.fnr.confiar.config.persistence.BaseEntity;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.core.convert.converter.Converter;

@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fnr.confiar.config.BaseDTO;
+import com.fnr.confiar.base.BaseDTO;
 
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;

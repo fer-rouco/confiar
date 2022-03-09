@@ -1,6 +1,6 @@
 package com.fnr.confiar.users;
 
-import com.fnr.confiar.config.BaseDTO;
+import com.fnr.confiar.base.BaseDTO;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

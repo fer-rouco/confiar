@@ -2,7 +2,7 @@ package com.fnr.confiar.customers;
 
 import java.util.List;
 
-import com.fnr.confiar.config.persistence.BaseEntity;
+import com.fnr.confiar.base.BaseEntity;
 import com.fnr.confiar.generic.entities.Document;
 
 import jakarta.persistence.CascadeType;

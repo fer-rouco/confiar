@@ -1,6 +1,6 @@
 package com.fnr.confiar.users;
 
-import com.fnr.confiar.config.EntityConverter;
+import com.fnr.confiar.base.EntityConverter;
 
 import org.springframework.stereotype.Component;
 

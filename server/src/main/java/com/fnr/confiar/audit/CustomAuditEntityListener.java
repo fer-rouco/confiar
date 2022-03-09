@@ -7,7 +7,7 @@ import java.net.UnknownHostException;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
-import com.fnr.confiar.config.persistence.BaseEntity;
+import com.fnr.confiar.base.BaseEntity;
 
 public class CustomAuditEntityListener {
 

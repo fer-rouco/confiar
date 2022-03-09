@@ -1,6 +1,6 @@
 package com.fnr.confiar.generic.converters;
 
-import com.fnr.confiar.config.EntityConverter;
+import com.fnr.confiar.base.EntityConverter;
 import com.fnr.confiar.generic.dtos.DocumentDTO;
 import com.fnr.confiar.generic.entities.Document;
 

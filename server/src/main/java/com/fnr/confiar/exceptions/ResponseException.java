@@ -1,7 +1,7 @@
 package com.fnr.confiar.exceptions;
 
-import com.fnr.confiar.config.DataTransferObjectInterface;
-import com.fnr.confiar.config.ErrorResponse;
+import com.fnr.confiar.base.DataTransferObjectInterface;
+import com.fnr.confiar.base.ErrorResponse;
 
 import org.springframework.http.HttpStatus;
 

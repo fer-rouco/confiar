@@ -1,6 +1,6 @@
 package com.fnr.confiar.session;
 
-import com.fnr.confiar.config.BaseDTO;
+import com.fnr.confiar.base.BaseDTO;
 import com.fnr.confiar.utils.StringUtils;
 
 import lombok.Data;

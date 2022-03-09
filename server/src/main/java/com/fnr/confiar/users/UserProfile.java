@@ -1,6 +1,6 @@
 package com.fnr.confiar.users;
 
-import com.fnr.confiar.config.persistence.BaseEntity;
+import com.fnr.confiar.base.BaseEntity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

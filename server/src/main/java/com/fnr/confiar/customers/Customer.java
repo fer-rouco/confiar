@@ -22,7 +22,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 @Entity
-@Table(name = "customer")
+@Table(name = "customers")
 public class Customer extends BaseEntity<Long> {
 
   @Builder

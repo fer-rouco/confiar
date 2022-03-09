@@ -15,7 +15,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = false)
 @Entity
-@Table(name = "profile")
+@Table(name = "profiles")
 public class UserProfile extends BaseEntity<Short> {
 
   @Builder

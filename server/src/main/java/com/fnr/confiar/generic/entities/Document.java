@@ -22,7 +22,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 @Entity
-@Table(name = "document")
+@Table(name = "documents")
 public class Document extends BaseEntity<Long> {
 
   @Column(nullable = false, length = 50)

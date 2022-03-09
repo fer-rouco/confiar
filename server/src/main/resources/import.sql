@@ -1,6 +1,6 @@
-INSERT INTO PROFILE (ID, DESCRIPTION) VALUES(1, 'Administrador');
-INSERT INTO PROFILE (ID, DESCRIPTION) VALUES(2, 'Vendedor');
-INSERT INTO PROFILE (ID, DESCRIPTION) VALUES(3, 'Empleado administrativo');
+INSERT INTO PROFILES (ID, DESCRIPTION) VALUES(1, 'Administrador');
+INSERT INTO PROFILES (ID, DESCRIPTION) VALUES(2, 'Vendedor');
+INSERT INTO PROFILES (ID, DESCRIPTION) VALUES(3, 'Empleado administrativo');
 
 INSERT INTO USERS (NAME, LAST_NAME, USER_NAME, MAIL, PASSWORD, PROFILE_ID) VALUES('Pablo', 'Perez', 'perez', 'pperez@gmail.com', 'PPerez99', 2);
 INSERT INTO USERS (NAME, LAST_NAME, USER_NAME, MAIL, PASSWORD, PROFILE_ID) VALUES('Maria', 'Suarez', 'msuarez', 'msuarez@gmail.com', 'MSuarez', 1);
@@ -19,21 +19,21 @@ INSERT INTO USERS (NAME, LAST_NAME, USER_NAME, MAIL, PASSWORD, PROFILE_ID) VALUE
 INSERT INTO USERS (NAME, LAST_NAME, USER_NAME, MAIL, PASSWORD, PROFILE_ID) VALUES('Dennis', 'Schulist', 'dschulist', 'dschulist@gmail.com', 'DSchulist', 1);
 
 
-INSERT INTO CUSTOMER (NAME, LAST_NAME, MAIL, PHONE) VALUES('Pablo', 'Perez', 'pperez@gmail.com', '+541162365255');
-INSERT INTO CUSTOMER (NAME, LAST_NAME, MAIL, PHONE) VALUES('Maria', 'Suarez','msuarez@gmail.com', '+5411121221');
-INSERT INTO CUSTOMER (NAME, LAST_NAME, MAIL, PHONE) VALUES('Flor', 'Martinez','florm@gmail.com', '+541155555555');
-INSERT INTO CUSTOMER (NAME, LAST_NAME, MAIL, PHONE) VALUES('Michael', 'Lawson','mlawson@gmail.com', '+54116666666');
-INSERT INTO CUSTOMER (NAME, LAST_NAME, MAIL, PHONE) VALUES('Lindsay', 'Ferguson','lferguson@gmail.com', '+5411999999');
-INSERT INTO CUSTOMER (NAME, LAST_NAME, MAIL, PHONE) VALUES('Tobias', 'Funke','tfunke@gmail.com', '+541188888');
-INSERT INTO CUSTOMER (NAME, LAST_NAME, MAIL, PHONE) VALUES('Byron', 'Fields','bfields@gmail.com', '+541166969666');
-INSERT INTO CUSTOMER (NAME, LAST_NAME, MAIL, PHONE) VALUES('George', 'Edwards','gedwards@gmail.com', '+54118858585');
-INSERT INTO CUSTOMER (NAME, LAST_NAME, MAIL, PHONE) VALUES('Rachel', 'Howel','rhowel@gmail.com', '+54119965656');
-INSERT INTO CUSTOMER (NAME, LAST_NAME, MAIL, PHONE) VALUES('Leanne', 'Bret','lbret@gmail.com', '+54114545454');
-INSERT INTO CUSTOMER (NAME, LAST_NAME, MAIL, PHONE) VALUES('Ervin', 'Howel','ehowel@gmail.com', '+54115292929');
-INSERT INTO CUSTOMER (NAME, LAST_NAME, MAIL, PHONE) VALUES('Clementine', 'Bauch','cbauch@gmail.com', '+54116559292');
-INSERT INTO CUSTOMER (NAME, LAST_NAME, MAIL, PHONE) VALUES('Patricia', 'Lebsack','plebsack@gmail.com', '+54116656526');
-INSERT INTO CUSTOMER (NAME, LAST_NAME, MAIL, PHONE) VALUES('Chelsey', 'Dietrich','cdietrich@gmail.com', '+541112655151');
-INSERT INTO CUSTOMER (NAME, LAST_NAME, MAIL, PHONE) VALUES('Dennis', 'Schulist','dschulist@gmail.com', '+5411656565');
+INSERT INTO CUSTOMERS (NAME, LAST_NAME, MAIL, PHONE) VALUES('Pablo', 'Perez', 'pperez@gmail.com', '+541162365255');
+INSERT INTO CUSTOMERS (NAME, LAST_NAME, MAIL, PHONE) VALUES('Maria', 'Suarez','msuarez@gmail.com', '+5411121221');
+INSERT INTO CUSTOMERS (NAME, LAST_NAME, MAIL, PHONE) VALUES('Flor', 'Martinez','florm@gmail.com', '+541155555555');
+INSERT INTO CUSTOMERS (NAME, LAST_NAME, MAIL, PHONE) VALUES('Michael', 'Lawson','mlawson@gmail.com', '+54116666666');
+INSERT INTO CUSTOMERS (NAME, LAST_NAME, MAIL, PHONE) VALUES('Lindsay', 'Ferguson','lferguson@gmail.com', '+5411999999');
+INSERT INTO CUSTOMERS (NAME, LAST_NAME, MAIL, PHONE) VALUES('Tobias', 'Funke','tfunke@gmail.com', '+541188888');
+INSERT INTO CUSTOMERS (NAME, LAST_NAME, MAIL, PHONE) VALUES('Byron', 'Fields','bfields@gmail.com', '+541166969666');
+INSERT INTO CUSTOMERS (NAME, LAST_NAME, MAIL, PHONE) VALUES('George', 'Edwards','gedwards@gmail.com', '+54118858585');
+INSERT INTO CUSTOMERS (NAME, LAST_NAME, MAIL, PHONE) VALUES('Rachel', 'Howel','rhowel@gmail.com', '+54119965656');
+INSERT INTO CUSTOMERS (NAME, LAST_NAME, MAIL, PHONE) VALUES('Leanne', 'Bret','lbret@gmail.com', '+54114545454');
+INSERT INTO CUSTOMERS (NAME, LAST_NAME, MAIL, PHONE) VALUES('Ervin', 'Howel','ehowel@gmail.com', '+54115292929');
+INSERT INTO CUSTOMERS (NAME, LAST_NAME, MAIL, PHONE) VALUES('Clementine', 'Bauch','cbauch@gmail.com', '+54116559292');
+INSERT INTO CUSTOMERS (NAME, LAST_NAME, MAIL, PHONE) VALUES('Patricia', 'Lebsack','plebsack@gmail.com', '+54116656526');
+INSERT INTO CUSTOMERS (NAME, LAST_NAME, MAIL, PHONE) VALUES('Chelsey', 'Dietrich','cdietrich@gmail.com', '+541112655151');
+INSERT INTO CUSTOMERS (NAME, LAST_NAME, MAIL, PHONE) VALUES('Dennis', 'Schulist','dschulist@gmail.com', '+5411656565');
 
 
 -- Hash User Passwords

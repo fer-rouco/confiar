@@ -15,12 +15,6 @@ import java.util.IllegalFormatException;
  *
  * @param <T>
  * @param <C>
- *
- * Created on October, 2018
- *
- * @author Destan Sarpkaya
- * @author Ersan Ceylan
- * @author Gökhan Birinci
  */
 
 @SuppressWarnings({"rawtypes", "unchecked"})
@@ -71,11 +65,12 @@ class GenericSpecification<E, T, C extends Comparable<? super C>> implements Spe
 		case LIKE: {
 			final Path<?> path = resolvePath(root, filterCriteria.getKey());
 			if (filterCriteria.isCaseSensitive()) {
-				criteriaBuilder.like(path.as(String.class), "%" + filterCriteria.getValue() + "%");
+				String value = String.format(QueryConstants.LIKE, (filterCriteria.getValue() != null) ? String.valueOf(filterCriteria.getValue()): "");
+				criteriaBuilder.like(path.as(String.class), value);
 			}
 			else {
-				return criteriaBuilder.like(criteriaBuilder.lower(path.as(String.class)),
-											"%" + String.valueOf(filterCriteria.getValue()).toLowerCase() + "%");
+				String value = String.format(QueryConstants.LIKE, (filterCriteria.getValue() != null) ? String.valueOf(filterCriteria.getValue()).toLowerCase(): "");
+				return criteriaBuilder.like(criteriaBuilder.lower(path.as(String.class)), value);
 			}
 		}
 

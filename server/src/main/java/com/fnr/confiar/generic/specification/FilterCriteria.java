@@ -7,14 +7,6 @@ import org.springframework.lang.NonNull;
 import jakarta.persistence.criteria.JoinType;
 
 /**
- * Created on October, 2018
- *
- * @author Destan Sarpkaya
- * @author Ersan Ceylan
- * @author Gökhan Birinci
- */
-
-/**
  * Class that holds key value pair for given filter parameters
  * @param <T>
  */

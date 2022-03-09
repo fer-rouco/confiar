@@ -1,11 +1,5 @@
 package com.fnr.confiar.generic.specification;
 
-/**
- * Created on October, 2018
- *
- * @author Destan Sarpkaya
- * @author Ersan Ceylan
- */
 enum CriteriaOperation {
 
 	JOIN,

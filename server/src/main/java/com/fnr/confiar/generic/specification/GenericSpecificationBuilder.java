@@ -18,11 +18,6 @@ import java.util.*;
  * 			.greaterThan("age", age)
  * 		.build();
  * </pre></blockquote>
- *
- * @param <E> Created on October, 2018
- * @author Destan Sarpkaya
- * @author Ersan Ceylan
- * @author Gökhan Birinci
  */
 public class GenericSpecificationBuilder<E> {
 

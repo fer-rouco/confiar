@@ -9,7 +9,6 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import java.util.Base64;
 import java.util.List;
 
 import com.fnr.confiar.BaseControllerTest;
@@ -82,7 +81,7 @@ public class UserControllerTest extends BaseControllerTest {
     .andExpect(jsonPath(buildJsonPath(responseModelIndexZero, UserDTO.Fields.lastName), is(user.getLastName())))
     .andExpect(jsonPath(buildJsonPath(responseModelIndexZero, UserDTO.Fields.userName), is(user.getUserName())))
     .andExpect(jsonPath(buildJsonPath(responseModelIndexZero, UserDTO.Fields.mail), is(user.getMail())))
-    .andExpect(jsonPath(buildJsonPath(responseModelIndexZero, UserDTO.Fields.password), is(Base64.getEncoder().encodeToString(user.getPassword()))))
+    .andExpect(jsonPath(buildJsonPath(responseModelIndexZero, UserDTO.Fields.password), is(StringUtils.encodeToString(user.getPassword()))))
     .andExpect(status().isOk());
   }
 
@@ -97,7 +96,7 @@ public class UserControllerTest extends BaseControllerTest {
       .andExpect(jsonPath(buildJsonPath(responseModelIndexZero, UserDTO.Fields.lastName), is(user.getLastName())))
       .andExpect(jsonPath(buildJsonPath(responseModelIndexZero, UserDTO.Fields.userName), is(user.getUserName())))
       .andExpect(jsonPath(buildJsonPath(responseModelIndexZero, UserDTO.Fields.mail), is(user.getMail())))
-      .andExpect(jsonPath(buildJsonPath(responseModelIndexZero, UserDTO.Fields.password), is(Base64.getEncoder().encodeToString(user.getPassword()))));
+      .andExpect(jsonPath(buildJsonPath(responseModelIndexZero, UserDTO.Fields.password), is(StringUtils.encodeToString(user.getPassword()))));
   }
 
   @Test

@@ -4,7 +4,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.Mockito.when;
 
-import java.util.Base64;
 import java.util.Collection;
 import java.util.List;
 
@@ -102,7 +101,7 @@ public class UserTest {
     assertEquals("Perez", newSupervisorInDb.getLastName());
     assertEquals("perez@gmail.com", newSupervisorInDb.getMail());
     assertEquals("perez", newSupervisorInDb.getUserName());
-    assertEquals(Base64.getEncoder().encodeToString(StringUtils.toSha256("PPerez99")), Base64.getEncoder().encodeToString(newSupervisorInDb.getPassword()));
+    assertEquals(StringUtils.encodeToString(StringUtils.toSha256("PPerez99")), StringUtils.encodeToString(newSupervisorInDb.getPassword()));
     assertEquals((short) 1, newSupervisorInDb.getProfile().getId());
 
     when(userService.findByUserName(user.getUserName())).thenReturn(user);
@@ -122,7 +121,7 @@ public class UserTest {
     assertEquals("NewTest", updatedUserInDb.getLastName());
     assertEquals("new.user.test@gmail.com", updatedUserInDb.getMail());
     assertEquals("NewUserTest", updatedUserInDb.getUserName());
-    assertEquals(Base64.getEncoder().encodeToString(StringUtils.toSha256("NewUserTest99")), Base64.getEncoder().encodeToString(updatedUserInDb.getPassword()));
+    assertEquals(StringUtils.encodeToString(StringUtils.toSha256("NewUserTest99")), StringUtils.encodeToString(updatedUserInDb.getPassword()));
     assertEquals((short) 1, updatedUserInDb.getProfile().getId());
 
   }

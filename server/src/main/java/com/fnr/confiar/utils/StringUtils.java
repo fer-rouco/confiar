@@ -31,9 +31,17 @@ public class StringUtils {
   }
 
   public static String generateNewToken() {
-      byte[] randomBytes = new byte[24];
-      new SecureRandom().nextBytes(randomBytes);
-      return Base64.getUrlEncoder().encodeToString(randomBytes);
+    byte[] randomBytes = new byte[24];
+    new SecureRandom().nextBytes(randomBytes);
+    return StringUtils.encodeUrlToString(randomBytes);
+  }
+
+  public static String encodeToString(byte[] bytes) {
+    return Base64.getEncoder().encodeToString(bytes);
+  }
+
+  public static String encodeUrlToString(byte[] bytes) {
+    return Base64.getUrlEncoder().encodeToString(bytes);
   }
 
 }

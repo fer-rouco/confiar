@@ -1,6 +1,5 @@
 package com.fnr.confiar.exceptions;
 
-import com.fnr.confiar.config.BaseDTO;
 import com.fnr.confiar.config.DataTransferObjectInterface;
 import com.fnr.confiar.config.ErrorResponse;
 

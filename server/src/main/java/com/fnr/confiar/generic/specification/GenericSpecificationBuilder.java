@@ -23,8 +23,6 @@ public class GenericSpecificationBuilder<E> {
 
 	private final List<FilterCriteria<?>> filterCriteriaList;
 
-	private final List<Specification<E>> specifications;
-
 	private final Map<Specification<E>, ConditionType> customSpecifications;
 
 	private final List<Map<String, String>> parameters;
@@ -34,8 +32,7 @@ public class GenericSpecificationBuilder<E> {
 
 	private GenericSpecificationBuilder() {
 		filterCriteriaList = new ArrayList<>();
-		specifications = new ArrayList<>();
-		parameters = new ArrayList();
+		parameters = new ArrayList<>();
 		activeConditionType = ConditionType.AND;
 		customSpecifications = new HashMap<>();
 	}

@@ -11,20 +11,12 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import java.util.Base64;
 import java.util.List;
-import java.util.Optional;
 
 import com.fnr.confiar.BaseControllerTest;
 import com.fnr.confiar.MockDataProvider;
 import com.fnr.confiar.config.Response;
 import com.fnr.confiar.generic.dtos.FilterDTO;
 import com.fnr.confiar.generic.dtos.PaginatorDTO;
-import com.fnr.confiar.users.User;
-import com.fnr.confiar.users.UserProfile;
-// import com.fnr.confiar.models.FilterDTO;
-// import com.fnr.confiar.models.PaginatorDTO;
-import com.fnr.confiar.users.UserDTO;
-import com.fnr.confiar.users.UserProfileDTO;
-import com.fnr.confiar.users.UserService;
 import com.fnr.confiar.utils.StringUtil;
 
 import org.junit.jupiter.api.BeforeEach;

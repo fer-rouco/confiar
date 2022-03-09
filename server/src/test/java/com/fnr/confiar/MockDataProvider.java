@@ -3,36 +3,41 @@ package com.fnr.confiar;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.fnr.confiar.entities.Customer;
-import com.fnr.confiar.entities.User;
-import com.fnr.confiar.entities.UserProfile;
+import com.fnr.confiar.customers.CustomerDTO;
+import com.fnr.confiar.users.UserDTO;
+import com.fnr.confiar.users.UserProfileDTO;
 import com.fnr.confiar.utils.StringUtil;
 
 public class MockDataProvider {
   
-  public static UserProfile getProfileAdministrator() {
-    return UserProfile.builder().id(1L).description("Administrador").build();
+  public static UserProfileDTO getProfileAdministrator() {
+    UserProfileDTO userProfile = UserProfileDTO.builder().description("Administrador").build();
+    userProfile.setId(Short.parseShort("1"));
+    return userProfile;
   }
 
-  public static UserProfile getProfileSeller() {
-    return UserProfile.builder().id(2L).description("Vendedor").build();
+  public static UserProfileDTO getProfileSeller() {
+    UserProfileDTO userProfile = UserProfileDTO.builder().description("Vendedor").build();
+    userProfile.setId(Short.parseShort("2"));
+    return userProfile;
   }
 
-  public static UserProfile getProfileEmployee() {
-    return UserProfile.builder().id(3L).description("Empleado administrativo").build();
+  public static UserProfileDTO getProfileEmployee() {
+    UserProfileDTO userProfile = UserProfileDTO.builder().description("Empleado administrativo").build();
+    userProfile.setId(Short.parseShort("3"));
+    return userProfile;
   }
 
-  public static List<UserProfile> getProfiles() {
-    List<UserProfile> userProfiles = new ArrayList<>();
+  public static List<UserProfileDTO> getProfiles() {
+    List<UserProfileDTO> userProfiles = new ArrayList<>();
     userProfiles.add(getProfileAdministrator());
     userProfiles.add(getProfileSeller());
     userProfiles.add(getProfileEmployee());
     return userProfiles;
   }
 
-  public static User getUserAdministrator() {
-    return User.builder()
-      .id(1L)
+  public static UserDTO getUserAdministrator() {
+    UserDTO user = UserDTO.builder()
       .name("Pablo")
       .lastName("Perez")
       .userName("perez")
@@ -40,11 +45,12 @@ public class MockDataProvider {
       .password(StringUtil.toSha256("PPerez99"))
       .profile(getProfileAdministrator())
       .build();
+    user.setId(1L);
+    return user;
   }
   
-  public static User getUserSeller() {
-    return User.builder()
-      .id(2L)
+  public static UserDTO getUserSeller() {
+    UserDTO user = UserDTO.builder()
       .name("Maria")
       .lastName("Suarez")
       .userName("msuarez")
@@ -52,41 +58,45 @@ public class MockDataProvider {
       .password(StringUtil.toSha256("MSuarez"))
       .profile(getProfileSeller())
       .build();
+    user.setId(2L);
+    return user;
   }
     
-  public static User getUserEmployee() {
-    return User.builder()
-      .id(3L)
-      .name("Flor")
-      .lastName("Martinez")
-      .userName("florm")
-      .mail("florm@gmail.com")
-      .password(StringUtil.toSha256("FlorM"))
-      .profile(getProfileEmployee())
-      .build();
+  public static UserDTO getUserEmployee() {
+    UserDTO user = UserDTO.builder()
+    .name("Flor")
+    .lastName("Martinez")
+    .userName("florm")
+    .mail("florm@gmail.com")
+    .password(StringUtil.toSha256("FlorM"))
+    .profile(getProfileEmployee())
+    .build();
+    user.setId(3L);
+    return user;
   }
 
-  public static List<User> getUsers() {
-    List<User> users = new ArrayList<>();
+  public static List<UserDTO> getUsers() {
+    List<UserDTO> users = new ArrayList<>();
     users.add(getUserAdministrator());
     users.add(getUserSeller());
     users.add(getUserEmployee());
     return users;
   }
   
-  public static Customer getCustomer() {
-    return Customer.builder()
-      .id(3L)
+  public static CustomerDTO getCustomer() {
+    CustomerDTO customer = CustomerDTO.builder()
       .name("Pablo")
       .lastName("Perez")
       .address("Siempre viva 4323")
       .mail("perez@gmail.com")
       .phone("+541161255454")
       .build();
+    customer.setId(3L);
+    return customer;
   }
     
-  public static List<Customer> getCustomers() {
-    List<Customer> customer = new ArrayList<>();
+  public static List<CustomerDTO> getCustomers() {
+    List<CustomerDTO> customer = new ArrayList<>();
     customer.add(getCustomer());
     return customer;
   }

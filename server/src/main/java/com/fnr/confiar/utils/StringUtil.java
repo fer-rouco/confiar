@@ -18,8 +18,16 @@ public class StringUtil {
     return underscore;
   }
 
-  public static String toSha256(String stringToHash) {
-    return Hashing.sha256().hashString(stringToHash, StandardCharsets.UTF_8).toString();
+  public static byte[] toSha256(String stringToHash) {
+    return Hashing.sha256().hashString(stringToHash, StandardCharsets.UTF_8).asBytes();
+  }
+
+  public static String fromSha256(byte[] sha256Result) {
+    StringBuffer sb = new StringBuffer();
+    for (int i = 0; i < sha256Result.length; i++) {
+      sb.append(Integer.toString((sha256Result[i] & 0xff) + 0x100, 16).substring(1));
+    }
+    return sb.toString();
   }
 
   public static String generateNewToken() {

@@ -1,5 +1,5 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
+import { createRoot } from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
 import App from './App';
 import { ThemeModeProvider } from './contexts/theme-context';
@@ -7,9 +7,10 @@ import { ThemeModeProvider } from './contexts/theme-context';
 import { getSessionInfo } from './services/server/session-service';
 import './i18n';
 
+const container = document.getElementById('root');
 let routingApp = null;
 getSessionInfo()
-  .then((sessionInfo) => {
+  .then(() => {
     routingApp = (
       <App></App>
     );
@@ -29,7 +30,8 @@ getSessionInfo()
         </ThemeModeProvider>
       </React.StrictMode>
     );
-    ReactDOM.render(routing, document.getElementById('root'));
+    const root = createRoot(container);
+    root.render(routing);
   });
 
 // If you want to start measuring performance in your app, pass a function

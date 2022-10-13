@@ -1,26 +1,13 @@
 import { useEffect, useState } from 'react';
-import { useHistory } from 'react-router';
+import { useLocation } from 'react-router-dom';
 
 const useReactPath = () => {
   const [path, setPath] = useState(window.location.pathname);
-  const history = useHistory();
-
-  const listenToPopstate = () => {
-    const winPath = window.location.pathname;
-    setPath(winPath);
-  };
+  const location = useLocation();
 
   useEffect(() => {
-    history.listen((location, action) => {
-      listenToPopstate();
-    });
-
-    return () => {
-      if (history.unlisten) {
-        history.unlisten();
-      }
-    };
-  }, [history]);
+    setPath(window.location.pathname);
+  }, [location]);
 
   return path;
 };

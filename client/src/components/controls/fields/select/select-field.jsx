@@ -13,7 +13,7 @@ const StyledFormSelect = styled.select`
   &.form-select {
     height: 40px;
     padding-top: 14px !important;
-    padding-bottom: 8px !important;
+    padding-bottom: 7px !important;
     margin-bottom: 20px !important;
     font-size: 1rem;
     padding-left: 0.75rem;
@@ -56,6 +56,7 @@ export default function SelectField(props) {
         className="field form-select form-select-lg mb-4"
         required={props.required}
         onChange={field.update}
+        title={field.label}
       >
         {getOptions()}
       </StyledFormSelect>

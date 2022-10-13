@@ -1,5 +1,5 @@
 import { useEffect, useState, Suspense, lazy } from 'react';
-import { Route, Switch, withRouter } from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
 import { ThemeProvider } from 'styled-components';
 import { BarsProvider } from './components/bars/bars-context';
 import NavBar from './components/bars/nav-bar';
@@ -24,16 +24,16 @@ function App({error}) {
   const [routes, setRoutes] = useState(null);
   const routesResolver = useRoutesResolver();
 
-  function buildDynamicRouteComponent(componentName) {
-    let DynamicComponent;
-    const componentNameInLowerCase = componentName.toLowerCase();
-    if (componentName.indexOf('logIn') > -1) {
-      DynamicComponent = withRouter(lazyImport(componentNameInLowerCase));
+  function buildDynamicRouteElement(elementName) {
+    let DynamicElement;
+    const elementNameInLowerCase = elementName.toLowerCase();
+    if (elementNameInLowerCase.indexOf('login') > -1) {
+      DynamicElement = lazyImport(elementNameInLowerCase);
     }
     else {
-      DynamicComponent = withRouter(withAuth(lazyImport(componentNameInLowerCase)));
+      DynamicElement = withAuth(lazyImport(elementNameInLowerCase));
     }
-    return <DynamicComponent/>;
+    return <DynamicElement/>;
   }
 
   function buildRegisteredRoutes(routeItem) {
@@ -57,20 +57,20 @@ function App({error}) {
 
   function buildRegisteredRoute(routeItem) {
     return (routeItem) ? (
-      <Route exact path={routesResolver.getUrl(routeItem.id)} key={routeItem.id} >
-        { buildDynamicRouteComponent(routeItem.id) }
-      </Route>
-    ) : (<></>);
+      <Route path={routesResolver.getUrl(routeItem.id)} key={routeItem.id} element={buildDynamicRouteElement(routeItem.id)} ></Route>
+    ) : (
+      <></>
+    );
   }
 
   function buildRoutes() {
-    const mainRoute = withRouter(withAuth(lazyImport('users')));
+    const mainRoute = buildDynamicRouteElement('users');
     setRoutes(
-      <Switch>
-        <Route exact path="/" component={mainRoute} />
-          { routesResolver.getAllItems().map((routeItem) => buildRegisteredRoutes(routeItem)) }
-        <Route component={lazyImport('page-not-found')} />
-      </Switch>
+      <Routes>
+        <Route path="/" element={mainRoute} />
+        { routesResolver.getAllItems().map((routeItem) => buildRegisteredRoutes(routeItem)) }
+        <Route element={lazyImport('page-not-found')} />
+      </Routes>
     );
   }
 
@@ -96,9 +96,9 @@ function App({error}) {
                   routes
                 :
                   (
-                    <Switch>
-                      <Route component={lazyImport('server-not-ready')} />
-                    </Switch>
+                    <Routes>
+                      <Route element={lazyImport('server-not-ready')} />
+                    </Routes>
                   )
                 }                
               </Suspense>

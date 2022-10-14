@@ -5,18 +5,18 @@
   "version": "0.2.0",
   "configurations": [
     {
+      "name": "Client",
+      "type": "node-terminal",
+      "request": "launch",
+      "command": "npm start",
+      "cwd": "${workspaceRoot}/client",
+    },
+    {
+      "name": "Server",
       "type": "java",
-      "name": "Launch Confiar Server",
       "request": "launch",
       "mainClass": "com.fnr.confiar.ConfiarApplication",
       "projectName": "Confiar"
-    },
-    {
-      "name": "Launch Confiar Client Debugger",
-      "request": "launch",
-      "type": "pwa-chrome",
-      "url": "http://localhost:3000",
-      "webRoot": "${workspaceFolder}"
     }
   ]
 }

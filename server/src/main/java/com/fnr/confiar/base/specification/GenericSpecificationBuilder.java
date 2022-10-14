@@ -3,7 +3,7 @@ package com.fnr.confiar.base.specification;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.util.StringUtils;
 
-import jakarta.persistence.criteria.*;
+import javax.persistence.criteria.*;
 import java.util.*;
 
 /**
@@ -12,12 +12,16 @@ import java.util.*;
  * by chaining methods which are provided in this class. For example:
  * </p>
  *
- * <blockquote><pre>
- * 		GenericSpecificationBuilder.of(Person.class)
- * 			.like("name", name)
- * 			.greaterThan("age", age)
+ * <blockquote>
+ * 
+ * <pre>
+ * GenericSpecificationBuilder.of(Person.class)
+ * 		.like("name", name)
+ * 		.greaterThan("age", age)
  * 		.build();
- * </pre></blockquote>
+ * </pre>
+ * 
+ * </blockquote>
  */
 public class GenericSpecificationBuilder<E> {
 
@@ -43,7 +47,8 @@ public class GenericSpecificationBuilder<E> {
 	 * @param clazz
 	 * @param <E>
 	 * @return this
-	 * @throws IllegalArgumentException in case the given clazz is {@link java.lang.Number}.
+	 * @throws IllegalArgumentException in case the given clazz is
+	 *                                  {@link java.lang.Number}.
 	 */
 	public static <E> GenericSpecificationBuilder<E> of(Class<E> clazz) {
 		if (Number.class.isAssignableFrom(clazz)) {
@@ -67,15 +72,18 @@ public class GenericSpecificationBuilder<E> {
 	@SuppressWarnings("unchecked")
 	private <C> GenericSpecificationBuilder<E> addCriteria(String key, C value, CriteriaOperation operation) {
 		if (value != null) {
-			filterCriteriaList.add(new FilterCriteria<>(key, value, operation, (Class<C>) value.getClass(), activeConditionType));
+			filterCriteriaList
+					.add(new FilterCriteria<>(key, value, operation, (Class<C>) value.getClass(), activeConditionType));
 		}
 		return this;
 	}
 
 	@SuppressWarnings("unchecked")
-	private <C extends Comparable<? super C>> GenericSpecificationBuilder<E> addComparableCriteria(String key, C value, CriteriaOperation operation) {
+	private <C extends Comparable<? super C>> GenericSpecificationBuilder<E> addComparableCriteria(String key, C value,
+			CriteriaOperation operation) {
 		if (value != null) {
-			filterCriteriaList.add(new ComparableFilterCriteria<C>(key, value, operation, (Class<C>) value.getClass(), activeConditionType));
+			filterCriteriaList.add(new ComparableFilterCriteria<C>(key, value, operation, (Class<C>) value.getClass(),
+					activeConditionType));
 		}
 		return this;
 	}
@@ -135,11 +143,15 @@ public class GenericSpecificationBuilder<E> {
 	/**
 	 * Adds a new "equals" criteria to the filterCriteriaList
 	 * For example:
-	 * <blockquote><pre>
-	 *     GenericSpecificationBuilder.of(Person.class)
-	 *     	.equals("gender", Gender.FEMALE)
-	 *     	.build();
-	 * </pre></blockquote>
+	 * <blockquote>
+	 * 
+	 * <pre>
+	 * GenericSpecificationBuilder.of(Person.class)
+	 * 		.equals("gender", Gender.FEMALE)
+	 * 		.build();
+	 * </pre>
+	 * 
+	 * </blockquote>
 	 *
 	 * @param key   field name
 	 * @param value
@@ -151,11 +163,15 @@ public class GenericSpecificationBuilder<E> {
 
 	/**
 	 * Adds a new "like" criteria to the filterCriteriaList
-	 * <blockquote><pre>
-	 *     GenericSpecificationBuilder.of(Person.class)
-	 *     	.like("bio", keyword)
-	 *     	.build();
-	 * </pre></blockquote>
+	 * <blockquote>
+	 * 
+	 * <pre>
+	 * GenericSpecificationBuilder.of(Person.class)
+	 * 		.like("bio", keyword)
+	 * 		.build();
+	 * </pre>
+	 * 
+	 * </blockquote>
 	 *
 	 * @param key   field name
 	 * @param value
@@ -175,11 +191,15 @@ public class GenericSpecificationBuilder<E> {
 
 	/**
 	 * Adds a new "in" criteria to the filterCriteriaList
-	 * <blockquote><pre>
-	 *     GenericSpecificationBuilder.of(Person.class)
-	 *     	.in("name", name)
-	 *     	.build();
-	 * </pre></blockquote>
+	 * <blockquote>
+	 * 
+	 * <pre>
+	 * GenericSpecificationBuilder.of(Person.class)
+	 * 		.in("name", name)
+	 * 		.build();
+	 * </pre>
+	 * 
+	 * </blockquote>
 	 *
 	 * @param key   field name
 	 * @param value
@@ -191,11 +211,15 @@ public class GenericSpecificationBuilder<E> {
 
 	/**
 	 * Adds a new "lessThan" criteria to the filterCriteriaList
-	 * <blockquote><pre>
-	 *     GenericSpecificationBuilder.of(Person.class)
-	 *     	.lessThan("birthDate", thirtyYearsAgo)
-	 *     	.build();
-	 * </pre></blockquote>
+	 * <blockquote>
+	 * 
+	 * <pre>
+	 * GenericSpecificationBuilder.of(Person.class)
+	 * 		.lessThan("birthDate", thirtyYearsAgo)
+	 * 		.build();
+	 * </pre>
+	 * 
+	 * </blockquote>
 	 *
 	 * @param key   field name
 	 * @param value
@@ -207,11 +231,15 @@ public class GenericSpecificationBuilder<E> {
 
 	/**
 	 * Adds a new "lessThanOrEqualTo" criteria to the filterCriteriaList
-	 * <blockquote><pre>
-	 *     GenericSpecificationBuilder.of(Person.class)
-	 *     	.lessThanOrEqualTo("birthDate", thirtyYearsAgo)
-	 *     	.build();
-	 * </pre></blockquote>
+	 * <blockquote>
+	 * 
+	 * <pre>
+	 * GenericSpecificationBuilder.of(Person.class)
+	 * 		.lessThanOrEqualTo("birthDate", thirtyYearsAgo)
+	 * 		.build();
+	 * </pre>
+	 * 
+	 * </blockquote>
 	 *
 	 * @param key   field name
 	 * @param value
@@ -223,11 +251,15 @@ public class GenericSpecificationBuilder<E> {
 
 	/**
 	 * Adds a new "greaterThan" criteria to the filterCriteriaList
-	 * <blockquote><pre>
-	 *     GenericSpecificationBuilder.of(Person.class)
-	 *     	.greaterThan("birthDate", thirtyYearsAgo)
-	 *     	.build();
-	 * </pre></blockquote>
+	 * <blockquote>
+	 * 
+	 * <pre>
+	 * GenericSpecificationBuilder.of(Person.class)
+	 * 		.greaterThan("birthDate", thirtyYearsAgo)
+	 * 		.build();
+	 * </pre>
+	 * 
+	 * </blockquote>
 	 *
 	 * @param key   field name
 	 * @param value
@@ -239,11 +271,15 @@ public class GenericSpecificationBuilder<E> {
 
 	/**
 	 * Adds a new "greaterThanOrEqualTo" criteria to the filterCriteriaList
-	 * <blockquote><pre>
-	 *     GenericSpecificationBuilder.of(Person.class)
-	 *     	.greaterThanOrEqualTo("birthDate", thirtyYearsAgo)
-	 *     	.build();
-	 * </pre></blockquote>
+	 * <blockquote>
+	 * 
+	 * <pre>
+	 * GenericSpecificationBuilder.of(Person.class)
+	 * 		.greaterThanOrEqualTo("birthDate", thirtyYearsAgo)
+	 * 		.build();
+	 * </pre>
+	 * 
+	 * </blockquote>
 	 *
 	 * @param key   field name
 	 * @param value
@@ -254,7 +290,8 @@ public class GenericSpecificationBuilder<E> {
 	}
 
 	/**
-	 * Adds a new {@link org.springframework.data.jpa.domain.Specification} to the specifications list <b>directly</b>
+	 * Adds a new {@link org.springframework.data.jpa.domain.Specification} to the
+	 * specifications list <b>directly</b>
 	 *
 	 * @param specification
 	 * @return
@@ -287,8 +324,7 @@ public class GenericSpecificationBuilder<E> {
 						path = path.get(columns[i]);
 					}
 					parameterExpressions.add(path);
-				}
-				else {
+				} else {
 					parameterExpressions.add(root.get(fieldName));
 				}
 
@@ -296,13 +332,15 @@ public class GenericSpecificationBuilder<E> {
 					final String paramsName = "function" + functionIndex + "_param" + parameterIndex + "_" +
 							StringUtils.deleteAny(UUID.randomUUID().toString(), "-");
 					parameterMap.put(paramsName, param);
-					final ParameterExpression<String> parameterExpression = criteriaBuilder.parameter(String.class, paramsName);
+					final ParameterExpression<String> parameterExpression = criteriaBuilder.parameter(String.class,
+							paramsName);
 					++parameterIndex;
 					parameterExpressions.add(parameterExpression);
 				}
 
 				final Expression<?>[] parameters = parameterExpressions.toArray(new Expression<?>[] {});
-				final Expression<Boolean> sqlFunction = criteriaBuilder.function(functionName, Boolean.class, parameters);
+				final Expression<Boolean> sqlFunction = criteriaBuilder.function(functionName, Boolean.class,
+						parameters);
 
 				return criteriaBuilder.equal(sqlFunction, "");
 			};
@@ -321,7 +359,8 @@ public class GenericSpecificationBuilder<E> {
 
 	/**
 	 * <p>
-	 * Generates a {@link com.kodgemisi.specification.GenericSpecification} object for each given filter criteria paramater
+	 * Generates a {@link com.kodgemisi.specification.GenericSpecification} object
+	 * for each given filter criteria paramater
 	 * by iterating filterCriteriaList then combines them with AND clause
 	 * </p>
 	 *
@@ -340,18 +379,17 @@ public class GenericSpecificationBuilder<E> {
 			final Specification<E> specification = new GenericSpecification(filterCriteria);
 			if (filterCriteria.getConditionType().equals(ConditionType.AND)) {
 				andSpecs = Specification.where(andSpecs).and(specification);
-			}
-			else {
+			} else {
 				orSpecs = Specification.where(orSpecs).or(specification);
 			}
 		}
 
 		// iterate over custom specification list
-		for (Map.Entry<Specification<E>, ConditionType> specificationConditionTypeEntry : customSpecifications.entrySet()) {
+		for (Map.Entry<Specification<E>, ConditionType> specificationConditionTypeEntry : customSpecifications
+				.entrySet()) {
 			if (specificationConditionTypeEntry.getValue().equals(ConditionType.AND)) {
 				andSpecs = Specification.where(andSpecs).and(specificationConditionTypeEntry.getKey());
-			}
-			else {
+			} else {
 				orSpecs = Specification.where(orSpecs).or(specificationConditionTypeEntry.getKey());
 			}
 		}

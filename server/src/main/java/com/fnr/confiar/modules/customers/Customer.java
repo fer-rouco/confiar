@@ -5,11 +5,11 @@ import java.util.List;
 import com.fnr.confiar.base.BaseEntity;
 import com.fnr.confiar.generic.entities.Document;
 
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -17,7 +17,7 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 @Data
-@EqualsAndHashCode(callSuper=false)
+@EqualsAndHashCode(callSuper = false)
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
@@ -34,7 +34,7 @@ public class Customer extends BaseEntity<Long> {
     this.mail = mail;
     this.phone = phone;
   }
-  
+
   @Column(length = 30)
   private String name;
   @Column(length = 30)

@@ -16,14 +16,14 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.util.Assert;
 
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.Tuple;
-import jakarta.persistence.TypedQuery;
-import jakarta.persistence.criteria.CriteriaBuilder;
-import jakarta.persistence.criteria.CriteriaQuery;
-import jakarta.persistence.criteria.Predicate;
-import jakarta.persistence.criteria.Root;
-import jakarta.persistence.criteria.Selection;
+import javax.persistence.EntityManager;
+import javax.persistence.Tuple;
+import javax.persistence.TypedQuery;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
+import javax.persistence.criteria.Selection;
 
 public abstract class BaseService<E extends BaseEntity<?>> {
 
@@ -32,7 +32,7 @@ public abstract class BaseService<E extends BaseEntity<?>> {
 
   protected abstract Class<E> getClazz();
   protected abstract <DTO extends DataTransferObjectInterface<? extends Number>, EC extends EntityConverter<E, DTO>> EC getConverter();
-   
+
   // public List<E> findByFiltersCriteria(FilterModel filter, Class<E> entityClass) {
   //   CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
   //   // CriteriaQuery<E> createQuery = criteriaBuilder.createQuery(entityClass);
@@ -46,7 +46,7 @@ public abstract class BaseService<E extends BaseEntity<?>> {
   //     Predicate predicate = criteriaBuilder.like(criteriaBuilder.lower(root.get(filterItem.getKey())), value);
   //     predicates.add(predicate);
   //   }
-  
+
   //   createQuery.where(predicates.toArray(Predicate[]::new));
 
   //   List<Path<E>> paths = new ArrayList<>();
@@ -137,10 +137,10 @@ public abstract class BaseService<E extends BaseEntity<?>> {
     // Define selecting expression
     List<Selection<?>> selections = getSelections(filter.getProjectionFields(), root);
     query.multiselect(selections);
-    //Define ORDER BY clause
+    // Define ORDER BY clause
     applySorting(builder, query, root, pageable);
 
-    List<E> entities = getPageableResultList(query, pageable).stream().map((Tuple tuple) -> { 
+    List<E> entities = getPageableResultList(query, pageable).stream().map((Tuple tuple) -> {
       Map<String, Object> maps = new HashMap<>();
       tuple.getElements().forEach(tupleElement -> {
         maps.put(tupleElement.getAlias(), tuple.get(tupleElement.getAlias()));
@@ -161,7 +161,7 @@ public abstract class BaseService<E extends BaseEntity<?>> {
     queryCount.select(builder.count(rootCount));
     return entityManager.createQuery(queryCount).getSingleResult();
   }
- 
+
   public Specification<E> buildSpecificationsByFilters(FilterDTO filter) {
     GenericSpecificationBuilder<E> builder = GenericSpecificationBuilder.of(getClazz());
 
@@ -183,7 +183,7 @@ public abstract class BaseService<E extends BaseEntity<?>> {
   public List<? extends DataTransferObjectInterface<? extends Number>> findByFilters(FilterDTO filter) {
     return findByFiltersWithPagination(buildSpecificationsByFilters(filter), filter);
   }
-  
+
   public long countByFilters(FilterDTO filter) {
     return countByFiltersWithPagination(buildSpecificationsByFilters(filter));
   }

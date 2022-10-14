@@ -4,10 +4,11 @@ import lombok.Getter;
 import lombok.Setter;
 import org.springframework.lang.NonNull;
 
-import jakarta.persistence.criteria.JoinType;
+import javax.persistence.criteria.JoinType;
 
 /**
  * Class that holds key value pair for given filter parameters
+ * 
  * @param <T>
  */
 @Getter

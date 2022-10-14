@@ -4,12 +4,12 @@ import java.util.Date;
 
 import com.fnr.confiar.base.BaseEntity;
 
-import jakarta.persistence.Basic;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.Lob;
-import jakarta.persistence.Table;
+import javax.persistence.Basic;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Lob;
+import javax.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -34,7 +34,7 @@ public class Document extends BaseEntity<Long> {
   private Integer size;
   private Short orderNumber;
   private Date lastModified;
-  
+
   @Lob
   @Basic(fetch = FetchType.LAZY)
   @Column(columnDefinition = "LONGBLOB", nullable = false)

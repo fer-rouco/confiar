@@ -2,11 +2,11 @@ package com.fnr.confiar.modules.users;
 
 import com.fnr.confiar.base.BaseEntity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
 import lombok.Data;
 import lombok.Builder;
@@ -23,7 +23,8 @@ import lombok.experimental.FieldNameConstants;
 public class User extends BaseEntity<Long> {
 
   @Builder
-  public User(Long id, String name, String lastName, String userName, String mail, byte[] password, UserProfile profile) {
+  public User(Long id, String name, String lastName, String userName, String mail, byte[] password,
+      UserProfile profile) {
     this.setId(id);
     this.name = name;
     this.lastName = lastName;
@@ -44,7 +45,7 @@ public class User extends BaseEntity<Long> {
   @Column(nullable = false)
   private byte[] password;
   @ManyToOne
-  @JoinColumn(name="PROFILE_ID")
+  @JoinColumn(name = "PROFILE_ID")
   private UserProfile profile;
 
 }

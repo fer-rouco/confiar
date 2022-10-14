@@ -2,9 +2,9 @@ package com.fnr.confiar.modules.users;
 
 import com.fnr.confiar.base.BaseEntity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 
 import lombok.Data;
 import lombok.Builder;

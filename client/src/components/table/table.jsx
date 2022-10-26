@@ -1,7 +1,8 @@
-import { createRef, useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import i18next from "i18next";
+import debounce from 'lodash.debounce';
 import useRoutesResolver from './../../hooks/routes-resolver';
 import { useDialog } from '../../contexts/dialog-context';
 import { usePage } from '../../contexts/page-context';
@@ -168,7 +169,7 @@ function Table(props) {
 
   function update() {
     if (props.requestRowObjectsFunction) {
-      updateRowObjectsWithPaginator();
+      debouncedUpdateRowObjectsWithPaginator(filtersState);
     }
     else if (props.rowObjects) {
       updateRowObjects();
@@ -186,7 +187,12 @@ function Table(props) {
     return (calculatedTotalPages < 0) ? 0 : calculatedTotalPages;
   }
 
-  function updateRowObjectsWithPaginator() {
+  const debouncedUpdateRowObjectsWithPaginator = useCallback(
+    debounce((filtersState) => updateRowObjectsWithPaginator(filtersState), 500),
+    []
+  );
+
+  function updateRowObjectsWithPaginator(filtersState) {
     if (props.requestRowObjectsFunction && props.columnDefinitions.length > 0) { 
       let projectionFields = props.columnDefinitions.map((columnDefinition) => {
         return (columnDefinition.type != 'icon') ? columnDefinition.key : null

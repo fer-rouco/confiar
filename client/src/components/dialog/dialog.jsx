@@ -8,8 +8,8 @@ import { navigateIntoObjectByPath } from '../../theme';
 import { usePage } from '../../contexts/page-context';
 
 
-const getThemeAttribute = (theme, attrribute) => {
-  return navigateIntoObjectByPath(theme, "components.dialog." + attrribute);
+const getThemeAttribute = (theme, attribute) => {
+  return navigateIntoObjectByPath(theme, "components.dialog." + attribute);
 }
 
 const StyledModalContent = styled.div`

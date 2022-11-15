@@ -6,8 +6,8 @@ import withLoader from './../general/load-indicator-hoc';
 import { usePage } from '../../contexts/page-context';
 import { ModelProvider } from '../controls/fields/model-context';
 
-const getThemeAttribute = (theme, attrribute) => {
-  return navigateIntoObjectByPath(theme, "components.containers.panel." + attrribute);
+const getThemeAttribute = (theme, attribute) => {
+  return navigateIntoObjectByPath(theme, "components.containers.panel." + attribute);
 }
 
 const StyledBoxShadow = css`

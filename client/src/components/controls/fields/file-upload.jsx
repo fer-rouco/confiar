@@ -9,8 +9,8 @@ import baseField from './base-field';
 import { useModel } from './model-context';
 
 
-const getThemeAttribute = (theme, attrribute) => {
-  return navigateIntoObjectByPath(theme, "components.controls.fileUpload." + attrribute);
+const getThemeAttribute = (theme, attribute) => {
+  return navigateIntoObjectByPath(theme, "components.controls.fileUpload." + attribute);
 }
 
 const StyledContainer = styled.div`

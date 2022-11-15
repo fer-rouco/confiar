@@ -11,8 +11,8 @@ import Icon from '../general/icon';
 import { getCurrentSession, logOut } from './../../services/server/session-service';
 import { useBars } from './bars-context';
 
-const getThemeAttribute = (theme, attrribute) => {
-  return navigateIntoObjectByPath(theme, "components.bars.sideBar." + attrribute);
+const getThemeAttribute = (theme, attribute) => {
+  return navigateIntoObjectByPath(theme, "components.bars.sideBar." + attribute);
 }
 
 const StyledSideBar = styled.div`

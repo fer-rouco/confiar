@@ -5,8 +5,8 @@ import styled from 'styled-components';
 import { navigateIntoObjectByPath } from '../../../../theme';
 import baseField from '../base-field';
 
-const getThemeAttribute = (theme, attrribute) => {
-  return navigateIntoObjectByPath(theme, "components.controls.fields.input." + attrribute);
+const getThemeAttribute = (theme, attribute) => {
+  return navigateIntoObjectByPath(theme, "components.controls.fields.input." + attribute);
 }
 
 const StyledErrorMessage = styled.div`

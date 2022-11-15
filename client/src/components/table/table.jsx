@@ -18,8 +18,8 @@ import storageManagerService from "./../../services/storage/storage-manager-serv
 import { navigateIntoObjectByPath } from '../../theme';
 import { useAlertMessage } from '../../contexts/alert-message-context';
 
-const getThemeAttribute = (theme, attrribute) => {
-  return navigateIntoObjectByPath(theme, "components.table." + attrribute);
+const getThemeAttribute = (theme, attribute) => {
+  return navigateIntoObjectByPath(theme, "components.table." + attribute);
 }
 
 const StyledTable = styled.table`
@@ -96,7 +96,7 @@ const StyledHeaderParagraph = styled.p`
 
 const StyledNumericField = styled(NumericField)`
   display: inline;
-  positiion: absolute;
+  position: absolute;
 `;
 
 function Table(props) {
@@ -169,8 +169,8 @@ function Table(props) {
 
   function update() {
     if (props.requestRowObjectsFunction) {
-      debouncedUpdateRowObjectsWithPaginator(filtersState);
-    }
+        debouncedUpdateRowObjectsWithPaginator(filtersState);
+      }
     else if (props.rowObjects) {
       updateRowObjects();
     }
@@ -453,8 +453,6 @@ function Table(props) {
             );
             break;
           case 'enum':
-            // filtersState[0][filterDefinition.key] = filterDefinition.options[0];
-            // filtersState[1](filtersState[0]);
             filter = (
               <SelectField attr={filterDefinition.key} label={filterDefinition.label} options={filterDefinition.options} ></SelectField>
             );
@@ -465,7 +463,7 @@ function Table(props) {
         }
       });
 
-      const buidlFilter = (filterItemToBuild) => (
+      const buildFilter = (filterItemToBuild) => (
         (filterItemToBuild) ? (
           <div className="col-md-4" >
             {filterItemToBuild}
@@ -482,9 +480,9 @@ function Table(props) {
         const filterToBuild2 = filtersToBuild[filtersToBuildIndex + 2];
         rows.push(
           <div className="row" key={"filter-row-" + filtersToBuildIndex} >
-            {buidlFilter(filterToBuild0)}
-            {buidlFilter(filterToBuild1)}
-            {buidlFilter(filterToBuild2)}
+            {buildFilter(filterToBuild0)}
+            {buildFilter(filterToBuild1)}
+            {buildFilter(filterToBuild2)}
           </div>      
         )
       }

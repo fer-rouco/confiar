@@ -1,4 +1,4 @@
-# fullstack_challenge_fernando_rouco
+# Confiar
 
 Appplicacion desarrollada con Java, Spring Boot y una base de datos H2 embebida del la lado del server, y React del lado del cliente.
 

@@ -69,7 +69,7 @@ function App({error}) {
       <Routes>
         <Route path="/" element={mainRoute} />
         { routesResolver.getAllItems().map((routeItem) => buildRegisteredRoutes(routeItem)) }
-        <Route element={lazyImport('page-not-found')} />
+        <Route path="*" element={buildDynamicRouteElement('page-not-found')} />
       </Routes>
     );
   }

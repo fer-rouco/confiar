@@ -6,8 +6,10 @@ import Table from '../components/table/table';
 import { removeColumnDefinition, textColumnDefinition } from '../components/table/column-definitions/column-definition';
 import withPage from '../components/containers/page';
 import { addIconAction } from '../components/controls/action-definition';
+import { createModel, updateModel } from '../components/controls/fields/model-context';
 
 function Customers() {
+  const modelState = createModel();
   const navigation = useNavigation();
   const [columnDefinitions, setColumnDefinitions] = useState([]);
   const [filterDefinitions, setFilterDefinitions] = useState([]);
@@ -34,6 +36,8 @@ function Customers() {
       textColumnDefinition({ key: 'mail' })
     ]);
         
+    updateModel(modelState);
+
     return () => {
       setColumnDefinitions([]);
       setFilterDefinitions([]);
@@ -41,8 +45,8 @@ function Customers() {
   }, []);
 
   return (
-    <Panel model={{}} actions={[addIconAction(create)]} >
-      <Table columnDefinitions={columnDefinitions} requestRowObjectsFunction={findCustomers} filterDefinitions={filterDefinitions} ></Table>
+    <Panel model={modelState} actions={[addIconAction(create)]} >
+      <Table requestRowObjectsFunction={findCustomers} columnDefinitions={columnDefinitions} filterDefinitions={filterDefinitions} ></Table>
     </Panel>
   );
 }

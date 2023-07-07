@@ -18,7 +18,7 @@ function Settings(props) {
   const themeModelState = createModel({ dark: theme.isDark() });
   const routesResolver = useRoutesResolver();
   const { i18n } = useTranslation('pages', { keyPrefix: 'settings' });
-  const languages = Object.keys(i18n.services.resourceStore.data).map((language) => { return {value: language, label: language }; });
+  const languages = Object.keys(i18n.services.resourceStore.data).map((language) => { return {value: language, label: translateLabel(language) }; });
 
   function handleLanguageChange() {
     i18n.changeLanguage(generalModel.language, (error, t) => {
@@ -32,6 +32,11 @@ function Settings(props) {
     });
   }
 
+  function translateLabel(language) {
+    const { t } = useTranslation('pages', { keyPrefix: 'settings.general.panel.languages' });
+    return t(language);
+  }
+  
   useEffect(() => {
     updateModel(generalModelState);
     updateModel(themeModelState);

@@ -96,7 +96,11 @@
       },
       "general.panel": {
         "title": "General",
-        "language": "Language"
+        "language": "Language",
+        "languages": {
+          "en": "English",
+          "es": "Spanish"
+        }
       },
       "theme.panel": {
         "title": "Theme",

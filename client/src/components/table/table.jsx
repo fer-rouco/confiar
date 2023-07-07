@@ -143,7 +143,7 @@ function Table(props) {
      
   useEffect(() => {
     if (dialog.getAfterConfirmation()) {
-      updateRowObjectsWithPaginator();
+      updateRowObjectsWithPaginator(filtersState);
       const translationKey = dialog.getTranslationPrefixKey().concat(".").concat(dialog.getTranslationActionKey()).concat(".success");
       const placeholderList = dialog.getDefinition().message.placeholders;
       let placeholdersToApply = {};
@@ -201,17 +201,19 @@ function Table(props) {
       });
 
       let filters = {};
-      Object.entries(filtersState[0]).forEach((filterEntry) => {
-        const filterValue = filterEntry[1];
-        if (filterValue.length > 0) {
-          const filterKey = filterEntry[0];
-          const filterType = props.filterDefinitions.find((filterDef) => { return filterDef.key === filterKey }).type;
-          filters[filterKey] = {
-            type: filterType,
-            value: filterValue
-          };
-        }
-      });
+      if (filtersState) {
+        Object.entries(filtersState[0]).forEach((filterEntry) => {
+          const filterValue = filterEntry[1];
+          if (filterValue.length > 0) {
+            const filterKey = filterEntry[0];
+            const filterType = props.filterDefinitions.find((filterDef) => { return filterDef.key === filterKey }).type;
+            filters[filterKey] = {
+              type: filterType,
+              value: filterValue
+            };
+          }
+        });        
+      }
       
       props.requestRowObjectsFunction(currentPagePosition, settings.pageSize, projectionFields, filters).then((paginator) => {
         // Set current rowObjects
